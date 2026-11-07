@@ -1,0 +1,32 @@
+{
+  "_note": "Kling 3.0 Pro, silent, 16:9. Each clip runs start frame -> end frame. Image IDs are Higgsfield job IDs (generated stills) or media IDs (uploaded frames).",
+  "frames": {
+    "K01": "26f1b566-5c32-45a1-863f-651bda73f2df",
+    "K02": "9821cdb0-6585-4b6b-917f-574d6c76757b",
+    "K03": "6bb03702-bf3b-4fc1-9b12-f1d9cc4a4d3c",
+    "K04": "970edce1-c94f-47a5-88b5-7770e49646db",
+    "K05": "3f7d0288-04ef-4ab4-a298-29c0c67172d3",
+    "K06": "f0f26d26-d4c7-4e40-948e-c6af0b06c512",
+    "K07": "9891210d-cdb2-49f8-8412-53025959a17f",
+    "K08": "975a0ae7-02ba-4974-8c48-4f1bba036bc8",
+    "K09": "84181fe6-640d-498f-985b-d58caa7c15cb",
+    "K10": "74356beb-fc55-4152-8d96-fbe9d2fb452b",
+    "K11": "0fc03c31-e12c-4378-906a-06b0f3350dbc",
+    "K12": "10586423-e93f-4ba8-8d75-1d87ef1a170e",
+    "K13": "74ee78b0-2bbb-4354-98d1-5856548bc5f5"
+  },
+  "style": "Silent. Photoreal, 35mm documentary film look, fine grain, smooth constant camera speed, no shake, no cuts. Muted palette, warm lamp-black shadows, no bright green. No text, no logos, no faces, no lens flares, no floating particles.",
+  "shots": [
+    {"id": "S02", "from": "K01", "to": "K02", "dur": 10, "prompt": "One continuous slow shot. The camera glides forward and gently down through the misty understory of an old Kerala forest, passing between ferns and buttress roots toward a single shaft of low golden sunlight, and settles at plant height on a young holy basil plant standing in the beam. Dust moves only inside the light."},
+    {"id": "S03", "from": "K02", "to": "K03", "dur": 5, "prompt": "Almost still macro, slow push-in. A weathered hand enters slowly from the right into the shaft of light, gently takes one holy basil leaf between thumb and forefinger and lifts it a little toward the camera; the plant stays soft behind. Natural, unhurried movement, correct fingers."},
+    {"id": "S04", "from": "K03", "to": "K04", "dur": 5, "prompt": "Very slow push-in. The leaf is raised against the low sun until it fills the frame; it becomes fully backlit, the hand and the forest fall away into warm black, and the vein network glows translucent gold. One continuous move."},
+    {"id": "S05", "from": "K04", "to": "K05", "dur": 10, "prompt": "One continuous macro move. The glowing gold veins of the leaf slowly dim and harden into dark incised grooves; the leaf tissue becomes the dry honey-coloured fibres of a palm-leaf manuscript strip, and the branching veins straighten into rows of soot-darkened stylus marks. The camera drifts slowly to the right along the strip toward its binding hole. Gradual physical transformation. The marks stay soft and never form legible letters."},
+    {"id": "S06", "from": "K05", "to": "K06", "dur": 10, "prompt": "The camera pulls slowly back and up from the palm-leaf strip, revealing it is one leaf in a bound bundle of palm-leaf manuscripts held between wooden boards and tied with a cotton cord, resting on dark rosewood and lit by a small brass oil lamp at the right. The flame flickers gently. Smooth constant pull-back, ending still, with the left of the frame dark."},
+    {"id": "S07", "from": "K06", "to": "K07", "dur": 5, "prompt": "Locked camera. The cotton cord binding the manuscript bundle begins to glow with warm gold light from within, then slowly lifts free of the bundle as a single fine golden thread and rises out of the top of the frame, while the lamp dims and the whole frame fades to complete darkness."},
+    {"id": "S09", "from": "K08", "to": "K09", "dur": 10, "prompt": "One continuous move. Low over still golden oil with slow concentric ripples, the camera rises and tilts down until it looks straight down, revealing the oil fills a wide bronze uruli vessel; herb roots and dark leaves sink slowly at its edges and the oil simmers gently with fine rings on its surface."},
+    {"id": "S10", "from": "K09", "to": "K10", "dur": 5, "prompt": "Continuous move. The camera drifts from the bronze vessel to follow a smooth, unbroken golden stream of the finished oil pouring through a fine white cotton cloth into a plain unlabelled amber glass bottle on dark wood. Slow and calm, warm side light."},
+    {"id": "S11", "from": "K10", "to": "K11", "dur": 5, "prompt": "The camera rises slowly straight up above the bottle until it looks directly down; warm light grows, the dark table brightens into a calm ivory surface, and the single circle of golden oil multiplies into a perfectly regular grid of identical amber softgel capsules filling the frame. Smooth and exact."},
+    {"id": "S12", "from": "K11", "to": "K12", "dur": 5, "prompt": "Slow, smooth descent. From the grid of identical softgels the camera settles onto a single capsule resting at the centre of the polished steel pan of a precision balance in a clean ivory and glass enclosure; cool soft daylight with a warm rim on the capsule. Everything settles to stillness."},
+    {"id": "S13", "from": "K12", "to": "K13", "dur": 5, "prompt": "The camera rises slowly away from the balance into soft bright morning light; the frame washes to warm ivory, and out of the light a single fine thread of real gold draws itself in one gentle curve across ivory handmade paper. Ends still and quiet."}
+  ]
+}

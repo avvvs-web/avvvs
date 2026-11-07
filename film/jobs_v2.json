@@ -1,0 +1,21 @@
+{
+ "_note": "Second pass after the frame-by-frame audit (2026-11-07). New stills: K04 veins v2 19f84d07-9074-4750-8a23-d5d861391706, K06 open bundle v2 7d43cf0f-e3cf-4cba-918a-d1889c62a8c5.",
+ "S03": "349df96c-5340-4e52-9560-3f0880ec6368",
+ "S04": "e582c28a-f2c3-4acb-9c90-a7d5d64dda56",
+ "S05": "8df2f05d-4c19-4ad8-a047-20341b20de4f",
+ "S11": "199baa95-02a6-4a39-a9e6-12b37072435c",
+ "S12": "27cfd5cf-cbfe-4e1c-ab27-77d42b41dbbf",
+ "S13": "2beaa8d9-da9d-4cd3-9b90-d5ecb95594ae",
+ "S06": "49dff6e3-200b-4988-b96a-9fa3b38c2188",
+ "S07": "3a74654d-9418-464a-b746-17c3fe7cfc40",
+ "S14_kling": "948fdbd7-44b4-419f-a252-43ff894fac16",
+ "_changes": "Balance shot (S12) dropped: Kling could only reach it by double exposure. S13 replaced by S14 = first 1.4 s of the S14 Kling take (rising off the capsule grid) + 0.8 s fade through white + the thread-drawing tail of the balance-to-ivory take from 2.6 s (film/clips/v1/S13_v2_balance-to-ivory.mp4). Blender clip trimmed by 1.0 s of black. First-pass clips kept in film/clips/v1/.",
+ "K09_clean": "baa106d1-f6e1-48f1-9a6e-91c03d2eda7c",
+ "S09": "9b67f715-d426-47cc-9f02-070e4ebe092e",
+ "S10": "d2d05486-39d4-44a6-8bc6-17b929f3de96",
+ "_changes_uruli": "Client asked for no chunks in the uruli (2026-11-07): new clean K09 (old one kept as keyframes/_replaced_K09_uruli_v1.png), S09 and S10 regenerated from it.",
+ "S10_alternates": {
+  "7d613e02-2e5f-4b2c-8ffd-4c556526747f": "vessel lifts away (underside turns to wood): clips/v1/S10_v3_lift.mp4",
+  "e17b42c9-61e0-4ac2-aa92-c9116f0b11cd": "submitted before the user stopped it; not downloaded"
+ }
+}

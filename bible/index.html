@@ -1,0 +1,512 @@
+<title>The Golden Thread</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+Malayalam:wght@400&display=swap">
+<style>
+/* Layout: a screening-room production bible. One dark reading column, wide storyboard strip, sticky slate nav. */
+:root{
+  --bg:#0D0B09; --surface:#171210; --surface-2:#2B1D16; --line:#3A2C22;
+  --gold:#C3A46A; --gold-dim:#8E7A50; --parch:#E8D9B9; --ivory:#F4EFE5; --muted:#B3A690;
+  --warn:#D9925B; --ok:#D8BE86;
+  --f-display:"Fraunces", "Iowan Old Style", Georgia, serif;
+  --f-body:"Hanken Grotesk", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --f-ml:"Noto Serif Malayalam", "Nirmala UI", serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ivory);font-family:var(--f-body);font-size:16px;line-height:1.6;margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.read{max-width:70ch}
+h1,h2,h3,h4{font-family:var(--f-display);font-weight:400;text-wrap:balance;margin:0;color:var(--parch)}
+h2{font-size:clamp(1.7rem,3.2vw,2.4rem);line-height:1.15}
+h3{font-size:1.3rem;line-height:1.25}
+h4{font-family:var(--f-body);font-weight:600;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+p{margin:0}
+a{color:var(--gold)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.mono{font-family:var(--f-mono);font-size:.82rem;font-variant-numeric:tabular-nums}
+.eyebrow{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.muted{color:var(--muted)}
+/* header */
+header.hero{padding-block:56px 40px;border-bottom:1px solid var(--line)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:40px;align-items:end}
+.hero h1{font-size:clamp(2.6rem,7vw,5.4rem);line-height:.98;font-weight:300;letter-spacing:-.01em}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.ml{font-family:var(--f-ml);color:var(--muted);font-size:1rem;margin-top:14px}
+.slate{border:1px solid var(--line);font-family:var(--f-mono);font-size:.8rem;display:grid;grid-template-columns:auto 1fr}
+.slate div{padding:8px 12px;border-bottom:1px solid var(--line)}
+.slate div:nth-child(odd){color:var(--muted);border-right:1px solid var(--line)}
+.slate div:nth-last-child(-n+2){border-bottom:0}
+/* nav */
+nav.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+nav.toc ol{display:flex;gap:4px 18px;list-style:none;margin:0;padding-block:10px;overflow-x:auto;white-space:nowrap;font-family:var(--f-mono);font-size:.75rem}
+nav.toc a{color:var(--muted);text-decoration:none}
+nav.toc a:hover{color:var(--gold)}
+section{padding-block:56px;border-bottom:1px solid var(--line)}
+.sec-head{display:grid;grid-template-columns:5.5rem minmax(0,1fr);gap:16px;margin-bottom:28px;align-items:baseline}
+.sec-num{font-family:var(--f-mono);color:var(--gold);font-size:.85rem}
+.stack{display:grid;gap:18px}
+/* decisions */
+.decisions{display:grid;gap:0;border-top:1px solid var(--line)}
+.dec{display:grid;grid-template-columns:2.5rem minmax(0,1fr) minmax(0,1.1fr);gap:18px;padding-block:16px;border-bottom:1px solid var(--line)}
+.dec .n{font-family:var(--f-mono);color:var(--gold)}
+.dec b{color:var(--parch);font-weight:600}
+.rec{color:var(--ok)}
+.rec::before{content:"Recommended: ";color:var(--muted)}
+/* tables */
+.tbl{overflow-x:auto;border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;font-size:.88rem}
+th,td{text-align:left;vertical-align:top;padding:9px 12px;border-bottom:1px solid var(--line)}
+th{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);background:var(--surface);font-weight:500}
+tr:last-child td{border-bottom:0}
+td.y{color:var(--ok)} td.n{color:var(--warn)} td.p{color:var(--parch)}
+/* callout */
+.note{border-left:2px solid var(--gold);padding:12px 16px;background:var(--surface);max-width:78ch}
+.note.warn{border-color:var(--warn)}
+/* reference images */
+.refgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
+figure{margin:0}
+figure img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;filter:saturate(.85);border:1px solid var(--line)}
+figcaption{font-size:.78rem;color:var(--muted);margin-top:6px;line-height:1.4}
+.stamp{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.08em;color:var(--warn);text-transform:uppercase}
+.swatches{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.sw{border:1px solid var(--line)}
+.sw i{display:block;height:84px}
+.sw span{display:block;padding:8px;font-family:var(--f-mono);font-size:.72rem;color:var(--muted)}
+/* timeline */
+.timeline{display:flex;height:40px;border:1px solid var(--line);margin-bottom:8px}
+.timeline div{display:flex;align-items:center;justify-content:center;font-family:var(--f-mono);font-size:.68rem;color:var(--bg);overflow:hidden;white-space:nowrap;border-right:1px solid var(--bg)}
+/* shots */
+.seq{margin-top:40px}
+.seq-head{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline;border-bottom:1px solid var(--gold-dim);padding-bottom:10px;margin-bottom:16px}
+.seq-head h3{font-size:1.6rem}
+.shot{display:grid;grid-template-columns:200px minmax(0,1fr);gap:22px;padding-block:20px;border-bottom:1px solid var(--line)}
+.frame{aspect-ratio:2.39/1;width:100%;background:var(--surface);border:1px solid var(--line);display:block}
+.shot-id{font-family:var(--f-mono);font-size:.95rem;color:var(--parch);margin-top:8px}
+.tc{font-family:var(--f-mono);font-size:.75rem;color:var(--muted)}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.b{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.06em;padding:2px 7px;border:1px solid currentColor;text-transform:uppercase}
+.b.LIVE{color:#E9C9A0}.b.BLENDER{color:#E3B26B}.b.UE5{color:#8EC5E8}.b.AI{color:#D7A0D9}.b.POST{color:#C9C2B0}.b.THREE{color:#C9B6E0}.b.FALLBACK{color:var(--warn)}
+.purpose{font-family:var(--f-display);font-size:1.12rem;color:var(--parch);margin-bottom:10px}
+dl.spec{display:grid;grid-template-columns:8.5rem minmax(0,1fr);gap:4px 14px;margin:0;font-size:.88rem}
+dl.spec dt{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-dim);padding-top:3px}
+dl.spec dd{margin:0}
+details.prompt{margin-top:10px;border:1px solid var(--line);background:var(--surface)}
+details.prompt summary{cursor:pointer;padding:8px 12px;font-family:var(--f-mono);font-size:.75rem;color:var(--gold)}
+details.prompt pre{margin:0;padding:12px;white-space:pre-wrap;font-family:var(--f-mono);font-size:.78rem;line-height:1.55;color:var(--parch);border-top:1px solid var(--line)}
+.copy{background:none;border:1px solid var(--gold-dim);color:var(--gold);font-family:var(--f-mono);font-size:.7rem;padding:3px 8px;margin:0 12px 10px;cursor:pointer}
+/* two col */
+.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+.cols3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+ul.clean{margin:0;padding-left:1.1em}
+ul.clean li{margin-bottom:6px}
+footer{padding-block:40px;color:var(--muted);font-size:.85rem}
+@media (max-width:820px){
+  .hero-grid,.cols,.cols3{grid-template-columns:minmax(0,1fr)}
+  .shot{grid-template-columns:minmax(0,1fr)}
+  .dec{grid-template-columns:2rem minmax(0,1fr)}
+  .dec .r{grid-column:2}
+  .sec-head{grid-template-columns:minmax(0,1fr)}
+  dl.spec{grid-template-columns:minmax(0,1fr)}
+  dl.spec dt{padding-top:8px}
+  .swatches{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">AVVVS brand film · production bible v0.3 · for approval</p>
+      <h1 style="margin-top:14px">The <em>Golden</em> Thread</h1>
+      <p class="ml">ആര്യവൈദ്യ വിലാസിനി വൈദ്യശാല · Kozhikode · since 1921</p>
+      <p class="read muted" style="margin-top:18px">Phases 1 and 2 are complete: the website research, asset inventory and tools audit. This page proposes the production direction, the treatment and a shot-by-shot storyboard. Nothing has been generated, shot or rendered. Production starts after you approve the direction and answer the decisions below.</p>
+    </div>
+    <div class="slate" aria-label="Production slate">
+      <div>Client</div><div>Arya Vaidya Vilasini Vaidya Sala</div>
+      <div>Film</div><div>The Golden Thread</div>
+      <div>Linear cut</div><div id="runtime">2:49 · 30 shots</div>
+      <div>Interactive</div><div>Seq 08 · real-time web</div>
+      <div>Aspect</div><div>2.39:1 master · 16:9 + 9:16 safe</div>
+      <div>Website photos</div><div>Reference only, not in film</div>
+      <div>Status</div><div style="color:var(--warn)">Awaiting approval</div>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections"><div class="wrap"><ol>
+  <li><a href="#decisions">Decisions</a></li><li><a href="#research">01 Research</a></li><li><a href="#archive">02 Archive</a></li><li><a href="#audit">03 Tools</a></li><li><a href="#pipeline">04 Pipeline</a></li><li><a href="#treatment">05 Treatment</a></li><li><a href="#storyboard">06 Storyboard</a></li><li><a href="#board">07 Reference</a></li><li><a href="#prompts">08 AI prompts</a></li><li><a href="#tech">09 3D / UE5</a></li><li><a href="#sound">10 Sound</a></li><li><a href="#schedule">11 Schedule</a></li><li><a href="#complexity">12 Complexity</a></li>
+</ol></div></nav>
+
+<main>
+<section id="decisions"><div class="wrap">
+  <div class="sec-head"><span class="sec-num">Before production</span><div><h2>Decisions I need from you</h2><p class="muted read" style="margin-top:8px">Each changes what gets built. My recommendation is given for each one.</p></div></div>
+  <div class="decisions" id="dec-list"></div>
+</div></section>
+
+<section id="research"><div class="wrap">
+  <div class="sec-head"><span class="sec-num">01</span><div><h2>Website research and history</h2></div></div>
+  <div class="cols">
+    <div class="stack read">
+      <h4>What the site documents</h4>
+      <ul class="clean">
+        <li><b>1921, Kozhikode.</b> Kaloor Neelakandan Vaidyar founded AVVVS as a pharmacy preparing and dispensing Ayurveda medicines. <span class="muted">(About Us; Home)</span></li>
+        <li><b>Sree Narayana Guru.</b> The site says the founder was "personally blessed and advised" by the Guru to set up a patient-care facility. This is AVVVS's own account. No image of the Guru appears on the site.</li>
+        <li><b>Life dates.</b> Founder 1895–1967. Ramdas Vaidyar 1934–1998. Both come from the centenary banner graphic only.</li>
+        <li><b>Succession.</b> His son K. N. Ramadas Vaidyar succeeded him and was known in Kozhikode's socio-literary circles for satire. Present management: Dr Manoj Kaloor (Managing Director) and Reeja Manoj.</li>
+        <li><b>Portfolio.</b> "More than 300" classical and proprietary formulations. Named products: Mezhu Thailam, Rujanth (capsules and liniment), Slepan, Red Irons, Lakshol, Diastat, Kidcare, Koftie, Hair Greens.</li>
+        <li><b>Factory.</b> GMP-certified, in the city suburbs. Lines named: capsule filling, blister packing, ointment manufacture and filling, cosmetics, plus traditional mechanised units. Exports to Russia, Austria, Slovenia and Colombia.</li>
+        <li><b>Cosmetics.</b> The /cosmetic/ page already sells under <b>Gloveda</b>: face washes, scrub, cream, scar oil and anti-dandruff shampoo, plus AVVVS face pack, moisturiser and Hairgreens shampoo. Herbs named include Triphala, Tulasi, Vacha, Manjishta, Yashtimadhu, Haridra, Bhringaraja and Amla.</li>
+        <li><b>Milestones seen in photos.</b> Navathi (90th year) celebrations, 2011, from event signage and a press clipping dated 26 September 2011. Centenary event branded "Ayursatham 22", Kozhikode.</li>
+      </ul>
+    </div>
+    <div class="stack read">
+      <h4>Problems in the source material</h4>
+      <div class="note warn"><p>The "unmatched legacy" article claims "tens of thousands of acres of herbal farms" and a "seed-to-shelf" business. The rest of the site only mentions herbal gardens around the factory, so this looks like copied boilerplate. The same article says "98 years". <b>I've kept both claims out of the film.</b></p></div>
+      <div class="note warn"><p>Not on the site at all: Gloveda Experience, Gloveda Revive, third-party manufacturing and white-label manufacturing. Sequence 08 needs a short brief for each before I can design those destinations.</p></div>
+      <div class="note"><p>The real archive is thin. There are two portraits, each about 250 px wide. There are no photographs from 1921, no image of the original premises, and no manuscripts. The earliest building image is a 2011 newspaper clipping of a shopfront.</p></div>
+      <div class="note"><p>The AVVVS logo is <b>blue</b> with a green leaf mark. The film palette is lamp-black, rosewood and gold. Sequence 07 needs a logo treatment that brand owners approve (decision 08).</p></div>
+      <p class="muted">Pages read: home, about-us, gallery and all 6 sub-galleries, cosmetic, speciality clinic, treatments, and 8 articles. Raw HTML, 119 downloaded assets and contact sheets are in <span class="mono">research/</span>.</p>
+    </div>
+  </div>
+</div></section>
+
+<section id="archive"><div class="wrap">
+  <div class="sec-head"><span class="sec-num">02</span><div><h2>Archival and asset inventory</h2><p class="muted read" style="margin-top:8px">All 119 images are listed with URL, source page, classification, resolution and suitability in <span class="mono">research/source-inventory.csv</span>. As you directed, <b>none of these images will appear in the film.</b> They are reference only, for accuracy of people, places, packaging and machinery.</p></div></div>
+  <div class="tbl"><table>
+    <thead><tr><th>Group</th><th>Count</th><th>Period</th><th>Best resolution</th><th>Use as reference for</th></tr></thead>
+    <tbody>
+      <tr><td class="p">Founder and successor portraits</td><td class="mono">2</td><td>Historical</td><td class="mono">251×301</td><td>Likeness check if an illustrated portrait is approved (decision 03)</td></tr>
+      <tr><td class="p">Centenary banner (portraits + life dates)</td><td class="mono">1</td><td>2021–22 graphic</td><td class="mono">1365×590</td><td>Source of dates 1895–1967 and 1934–1998</td></tr>
+      <tr><td class="p">Press clippings, Navathi 2011</td><td class="mono">20</td><td>2011</td><td class="mono">≤841 px</td><td>Shopfront signage, typography of the Malayalam name</td></tr>
+      <tr><td class="p">Navathi event collages</td><td class="mono">8</td><td>2011</td><td class="mono">1300×488</td><td>Milestone dating only</td></tr>
+      <tr><td class="p">Centenary event</td><td class="mono">16</td><td>2022</td><td class="mono">1280×853</td><td>Milestone dating only</td></tr>
+      <tr><td class="p">Factory</td><td class="mono">26</td><td>Contemporary</td><td class="mono">1300×1950</td><td>Facts only (lines, GMP). The factory is not shown in the film</td></tr>
+      <tr><td class="p">Products and packaging</td><td class="mono">11</td><td>Contemporary</td><td class="mono">1300×1950</td><td>Pack formats, colours, carton layouts (Seq 05)</td></tr>
+      <tr><td class="p">Outreach stall</td><td class="mono">5</td><td>c. 2011</td><td class="mono">1300×867</td><td>Breadth of the range: jars, bottles, cartons</td></tr>
+      <tr><td class="p">Logo, wordmark, roundel</td><td class="mono">3</td><td>Brand</td><td class="mono">SVG</td><td>Sequence 07 in post. Needs master files from AVVVS</td></tr>
+      <tr><td class="p">Stock and decorative images</td><td class="mono">24</td><td>n/a</td><td>–</td><td>Nothing. Not AVVVS-authentic</td></tr>
+    </tbody>
+  </table></div>
+</div></section>
+
+<section id="audit"><div class="wrap">
+  <div class="sec-head"><span class="sec-num">03</span><div><h2>Skills and tools audit</h2><p class="muted read" style="margin-top:8px">Checked on this machine on 7 November 2026: installed skills (their SKILL.md files), connectors, software and GPU. Nothing new was installed.</p></div></div>
+  <div class="tbl"><table>
+    <thead><tr><th>Capability</th><th>Existing skill / tool</th><th>Available?</th><th>Quality</th><th>Recommended usage</th></tr></thead>
+    <tbody id="audit-rows"></tbody>
+  </table></div>
+  <div class="cols3" style="margin-top:28px">
+    <div class="stack"><h4>I can produce directly</h4><ul class="clean"><li>Blender scenes, scripted headless from here: venation, golden threads, droplet, logo network</li><li>Three.js / R3F real-time Sequences 07–08 for the website</li><li>Animatic assembly, conforms, transcodes and proxies with ffmpeg</li><li>Typography and title design, storyboards, prompts, briefs</li></ul></div>
+    <div class="stack"><h4>Needs something external</h4><ul class="clean"><li><b>AI video.</b> Gemini (Veo) is not connected here. The media connector has many models but 0 credits.</li><li><b>Music and sound.</b> No working audio tool. Needs a composer and sound designer, or an AI temp track.</li><li><b>Grade and edit.</b> Premiere Pro (Beta) and Photoshop are installed. DaVinci Resolve is not.</li><li><b>Live action.</b> A crew for 1 shoot day in Kozhikode.</li></ul></div>
+    <div class="stack"><h4>Can't be done reliably here</h4><ul class="clean"><li>Accurate packaging or text inside AI footage</li><li>Authentic historical imagery of any kind</li><li>Photoreal human hands from AI at macro scale</li><li>4K UE5 forest finals on a 6 GB laptop GPU (memory-bound). Fine for 1080p and previs.</li></ul></div>
+  </div>
+</div></section>
+
+<section id="pipeline"><div class="wrap">
+  <div class="sec-head"><span class="sec-num">04</span><div><h2>Production pipeline recommendation</h2></div></div>
+  <div class="cols">
+    <div class="stack read">
+      <p>Since the website photos are off the table, <b>real footage is the film's credibility.</b> A one-day live shoot in Kozhikode does more for quality than any render engine. It covers the hand, the real leaf and the real packs. Everything that claims to be real is filmed. Everything metaphorical is built, including manufacturing, which is shown as precision rather than as a place.</p>
+      <ul class="clean">
+        <li><b>Live action:</b> the hand, the leaf on a lightbox, the oil-drop high-speed shot, products. Shots 01.05, 02.01, 05.02–05.04.</li>
+        <li><b>Unreal Engine 5:</b> the forest only (01.02–01.04). It's the one place where dense vegetation, volumetric light and a long continuous camera move justify UE5. Kerala-specific species need custom scans.</li>
+        <li><b>Blender:</b> the inner, symbolic world. Venation, palm-leaf incisions, golden threads, the droplet, the product plinth extension, the precision sequence (06), the network reveal.</li>
+        <li><b>Post typography:</b> the heritage sequence. Names, dates and the Guru's blessing, set with restraint.</li>
+        <li><b>Three.js / R3F:</b> Sequences 07–08 on the website, matched to the film's final frame.</li>
+        <li><b>AI video:</b> fallback only, for forest plates if UE5 slips. Never for people, heritage, products or the factory.</li>
+      </ul>
+    </div>
+    <div class="stack">
+      <h4>Method by sequence, in seconds</h4>
+      <div class="tbl"><table id="method-table"><thead><tr><th>Sequence</th><th>Live</th><th>UE5</th><th>Blender</th><th>Post</th><th>AI</th></tr></thead><tbody></tbody></table></div>
+      <p class="muted" style="font-size:.85rem">UE5 is used only where it helps. Product shots stay real. The factory is not shown. Archival photography is not used because the website images are excluded and no originals have been supplied.</p>
+    </div>
+  </div>
+</div></section>
+
+<section id="treatment"><div class="wrap">
+  <div class="sec-head"><span class="sec-num">05</span><div><h2>Treatment</h2></div></div>
+  <div class="cols">
+    <div class="stack read">
+      <p style="font-family:var(--f-display);font-size:1.35rem;line-height:1.45;color:var(--parch)">A leaf is taken from the forest. Its veins become a line of script. The script becomes a family's century. The century becomes one drop of medicine, and that drop becomes the exact, repeatable craft of a modern manufacturer that still makes it.</p>
+      <p>The film is one continuous camera with no hard cuts. Every transition is physical: a vein becomes an incision, an incision becomes a thread, a thread becomes a drop, a ripple becomes a machined ring. In Sequence 06 the edit rhythm tightens, so precision is felt in the timing. The factory itself is never shown. Its facts appear as type.</p>
+      <p>The film rejects the "golden fantasy temple". Gold is used in two places only: the threads and the droplet. Everywhere else, gold is just the colour of low sun. The forest is a working Western Ghats forest with buttress roots, lianas, wild ginger and moss. It is not enchanted.</p>
+      <p>Heritage is told in words, not invented pictures. Kozhikode, 1921, three names, two milestones. The type is set in lamp-black, the soot that Kerala scribes rubbed into palm leaves to make writing visible. That is the film's honest link between knowledge and lineage.</p>
+    </div>
+    <div class="stack read">
+      <h4>Changes I've made to the brief</h4>
+      <div class="note"><p><b>Palm leaf instead of parchment.</b> Kerala's medical knowledge was carried on palm-leaf manuscripts, incised with a stylus and blackened with soot. A vein turning into an incised line is a more accurate image than ink on parchment, and a more striking one.</p></div>
+      <div class="note"><p><b>Botanical plates are labelled as illustration.</b> Palm-leaf texts rarely carry drawings, so Sequence 04's ingredient plates are new engravings in a Malabar botanical style. The <i>Hortus Malabaricus</i> (Amsterdam, 1678–1693), compiled with Kerala physicians, is the stylistic reference. It is never presented as an AVVVS document.</p></div>
+      <div class="note"><p><b>No faces in heritage unless you supply originals.</b> With the website portraits excluded, the honest options are type only, or illustrated portraits clearly captioned as illustrations (decision 03).</p></div>
+      <div class="note"><p><b>The hand is real.</b> AI hands fail at macro scale and would undercut the "sacred and intimate" moment. I recommend the hand of a practising AVVVS physician.</p></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="storyboard"><div class="wrap">
+  <div class="sec-head"><span class="sec-num">06</span><div><h2>Shot-by-shot storyboard</h2><p class="muted read" style="margin-top:8px">Frames are composition diagrams at 2.39:1: horizon, subject and light direction. They are not renders. Timecodes are cumulative.</p></div></div>
+  <div class="timeline" id="timeline" aria-label="Sequence timeline"></div>
+  <div class="tc" id="timeline-legend"></div>
+  <div id="shots"></div>
+</div></section>
+
+<section id="board"><div class="wrap">
+  <div class="sec-head"><span class="sec-num">07</span><div><h2>Visual reference board</h2></div></div>
+  <div class="stack">
+    <h4>Palette</h4>
+    <div class="swatches">
+      <div class="sw"><i style="background:#0D0B09"></i><span>Lamp-black #0D0B09<br>Shadows, blacks, type</span></div>
+      <div class="sw"><i style="background:#2B1D16"></i><span>Rosewood #2B1D16<br>Dark midtones, wood, soil</span></div>
+      <div class="sw"><i style="background:#C3A46A"></i><span>Antique gold #C3A46A<br>Threads, droplet, sun</span></div>
+      <div class="sw"><i style="background:#E8D9B9"></i><span>Aged parchment #E8D9B9<br>Palm leaf, highlights</span></div>
+      <div class="sw"><i style="background:#F4EFE5"></i><span>Warm ivory #F4EFE5<br>Type, logo on dark</span></div>
+    </div>
+    <div class="cols3" style="margin-top:12px">
+      <div class="stack"><h4>Light</h4><p>Low sun, 6–10° elevation, through gaps. Shadows fall to warm lamp-black, never to grey or green. One key source per shot. Sequence 06 moves to a cooler key (5600K) against a warm residual rim (3200K), so tradition and technology show up in colour temperature.</p></div>
+      <div class="stack"><h4>Camera language</h4><p>Slow and continuous: cranes, push-ins and long lateral dollies. Primes from 24 to 100 mm macro. No handheld. Sequence 06 uses locked-off, symmetrical frames on a tighter rhythm.</p></div>
+      <div class="stack"><h4>Film touchstones</h4><p><i>Microcosmos</i> (1996) for macro scale and patience. <i>Samsara</i> (2011) for formal, reverent framing. <i>The Tree of Life</i> (2011) for light through leaves. These are for tone, not imitation.</p></div>
+    </div>
+    <div class="cols3">
+      <div class="stack"><h4>Typography</h4><p>A restrained serif for names and dates, in ivory or lamp-black. Malayalam and English set in parallel where the name appears. All type is added in post. None is generated in footage.</p></div>
+      <div class="stack"><h4>Grade</h4><p>No green in the grade. Blacks sit warm toward rosewood and highlights stay gold and ivory. Foliage can't stop being green, so it is pulled down to a deep, desaturated olive-umber that reads as shadow, not colour. Overall saturation is down about 15%, except on gold. 35mm-style grain under 3% so it is felt, not seen.</p></div>
+      <div class="stack"><h4>Banned</h4><p>Lens flares as decoration, floating particles everywhere, temple imagery, glowing runes, invented script, generic "doctor in a white coat", stock smiling families.</p></div>
+    </div>
+    <h4 style="margin-top:18px">AVVVS reference stills</h4>
+    <p class="muted read">From avvvs.com. <b>Reference only. Not used in the film.</b> They guide the live shoot and packaging accuracy.</p>
+    <div class="refgrid" id="refgrid"></div>
+  </div>
+</div></section>
+
+<section id="prompts"><div class="wrap">
+  <div class="sec-head"><span class="sec-num">08</span><div><h2>AI video prompts</h2><p class="muted read" style="margin-top:8px">Written for Veo in Gemini or Flow, and usable with Kling or Seedance. Every AI shot is a fallback or a plate. Generate silent, at 16:9 1080p, and crop to 2.39:1 in post. Veo clips are short (about 8 seconds), so each prompt describes one move. Prompts can be copied from each card.</p></div></div>
+  <div class="note warn" style="margin-bottom:20px"><p>A Gemini API key is now connected and works. It does <b>not</b> have access to Veo: every Veo model name returns "not found", which usually means the Google project needs billing enabled for video. The key can use Gemini image models (for look-frames and start/end keyframes) and Lyria (for the temp music). Higgsfield still has 0 credits (decision 07).</p></div>
+  <div id="prompt-list" class="stack"></div>
+</div></section>
+
+<section id="tech"><div class="wrap">
+  <div class="sec-head"><span class="sec-num">09</span><div><h2>Blender, Three.js and UE5 requirements</h2></div></div>
+  <div class="cols3">
+    <div class="stack"><h4>Unreal Engine 5.8 · forest</h4><ul class="clean">
+      <li>Shots 01.02–01.04. One level with a 40 × 25 m playable area. The camera never sees past 60 m, so the rest is fog.</li>
+      <li>Nanite foliage. PCG scatter for buttress trees, lianas, ferns, wild ginger and moss.</li>
+      <li>Hero plant and leaf litter photogrammetry captured on the shoot day, so the species is real and Kerala-specific. Library foliage alone won't be.</li>
+      <li>Lumen with hardware ray tracing. Local volumetric fog for light shafts. Niagara dust used sparingly, only inside light shafts.</li>
+      <li>Sequencer with CineCamera: 24 mm and 35 mm full-frame equivalents, f/5.6–8, 24 fps, 180° shutter.</li>
+      <li>Movie Render Queue to EXR in ACEScg. 1080p locally for previs and review. 4K finals on a 24 GB+ cloud GPU, because the RTX 4050's 6 GB will limit foliage density.</li>
+    </ul></div>
+    <div class="stack"><h4>Blender 5.2 · symbolic world</h4><ul class="clean">
+      <li>Venation (02.02): space-colonisation curves in Geometry Nodes, seeded from the scanned real leaf. Emissive sap flow along the curves.</li>
+      <li>Incision morph (02.03): curves projected onto a scanned palm-leaf mesh, with displacement and an animated soot mask.</li>
+      <li>Threads (04.01–04.04): vectorised plate linework becomes curves, then a braid solver drawn as thin tubes with a gold thin-film shader. Count stays under 200.</li>
+      <li>Droplet (04.04–05.01): SDF and metaball surface, wobble from a simple spring sim. Transmission plus amber volume absorption, refracting the plates.</li>
+      <li>Cycles with OptiX on the RTX 4050. Adaptive sampling with denoise. Output EXR multilayer, ACEScg.</li>
+      <li>I can drive Blender headless from this machine, so lookdev iterations don't need a manual step.</li>
+    </ul></div>
+    <div class="stack"><h4>Three.js / R3F · website</h4><ul class="clean">
+      <li>Sequence 07 continues the film's last frame. The film ends on a plate the web scene matches in camera, colour and thread positions.</li>
+      <li>Threads as instanced tube geometry with a custom shader (curl-noise drift, fresnel gold). Under 60k triangles.</li>
+      <li>Four destinations, each a distinct world (see Seq 08). Loaded on demand, under 2.5 MB each, KTX2 textures, Draco meshes.</li>
+      <li>GSAP ScrollTrigger to scrub the film segments. Video as HLS at 1080p, with 720p for mobile.</li>
+      <li>Static poster frames and reduced motion for low-power devices and <span class="mono">prefers-reduced-motion</span>.</li>
+      <li>Skills to apply: awwwards-motion (shaders, particles, post), scroll-experience, and one of impeccable or hallmark for the page design.</li>
+    </ul></div>
+  </div>
+</div></section>
+
+<section id="sound"><div class="wrap">
+  <div class="sec-head"><span class="sec-num">10</span><div><h2>Sound and music direction</h2></div></div>
+  <div class="cols">
+    <div class="stack read">
+      <h4>Score structure</h4>
+      <div class="tbl"><table><thead><tr><th>TC</th><th>Movement</th><th>Instruments and texture</th></tr></thead><tbody>
+        <tr><td class="mono">0:00</td><td class="p">Forest ambience</td><td>Pre-dawn forest bed. The Malabar whistling thrush, a Western Ghats bird, is the first musical sound. Distant cicadas.</td></tr>
+        <tr><td class="mono">0:10</td><td class="p">Drone</td><td>Low cello and shruti box, tuned to the drone of the bowed bronze bell at 1:41.</td></tr>
+        <tr><td class="mono">0:30</td><td class="p">Botanical</td><td>Close organic foley: leaf tension, sap, stylus on palm leaf. Prepared piano harmonics.</td></tr>
+        <tr><td class="mono">0:52</td><td class="p">Heritage theme</td><td>A restrained melody on edakka (the pitched Kerala hourglass drum) and solo viola. No vocals. Silence between names.</td></tr>
+        <tr><td class="mono">1:25</td><td class="p">Rising</td><td>Strings divide and climb. Mizhavu pulses under them, quiet and accelerating as the threads braid.</td></tr>
+        <tr><td class="mono">1:41</td><td class="p">Signature event</td><td>Everything gathers into one tone: a bronze uruli (medicine vessel) bowed at the rim, with an edakka pitch glide. Then a full beat of silence. This is the film's sonic logo.</td></tr>
+        <tr><td class="mono">2:09</td><td class="p">Precision</td><td>Strings move to staccato. Percussion is built from tuned metal: struck steel, clockwork ticks and the uruli tone cut into exact rhythmic values.</td></tr>
+        <tr><td class="mono">2:35</td><td class="p">Reveal</td><td>The heritage theme returns in full: strings, edakka and the uruli tone together. Elegant, not bombastic.</td></tr>
+        <tr><td class="mono">2:49</td><td class="p">Web handoff</td><td>A loopable 30-second bed from the reveal chord. Each destination gets its own 4-bar variation (see Seq 08).</td></tr>
+      </tbody></table></div>
+    </div>
+    <div class="stack read">
+      <h4>Recommendation</h4>
+      <p>Commission a composer who works with Kerala percussion, and record the uruli tone on the shoot. An AI temp track is fine for the animatic. It shouldn't be the final score.</p>
+      <h4>Temp music prompt</h4>
+      <details class="prompt" open><summary>Copy temp music prompt</summary><pre id="music-prompt">Cinematic instrumental, 2 minutes 49 seconds, 60 to 72 BPM. Opens with near silence and a soft forest ambience, then a low cello and harmonium-like drone. A restrained, melancholy melody on solo viola over a pitched Indian hourglass drum (edakka style). Gradually divided strings rise with a quiet, accelerating frame-drum pulse. At 1:41 everything converges on one sustained bowed bronze bell tone, followed by a full beat of silence. Then a precise, mechanical staccato string section with percussive metallic textures. Ends with the opening melody in full strings, warm and dignified, resolving on a sustained chord. No vocals, no EDM drops, no trailer braams, no stock corporate piano.</pre><button class="copy" data-copy="music-prompt" type="button">Copy</button></details>
+      <h4>Sound effects to record or license</h4>
+      <ul class="clean">
+        <li>Malabar whistling thrush, dawn chorus, cicadas, leaf drip (field recording, Kerala)</li>
+        <li>Leaf stem snap and fingertip on leaf (foley, macro mics)</li>
+        <li>Stylus incising palm leaf. Soot rubbed in with a cloth.</li>
+        <li>Thread tension "sings": bowed wire and glass rim, pitched to the score</li>
+        <li>Droplet: slowed oil-drop impact recorded at 96 kHz</li>
+        <li>Bronze uruli bowed and struck (signature tone)</li>
+        <li>Precision: struck and bowed steel, clockwork, glass tap, a calibrated click</li>
+        <li>Room tone of a quiet wood-floored room</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<section id="schedule"><div class="wrap">
+  <div class="sec-head"><span class="sec-num">11</span><div><h2>Production schedule and dependencies</h2><p class="muted read" style="margin-top:8px">Eight weeks from approval. Week 1 depends on your answers to the decisions above.</p></div></div>
+  <div class="tbl"><table><thead><tr><th>Week</th><th>Work</th><th>Depends on</th></tr></thead><tbody id="schedule-rows"></tbody></table></div>
+</div></section>
+
+<section id="complexity"><div class="wrap">
+  <div class="sec-head"><span class="sec-num">12</span><div><h2>Complexity and rendering</h2><p class="muted read" style="margin-top:8px">Render times are estimates. I'll replace them with measured numbers after lookdev on this machine.</p></div></div>
+  <div class="tbl"><table><thead><tr><th>Sequence</th><th>Complexity</th><th>Frames at 24 fps</th><th>Estimated render</th><th>Main risk</th></tr></thead><tbody id="cx-rows"></tbody></table></div>
+</div></section>
+</main>
+
+<footer><div class="wrap">Prepared from public pages of avvvs.com, read on 7 November 2026. Local working files: <span class="mono">research/source-inventory.csv</span>, <span class="mono">research/assets/</span>, <span class="mono">research/sheets/</span>.</div></footer>
+
+<script>
+const DECISIONS=[
+ ["Hero plant","Sequences 01 and 02 follow one real plant, filmed and scanned. It should come from an actual AVVVS formula.","Tulasi, named in the Gloveda face wash, for its strong leaf form. Alternative: Chemparathi (hibiscus) from Hairgreens, which is more specific to Kerala."],
+ ["Live-action shoot","One day in Kozhikode: hand, leaf macro, oil drop, products, foliage scans. The factory isn't shown, so no factory access is needed.","Approve one shoot day."],
+ ["How to show the founders","The website portraits are excluded. Without them the film can't show a face.","Type only: names, dates, silence. If the family can supply original prints, I'll revisit."],
+ ["Sree Narayana Guru","No image on the site. Depicting a meeting would be invention.","Text only, in AVVVS's own wording: \"With the blessings of Sree Narayana Guru\". Family and management to confirm the line."],
+ ["Palm leaf and script","Seq 02 shows incised script. It must be a real, correctly transcribed passage, not generated script.","Palm leaf instead of parchment. A passage chosen with an Ayurveda scholar. Do you have real manuscripts we could film?"],
+ ["Seq 08 destinations","Gloveda Experience and Gloveda Revive aren't on the website. Third-party and white-label manufacturing aren't either.","Send a one-paragraph brief and any imagery for each, and confirm the manufacturing claims."],
+ ["AI video access","The Gemini key works but has no Veo access. Higgsfield has 0 credits.","Enable billing on the Google project so Veo appears, or add Higgsfield credits. Image keyframes and Lyria temp music work now."],
+ ["Logo in the reveal","The logo is blue. The film palette is lamp-black, rosewood and gold.","An ivory single-colour version of the existing mark, approved by AVVVS. Send the master vector files."],
+ ["Packaging","Products must be accurate. Website shots are excluded.","Physical packs of 6–8 hero products for the shoot. Which products to feature?"],
+ ["Render hardware","The 6 GB laptop GPU is fine for previs and 1080p. 4K UE5 finals need more memory.","Rent a 24 GB+ cloud GPU for final forest renders only."],
+ ["Runtime and delivery","2:49 linear plus interactive Seq 08.","Approve 2:49, plus a 0:45 cut-down for social, and decide whether the website plays the full film or scroll-scrubbed segments."]
+];
+const AUDIT=[
+ ["3D environment creation","Blender 5.2, Unreal Engine 5.8 (installed). No skill for either.","Yes","High","UE5 for the forest, Blender for macro and symbolic worlds"],
+ ["Cinematic storytelling, direction","No dedicated skill","Partial","My own direction","Treatment, storyboard, edit decisions"],
+ ["Three.js and R3F","awwwards-motion (701 lines: GLSL, R3F, particles, post), threejs-skills (wrapper plus 701-line guide), Node.js","Yes","Good","Seq 07–08 on the website"],
+ ["Blender","Blender 5.2 CLI, scriptable headless from here","Yes","Strong","Venation, threads, droplet, network"],
+ ["Unreal Engine 5","UE 5.8 editor. No MCP or skill, so it's driven manually or by Python scripts","Yes","Highest for vegetation; 6 GB VRAM limits it","Forest shots 01.02–01.04"],
+ ["Procedural modelling","Blender Geometry Nodes, UE PCG","Yes","Strong","Venation, braid, forest scatter"],
+ ["Materials and shaders","awwwards-motion GLSL sections, Blender shader nodes, UE materials","Yes","Strong","Gold thin-film, droplet, leaf translucency"],
+ ["Particle systems","awwwards-motion GPU particles, Blender, UE Niagara","Yes","Good","Dust in light shafts only"],
+ ["Fluid simulation","Blender Mantaflow (built in)","Yes, slow","Fair on a laptop","Prefer a real high-speed shot for 05.02"],
+ ["Geometry and animation","Blender","Yes","Strong","All built shots"],
+ ["Camera and motion design","awwwards-motion (spring physics), Blender and UE Sequencer","Yes","Good","Continuous camera language"],
+ ["Video generation","Media connector: Kling 3/4, Seedance 2/2.5, MiniMax H3, Cinema Studio 4, FLUX 3 Video. 0 credits. Gemini/Veo not connected","No","n/a","Fallback forest plates only"],
+ ["Image generation","Media connector image models (0 credits). canvas-design and algorithmic-art skills for code-made art","Partial","Fair","Look-frames, plate engraving tests"],
+ ["Video editing","Premiere Pro (Beta), Media Encoder, ffmpeg","Yes","Good","Animatic, edit, delivery"],
+ ["Colour grading","Premiere Lumetri, ffmpeg LUTs. DaVinci Resolve not installed","Partial","Fair","Install Resolve (free) for the grade"],
+ ["Archival restoration","Photoshop (Beta). Upscalers on the media connector have 0 credits","Partial","n/a","Not needed while website images are excluded"],
+ ["Sound design and music","Audio models on the media connector (0 credits). No local audio tools","No","n/a","Composer and sound designer"],
+ ["GSAP and scroll animation","scroll-experience (thin wrapper plus 584-line guide), awwwards-motion","Yes","Good","Scroll-scrubbed film segments"],
+ ["Web design","impeccable, hallmark, design-taste-frontend, ui-ux-pro-max (overlapping)","Yes","Strong","Pick one for the site to avoid conflicting rules"],
+ ["Performance optimisation","awwwards-motion §18, web-design-guidelines","Partial","Fair","Budgets in section 09"]
+];
+const SEQ=[
+ {id:"01",name:"The Sacred Forest",color:"#7A5238"},
+ {id:"02",name:"The Knowledge",color:"#9C7A55"},
+ {id:"03",name:"The Heritage",color:"#C9B68D"},
+ {id:"04",name:"The Golden Thread",color:"#C3A46A"},
+ {id:"05",name:"The Medicine",color:"#A3784A"},
+ {id:"06",name:"The Modern Manufacturer",color:"#7F95A0"},
+ {id:"07",name:"The AVVVS Reveal",color:"#E8D9B9"}
+];
+// m = methods; f = frame diagram [horizon 0-1, subject x 0-1, subject y 0-1, light x 0-1]
+const SHOTS=[
+ {id:"01.01",d:4,m:["POST"],p:"Darkness, and the first sound.",comp:"Full black. A faint warm haze rises in the upper third over the last second.",cam:"n/a",lens:"n/a",mv:"None",li:"None, then a 2% haze rise",env:"Black",mat:"n/a",an:"Haze opacity curve",ti:"Open from black",to:"Haze becomes mist above the canopy",snd:"Forest bed fades in. The first thrush call lands at 3.5 s.",as:"Field recording",f:[.5,.5,.25,.5]},
+ {id:"01.02",d:8,m:["UE5","AI"],p:"Descend through the canopy into the forest.",comp:"Symmetrical canopy, a gap of light upper centre. Layers of leaves pass at a distance, never against the lens.",cam:"Above the canopy at 28 m, descending to 6 m",lens:"24 mm FF, f/8",mv:"Vertical crane down 22 m at constant speed, no forward drift",li:"Sun at 8° elevation, raking shafts, light volumetric fog",env:"Western Ghats moist evergreen canopy",mat:"Wet leaves with subsurface scattering, moss, bark",an:"Wind on the canopy, sparse leaf fall",ti:"From the haze of 01.01",to:"The camera settles at understory height",snd:"Thrush call, canopy wind",as:"UE5 forest level, foliage scans",f:[.3,.5,.4,.5],prompt:"A slow vertical crane shot descending straight down through the canopy of an old tropical evergreen forest in the Western Ghats of Kerala, in the first minutes after sunrise. The camera starts just above the treetops in thin mist and sinks at a constant, very slow speed through layers of large wet leaves, moss-covered branches and hanging lianas, ending in the dim understory. The camera only moves down: it never moves forward, never turns, and no leaf passes close to the lens.\nLighting: the sun is very low, just above the horizon behind the trees. Most of the frame is in deep shadow. A few sharp, clearly defined shafts of warm golden light cut diagonally through the mist. Dark, moody exposure with warm, deep blacks. Foliage is muted and desaturated, reading dark olive and umber rather than bright green.\nStyle: 35mm film look, fine grain, anamorphic feel, documentary nature cinematography, photoreal, 24mm lens. Keep the important detail in the centre band of the frame.\nAudio: quiet forest ambience and one distant bird call. No music.\nAvoid: drone fly-through, forward motion, fast or uneven movement, camera shake, leaves brushing the lens, bright midday light, flat even lighting, saturated green, people, animals, text, temples, fantasy glow, floating particles, lens flares."},
+ {id:"01.03",d:7,m:["UE5","AI"],p:"Travel through the understory toward the light.",comp:"Low camera between two buttress roots, light shaft on the right third.",cam:"0.6 m above the forest floor",lens:"35 mm FF, f/5.6",mv:"Slow dolly forward 4 m",li:"One shaft as the key, ambient falls to warm black",env:"Buttress roots, ferns, wild ginger, leaf litter",mat:"Leaf litter, wet root bark",an:"Dust visible only inside the shaft",ti:"Continues the descent of 01.02",to:"The shaft lands on the hero plant",snd:"Cicadas swell, then drop",as:"UE5 level, ground scans",f:[.65,.7,.55,.75],prompt:"A slow, smooth dolly moving forward at knee height along the floor of an old tropical forest in Kerala, passing between the huge buttress roots of two ancient trees. The camera moves at a constant, very slow pace, about one step every two seconds, with no shake and no turning. Ferns, wild ginger and wet leaf litter on the ground; moss on the roots.\nLighting: early morning. One single, sharp, clearly defined shaft of warm low sunlight falls diagonally onto the forest floor in the right third of the frame. Fine dust is visible only inside the beam. Everything outside the beam falls into deep, warm shadow. Dark, moody exposure. Foliage is muted and desaturated, reading dark olive and umber rather than bright green.\nStyle: 35mm film look, fine grain, documentary nature cinematography, photoreal, 35mm lens, light mist.\nAudio: soft insect hum that fades to near silence. No music.\nAvoid: handheld or drone movement, fast motion, leaves brushing the lens, several light shafts, bright or even lighting, saturated green, people, animals, text, fantasy glow, sparkles, lens flares."},
+ {id:"01.04",d:6,m:["UE5","LIVE"],p:"Discover the hero plant.",comp:"Rack focus from a fern in the foreground to the hero plant, lit by the shaft.",cam:"At plant height, 1.2 m away",lens:"85 mm FF, f/2.8",mv:"Locked off, slight push, rack focus",li:"Shaft as key from top right, rim on the leaf edges",env:"The forest floor at the end of the dolly",mat:"Scanned hero plant (decision 01)",an:"Breath of wind on the leaves",ti:"From the shaft in 01.03",to:"A hand enters the frame",snd:"A single drip. Silence of insects.",as:"Hero plant photogrammetry",f:[.6,.55,.5,.8],prompt:"A close, almost still shot of a single holy basil (Tulsi) plant growing from dark, damp forest soil in Kerala. The camera is at the plant's height and pushes in extremely slowly. Over the first four seconds, focus pulls from a soft, out-of-focus fern frond in the foreground to the Tulsi plant. The leaves move gently in a faint breath of wind.\nLighting: one narrow shaft of warm, low morning sunlight from the top right falls on the plant and nothing else. The serrated leaf edges are backlit and the veins show through the leaves. The background falls to near-black. Dark, moody exposure. Muted, desaturated foliage, reading olive and umber rather than bright green.\nStyle: 35mm film look, fine grain, documentary macro cinematography, photoreal, 85mm lens at f/2.8, shallow depth of field.\nAudio: near silence, one water drip. No music.\nAvoid: hands, people, flowers, sparkles, glowing magic effects, bokeh balls, floating particles, fast camera movement, bright green colour, text."},
+ {id:"01.05",d:5,m:["LIVE"],p:"A human hand plucks a leaf.",comp:"The hand enters from the lower left. The leaf is centred. Fingertips are the sharpest point.",cam:"Leaf height, 40 cm",lens:"100 mm macro, f/4",mv:"Locked off with a 2% push",li:"Shaft continues as key, warm bounce on skin",env:"Matched practical set: real plant, real soil",mat:"Skin, leaf",an:"The pluck, with natural hesitation",ti:"Matches the frame of 01.04",to:"The camera pushes into the plucked leaf",snd:"Stem snap foley, a breath",as:"Hand of an AVVVS physician, hero plant",f:[.6,.5,.5,.8]},
+ {id:"02.01",d:5,m:["LIVE","BLENDER"],p:"The leaf held up to the light. The veins appear.",comp:"Leaf fills frame, backlit. Midrib on a diagonal.",cam:"Over a lightbox",lens:"100 mm macro, f/8",mv:"Slow push into the midrib",li:"Transmitted light from behind, warm",env:"Lightbox on the shoot, extended in Blender",mat:"The real plucked leaf, scanned",an:"Push, with the vein glow rising",ti:"Push from 01.05",to:"The camera enters a vein",snd:"Low drone begins",as:"Leaf macro plate and scan",f:[.5,.5,.5,.5]},
+ {id:"02.02",d:6,m:["BLENDER"],p:"Travel through the vein network.",comp:"The venation becomes a landscape of channels, branching toward the lens.",cam:"Inside the leaf at a virtual 2 mm scale",lens:"18 mm virtual",mv:"Forward flight along the main vein, branching left",li:"Light comes through the leaf tissue, sap glows faintly",env:"Procedural venation from the scan",mat:"Translucent tissue, emissive sap",an:"Sap flow along curves",ti:"From the push of 02.01",to:"The channels flatten into lines",snd:"Organic micro-foley",as:"Geometry Nodes venation",f:[.5,.5,.5,.5]},
+ {id:"02.03",d:6,m:["BLENDER","LIVE"],p:"Veins become stylus incisions on a palm leaf. Soot reveals script.",comp:"Top-down on a palm leaf. Lines become letters left to right.",cam:"Top-down",lens:"50 mm",mv:"Slow lateral track",li:"Raking light from the left shows the incisions",env:"Scanned palm-leaf manuscript surface",mat:"Palm leaf, lamp-black soot",an:"Line morph, then a soot wipe",ti:"The veins flatten into incisions",to:"Pull back",snd:"Stylus on leaf, cloth wipe",as:"Real palm-leaf scan, verified passage (decision 05)",f:[.5,.5,.5,.1]},
+ {id:"02.04",d:5,m:["BLENDER"],p:"Generations of knowledge.",comp:"Pull out to a bundle of palm-leaf manuscripts on a dark wooden stand, then to engraved botanical plates spread around it.",cam:"From top-down to a 35° angle",lens:"50 mm to 35 mm",mv:"Pull back and tilt up",li:"Warm practical lamp, low",env:"Dark wooden study space, no location claimed",mat:"Palm leaf, cotton cord, paper plates",an:"Camera only",ti:"From 02.03",to:"The soot rises into the type of 03.01",snd:"Drone shifts toward the heritage theme",as:"Manuscript scans, 5 engraved plates",f:[.55,.5,.55,.2]},
+ {id:"03.01",d:4,m:["POST"],p:"1921 · Kozhikode.",comp:"Type centred low on lamp-black. Soot settles into the numerals.",cam:"n/a",lens:"n/a",mv:"None",li:"n/a",env:"Black with soot texture",mat:"Lamp-black",an:"Soot particles settle into letterforms",ti:"Soot from 02.04",to:"Hold, then fade",snd:"Heritage theme, first phrase",as:"Type design",f:[.6,.5,.6,.5]},
+ {id:"03.02",d:7,m:["POST"],p:"The founder.",comp:"Kaloor Neelakandan Vaidyar, 1895–1967, in English and Malayalam. A single thread draws beneath the name.",cam:"n/a",lens:"n/a",mv:"2% scale drift",li:"n/a",env:"Palm-leaf texture, out of focus",mat:"Lamp-black type",an:"Thread draws left to right",ti:"From 03.01",to:"The thread continues",snd:"Viola phrase",as:"Verified name spelling",f:[.55,.5,.5,.5]},
+ {id:"03.03",d:6,m:["POST"],p:"The blessing.",comp:"\"With the blessings of Sree Narayana Guru, he founded a pharmacy to prepare and dispense Ayurveda medicines.\"",cam:"n/a",lens:"n/a",mv:"None",li:"n/a",env:"Black",mat:"Ivory type",an:"Line-by-line fade",ti:"Thread passes",to:"Thread continues",snd:"Silence under the text",as:"Wording approved by AVVVS (decision 04)",f:[.5,.5,.5,.5]},
+ {id:"03.04",d:6,m:["POST"],p:"The successor.",comp:"K. N. Ramadas Vaidyar, 1934–1998. The thread continues from the founder's line.",cam:"n/a",lens:"n/a",mv:"2% scale drift",li:"n/a",env:"Palm-leaf texture",mat:"Lamp-black type",an:"Thread continues",ti:"Thread",to:"Thread continues",snd:"Edakka joins",as:"Verified dates",f:[.55,.5,.5,.5]},
+ {id:"03.05",d:7,m:["BLENDER","POST"],p:"A century in one thread.",comp:"The thread runs across the frame with two marks: 90 years · 2011, and 100 years. Then the present leadership name.",cam:"Lateral",lens:"50 mm virtual",mv:"Lateral track along the thread",li:"Gold edge light",env:"Black",mat:"Gold thread",an:"Marks appear as the camera passes",ti:"Thread",to:"Thread dives into a botanical plate",snd:"Theme resolves",as:"Confirmed milestone dates and names",f:[.5,.5,.5,.5]},
+ {id:"03.06",d:3,m:["BLENDER"],p:"Back to the plate.",comp:"The thread leads into the engraved plate's linework.",cam:"Push down",lens:"50 mm",mv:"Push",li:"Raking light",env:"Plate",mat:"Paper, ink",an:"Thread joins the line",ti:"From 03.05",to:"Plates in raking light",snd:"Strings lift",as:"Plates",f:[.5,.5,.5,.1]},
+ {id:"04.01",d:5,m:["BLENDER"],p:"Threads rise from the ingredients.",comp:"Five plates in raking light. Gold filaments lift off the engraved lines.",cam:"35° angle",lens:"35 mm",mv:"Slow crane up",li:"Raking from the left, warm",env:"Engraved plates (illustration)",mat:"Paper, ink, gold",an:"Curves lift from vector linework",ti:"From 03.06",to:"Threads travel",snd:"Divided strings",as:"Plates: Tulasi, Amla, Manjishta, Yashtimadhu, Bhringaraja",f:[.6,.5,.6,.1]},
+ {id:"04.02",d:6,m:["BLENDER"],p:"Threads cross and intertwine.",comp:"Low angle; threads weave over the plates toward the lens.",cam:"Low, 10 cm above the plates",lens:"50 mm",mv:"Tracking forward",li:"Threads carry their own light",env:"Plates fall to darkness",mat:"Gold thin-film",an:"Braid solver",ti:"From 04.01",to:"Convergence",snd:"Mizhavu pulse accelerating",as:"Thread rig",f:[.7,.5,.5,.5]},
+ {id:"04.03",d:5,m:["BLENDER"],p:"Convergence.",comp:"All threads spiral toward one point at centre.",cam:"Fixed",lens:"85 mm",mv:"Slow push",li:"Thread light only",env:"Black",mat:"Gold",an:"Spiral tightening",ti:"Braid",to:"Collapse",snd:"Build to the signature tone",as:"Thread rig",f:[.5,.5,.5,.5]},
+ {id:"04.04",d:6,m:["BLENDER"],p:"The droplet forms. The signature moment.",comp:"A single luminous amber droplet at centre. The plates are visible refracted inside it.",cam:"Fixed",lens:"100 mm macro",mv:"Hold, then a micro push",li:"Inner glow plus a top key",env:"Black",mat:"Transmission, amber volume",an:"Collapse to an SDF, then spring wobble",ti:"Threads collapse",to:"The droplet falls",snd:"Bowed uruli tone, then one beat of silence",as:"Droplet rig",f:[.5,.5,.5,.5]},
+ {id:"05.01",d:4,m:["BLENDER"],p:"The fall.",comp:"The droplet falls through darkness in slow motion.",cam:"Tilt down with the drop",lens:"85 mm",mv:"Tilt",li:"Drop carries its own light",env:"Black",mat:"Droplet",an:"High-speed timing",ti:"From 04.04",to:"Impact",snd:"Air, a held breath",as:"Droplet rig",f:[.5,.5,.3,.5]},
+ {id:"05.02",d:6,m:["LIVE","BLENDER"],p:"Impact into still oil. Rings of light.",comp:"Side-on, at oil level. Crown splash and rings.",cam:"At oil surface",lens:"100 mm macro, high-speed 1000 fps",mv:"Locked off",li:"Warm top light, gold reflections",env:"Dark bronze vessel of oil",mat:"Medicated oil",an:"Real splash; drop comp from Blender",ti:"Drop enters frame",to:"Rings spread into the product set",snd:"Slowed impact",as:"High-speed shoot",f:[.55,.5,.55,.5],prompt:"Extreme slow motion macro of a single amber droplet falling into a still pool of dark golden oil in a bronze vessel, side-on at the oil surface. A crown splash, then concentric rings spreading outward and catching warm golden top light. Black background, photoreal, high-speed cinematography, 100mm macro. No text, no logos, no hands, no extra objects."},
+ {id:"05.03",d:8,m:["LIVE"],p:"The real range, in its real formats.",comp:"Products on dark laterite plinths at staggered heights: tube and carton, syrup bottle and carton, liniment bottle, capsule jar, hair-oil bottle, a blister strip.",cam:"Product level",lens:"65 mm, f/5.6",mv:"Slow lateral dolly, 1.5 m",li:"Low key, warm rim, gold caustic from rippled oil",env:"Laterite plinths, black",mat:"Real packs",an:"Caustics drift",ti:"Ripples become caustics",to:"Hero carton",snd:"Strings settle",as:"Physical packs (decision 09)",f:[.6,.5,.6,.85]},
+ {id:"05.04",d:4,m:["LIVE"],p:"One carton, close.",comp:"A carton turns past the lens. Label legible, accurate.",cam:"Close",lens:"100 mm",mv:"Turntable, 30°",li:"Rim light",env:"Black",mat:"Carton",an:"Turntable",ti:"From the dolly",to:"Match cut: ripple becomes machined rings",snd:"A soft tone",as:"Hero product",f:[.5,.5,.5,.8]},
+ {id:"06.01",d:5,m:["BLENDER"],p:"From organic to exact.",comp:"Match cut: the rings spreading in the oil become concentric machined rings on a brushed-steel disc, perfectly even.",cam:"Top-down, matched to 05.04's ripple centre",lens:"85 mm virtual",mv:"Slow pull up",li:"Cool key (5600K) with the warm gold rim carried over",env:"Abstract black space. No room, no place.",mat:"Lathe-turned brushed steel, anisotropic",an:"Rings settle from liquid wobble to still metal",ti:"Match cut on the ripple",to:"Rings become lines",snd:"Bowed steel, pitched to the uruli tone",as:"Blender steel lookdev",f:[.5,.5,.5,.5]},
+ {id:"06.02",d:6,m:["BLENDER","POST"],p:"Measurement.",comp:"The gold threads straighten into a fine, even lattice. A thin line of light sweeps across it like a calibration scan.",cam:"Low angle across the lattice",lens:"50 mm virtual",mv:"Slow lateral track",li:"A moving scan line as the key",env:"Black",mat:"Gold threads, steel",an:"Curves relax into a grid. Scan line passes.",ti:"From the rings",to:"The scan line finds a capsule",snd:"Clockwork ticks on the beat",as:"Type in post: \"GMP-certified manufacturing · Kozhikode\"",f:[.6,.5,.55,.2]},
+ {id:"06.03",d:5,m:["BLENDER"],p:"Consistency.",comp:"A single clear capsule fills with gold to an exact level. It repeats into a perfect array of identical capsules receding into darkness.",cam:"Capsule height",lens:"100 mm macro virtual",mv:"Pull back to reveal the array",li:"Top key, gold glows from within",env:"Black",mat:"Clear gelatin shell, gold fill",an:"Fill, then instancing outward",ti:"Scan line",to:"Array becomes forms",snd:"Glass tap, a calibrated click",as:"Blender capsule rig. No branding.",f:[.5,.5,.5,.5]},
+ {id:"06.04",d:5,m:["BLENDER","POST"],p:"The range, as form.",comp:"Minimal white silhouettes of the real formats (capsule, tube, bottle, jar, blister cavity) in a measured row, each traced by a thin gold line.",cam:"Product level",lens:"65 mm virtual",mv:"Slow lateral dolly",li:"Soft top, gold edge lines",env:"Black",mat:"Matte white, gold line",an:"Lines trace each form in turn",ti:"From the array",to:"Lines extend outward",snd:"Staccato strings",as:"Type in post: \"300+ classical and proprietary formulations\"",f:[.6,.5,.6,.5]},
+ {id:"06.05",d:5,m:["BLENDER","POST"],p:"Reach.",comp:"The lines leave the forms and run outward to four points of light in the dark, positioned as on a world map without drawing the map.",cam:"Rising",lens:"35 mm virtual",mv:"Crane up",li:"Thread light only",env:"Black",mat:"Gold threads",an:"Threads extend to four points",ti:"From the forms",to:"Threads gather into a network",snd:"Rhythm resolves",as:"Type in post: Russia · Austria · Slovenia · Colombia",f:[.5,.5,.5,.5]},
+ {id:"07.01",d:7,m:["BLENDER"],p:"The threads return.",comp:"Pull back. Every thread from the film (forest, palm leaf, lineage, droplet, precision) rises into one network over darkness.",cam:"Rising pull-back",lens:"24 mm virtual",mv:"Crane up and back",li:"Threads become the key light",env:"Black",mat:"Gold threads",an:"Curves from earlier sequences rejoin",ti:"From 06.05",to:"Network centres",snd:"Theme returns in full",as:"Thread rig from Seq 04 and 06",f:[.6,.5,.4,.5]},
+ {id:"07.02",d:7,m:["POST","THREE"],p:"AVVVS.",comp:"The network resolves around the AVVVS mark, centred. Since 1921.",cam:"Fixed",lens:"n/a",mv:"None",li:"n/a",env:"Black",mat:"Ivory mark",an:"Network settles. The web scene takes over from this frame.",ti:"From 07.01",to:"Hand-off to the website",snd:"Final chord, then a 30-second web bed",as:"Master logo vectors",f:[.5,.5,.5,.5]}
+];
+const S08=[
+ ["Hub","Four threads extend from the mark to four destinations around it. Hover pulls a thread taut; click follows it.","Gold on lamp-black"],
+ ["AVVVS Manufacturing","Steel, precision and light. An architectural space of brushed metal and clean daylight. Classical and proprietary medicines, GMP manufacturing, third-party and white-label manufacturing (to be confirmed).","Cool steel, warm gold edge"],
+ ["Gloveda Herbals","Daylight botanical studio: leaves, glass, water drops on skin-care packs. Direct to the e-commerce store.","Daylight ivory, pale gold"],
+ ["Gloveda Experience","Evening water and stone at a resort spa: still pools, lamplight, laterite. Hospitality partnerships.","Dusk blue, lamp gold"],
+ ["Gloveda Revive","Intimate treatment room: warm wood, oil, hands. Independent spa partnerships.","Teak, amber"]
+];
+const SCHED=[
+ ["1","Answers to decisions. Script lock. Previs greybox in Blender. Shoot planning, permissions, crew.","Decisions 01–11"],
+ ["2","Animatic with temp music. Hero plant, plates and palm-leaf sourcing. Composer brief.","Previs; plate selection"],
+ ["3","One shoot day: hand, leaf macro, oil drop, products, foliage scans.","Packs, physician"],
+ ["3–5","UE5 forest build and lookdev. Blender venation, palm leaf, threads, droplet and precision (Seq 06) lookdev.","Scans from the shoot"],
+ ["4–7","Web build of Seq 07–08 in parallel.","Destination briefs (decision 06), logo files"],
+ ["5–6","Final renders: Blender locally, UE5 on a cloud GPU. AI plates only if UE5 slips.","Approved lookdev frames"],
+ ["6","Edit, conform, type design.","All plates"],
+ ["7","Grade, music recording, sound design and mix.","Locked edit"],
+ ["8","Delivery: 2.39:1 master, 16:9 and 9:16, 0:45 cut-down, web HLS segments. Website integration.","Final mix"]
+];
+const CX=[
+ ["01 Forest","High","720","UE5 1080p: 1–3 hours locally. 4K: cloud GPU","Generic-looking forest if scans are skipped"],
+ ["02 Knowledge","Medium-high","528","Cycles 1080p: about 1–4 min per frame","Venation reading as stock motion graphics"],
+ ["03 Heritage","Low","792","Minutes","Wording approvals"],
+ ["04 Golden Thread","High","528","Cycles: about 2–6 min per frame, droplet heaviest","Too much gold; thread count discipline"],
+ ["05 Medicine","Medium","528","Mostly live; Blender drop comp","Packaging accuracy"],
+ ["06 Precision","Medium","624","Cycles: about 1–3 min per frame","Reading as generic pharma CGI. Keep it abstract and restrained"],
+ ["07 Reveal","Medium","336","Cycles","Matching film to the web scene"]
+];
+const REFS=[
+ ["red-irons.jpg","Red Irons syrup: bottle and carton format."],
+ ["rujanth-2.jpg","Rujanth liniment: bottle and carton."],
+ ["diastat-capsules.jpg","Diastat capsules: jar format."],
+ ["hair-greens-2.jpg","Hair Greens oil: bottle format."],
+ ["hm-proprietary-img.jpg","Mezhu Thailam tube and carton."],
+ ["avvvs-outreach-3.jpg","Range breadth: jars, bottles, cartons (c. 2011)."],
+ ["news-20.jpg","2011 press clipping showing the shopfront name in Malayalam."],
+ ["da9dc648580d9fd9034db2f680cc8369.jpg","Centenary banner. Source of life dates."],
+ ["navathi2.jpg","Navathi celebrations, 2011."],
+ ["100th-year-celebration-15.jpg","Centenary event, \"Ayursatham 22\"."]
+];
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+$("#dec-list").innerHTML=DECISIONS.map((d,i)=>`<div class="dec"><span class="n">${String(i+1).padStart(2,"0")}</span><div><b>${esc(d[0])}</b><p class="muted" style="font-size:.92rem;margin-top:4px">${esc(d[1])}</p></div><p class="r rec" style="font-size:.92rem">${esc(d[2])}</p></div>`).join("");
+$("#audit-rows").innerHTML=AUDIT.map(r=>`<tr><td class="p">${esc(r[0])}</td><td>${esc(r[1])}</td><td class="${r[2]==="Yes"||r[2].startsWith("Yes")?"y":r[2]==="No"?"n":""}">${esc(r[2])}</td><td>${esc(r[3])}</td><td>${esc(r[4])}</td></tr>`).join("");
+$("#schedule-rows").innerHTML=SCHED.map(r=>`<tr><td class="mono">${r[0]}</td><td>${esc(r[1])}</td><td class="muted">${esc(r[2])}</td></tr>`).join("");
+$("#cx-rows").innerHTML=CX.map(r=>`<tr><td class="p">${r[0]}</td><td>${r[1]}</td><td class="mono">${r[2]}</td><td>${esc(r[3])}</td><td class="muted">${esc(r[4])}</td></tr>`).join("");
+$("#refgrid").innerHTML=REFS.map(r=>`<figure><img src="img/${r[0]}" alt="${esc(r[1])}" loading="lazy"><figcaption><span class="stamp">Reference only</span><br>${esc(r[1])}</figcaption></figure>`).join("");
+// timecodes
+const tc=s=>`${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,"0")}`;
+let t=0; const segT={};
+SHOTS.forEach(s=>{s.in=t;t+=s.d;const k=s.id.slice(0,2);segT[k]=(segT[k]||0)+s.d});
+const total=t;
+$("#runtime").textContent=`${tc(total)} · ${SHOTS.length} shots`;
+$("#timeline").innerHTML=SEQ.map(q=>`<div style="flex:${segT[q.id]};background:${q.color}" title="${esc(q.name)}">${q.id}</div>`).join("");
+$("#timeline-legend").textContent=SEQ.map(q=>`${q.id} ${q.name} ${segT[q.id]}s`).join("  ·  ")+"  ·  08 interactive";
+// method table
+const methods=["LIVE","UE5","BLENDER","POST","AI"];
+$("#method-table tbody").innerHTML=SEQ.map(q=>{const row={};SHOTS.filter(s=>s.id.startsWith(q.id)).forEach(s=>{const prim=s.m.filter(m=>m!=="AI"&&m!=="THREE");const share=s.d/(prim.length||1);prim.forEach(m=>row[m]=(row[m]||0)+share);if(s.m.includes("AI"))row.AI=(row.AI||0)+s.d});return `<tr><td class="p">${q.id} ${esc(q.name)}</td>${methods.map(m=>`<td class="mono">${row[m]?(m==="AI"?"fallback "+Math.round(row[m]):Math.round(row[m])):"–"}</td>`).join("")}</tr>`}).join("");
+// frames
+function frame(f,col){const [h,x,y,l]=f;const W=239,H=100;return `<svg class="frame" viewBox="0 0 ${W} ${H}" role="img" aria-label="Composition diagram"><rect width="${W}" height="${H}" fill="#171210"/><line x1="${W/3}" y1="0" x2="${W/3}" y2="${H}" stroke="#3A2C22" stroke-width=".5"/><line x1="${2*W/3}" y1="0" x2="${2*W/3}" y2="${H}" stroke="#3A2C22" stroke-width=".5"/><line x1="0" y1="${H/3}" x2="${W}" y2="${H/3}" stroke="#3A2C22" stroke-width=".5"/><line x1="0" y1="${2*H/3}" x2="${W}" y2="${2*H/3}" stroke="#3A2C22" stroke-width=".5"/><line x1="0" y1="${h*H}" x2="${W}" y2="${h*H}" stroke="#6B5444" stroke-width="1"/><polygon points="${l*W-6},0 ${l*W+6},0 ${x*W+10},${y*H} ${x*W-10},${y*H}" fill="#C3A46A" opacity=".14"/><circle cx="${x*W}" cy="${y*H}" r="7" fill="none" stroke="${col}" stroke-width="1.5"/><circle cx="${x*W}" cy="${y*H}" r="1.6" fill="${col}"/></svg>`}
+const promptShots=[];
+$("#shots").innerHTML=SEQ.map(q=>{const ss=SHOTS.filter(s=>s.id.startsWith(q.id));return `<div class="seq"><div class="seq-head"><span class="eyebrow">Sequence ${q.id}</span><h3>${esc(q.name)}</h3><span class="tc">${tc(ss[0].in)}–${tc(ss[ss.length-1].in+ss[ss.length-1].d)}</span></div>${ss.map(s=>{if(s.prompt)promptShots.push(s);const badges=s.m.map(m=>`<span class="b ${m}">${m==="AI"?"AI fallback":m}</span>`).join("");return `<article class="shot" id="shot-${s.id.replace(".","-")}"><div>${frame(s.f,q.color)}<div class="shot-id">${s.id}</div><div class="tc">${tc(s.in)} · ${s.d}s</div><div class="badges">${badges}</div></div><div><p class="purpose">${esc(s.p)}</p><dl class="spec"><dt>Composition</dt><dd>${esc(s.comp)}</dd><dt>Camera</dt><dd>${esc(s.cam)}</dd><dt>Lens</dt><dd class="mono">${esc(s.lens)}</dd><dt>Movement</dt><dd>${esc(s.mv)}</dd><dt>Lighting</dt><dd>${esc(s.li)}</dd><dt>Environment</dt><dd>${esc(s.env)}</dd><dt>Materials</dt><dd>${esc(s.mat)}</dd><dt>Animation</dt><dd>${esc(s.an)}</dd><dt>In / out</dt><dd>${esc(s.ti)} → ${esc(s.to)}</dd><dt>Sound</dt><dd>${esc(s.snd)}</dd><dt>Assets</dt><dd>${esc(s.as)}</dd></dl></div></article>`}).join("")}</div>`}).join("")+`<div class="seq"><div class="seq-head"><span class="eyebrow">Sequence 08</span><h3>The Business Ecosystem</h3><span class="tc">Interactive · Three.js / R3F</span></div><div class="tbl"><table><thead><tr><th>Destination</th><th>World</th><th>Palette</th></tr></thead><tbody>${S08.map(r=>`<tr><td class="p">${esc(r[0])}</td><td>${esc(r[1])}</td><td class="muted">${esc(r[2])}</td></tr>`).join("")}</tbody></table></div><p class="muted" style="margin-top:10px;font-size:.9rem">The four destinations share the thread language but differ in material, light and sound. Each has its own 4-bar variation of the theme.</p></div>`;
+// prompts
+const extra=[{id:"08 · Gloveda Experience plate",prompt:"Slow cinematic dolly at dusk across a still reflecting pool at a Kerala resort spa: laterite stone edges, brass oil lamps lit along the water, coconut palms silhouetted against a deep blue sky. Calm, luxurious, photoreal, 35mm lens, warm lamp light against cool dusk. No people, no text, no logos."}];
+$("#prompt-list").innerHTML=promptShots.concat(extra).map((s,i)=>`<details class="prompt"${i===0?" open":""}><summary>${s.id}${s.p?" · "+esc(s.p):""}</summary><pre id="pr-${i}">${esc(s.prompt)}</pre><button class="copy" data-copy="pr-${i}" type="button">Copy</button></details>`).join("");
+document.addEventListener("click",e=>{const b=e.target.closest(".copy");if(!b)return;const el=document.getElementById(b.dataset.copy);const txt=el.textContent;const done=()=>{b.textContent="Copied";setTimeout(()=>b.textContent="Copy",1500)};if(navigator.clipboard){navigator.clipboard.writeText(txt).then(done,()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent="Selected"})}});
+</script>

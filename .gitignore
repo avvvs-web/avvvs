@@ -1,0 +1,28 @@
+# --- dependencies, builds, local env
+node_modules/
+web/.next/
+web/.next-dev/
+web/out/
+*.tsbuildinfo
+.env
+.env.local
+.env.*.local
+*.key
+
+# --- tooling and OS
+.claude/
+.DS_Store
+Thumbs.db
+
+# --- raw production media (large; regenerable or archived elsewhere)
+# The site's own encoded media lives in web/public/media and IS committed.
+film/clips/
+film/keyframes/
+film/audit/
+film/preview_reel.mp4
+blender/renders/
+blender/*.blend1
+animatic/
+lookdev/
+research/assets/
+research/html/
