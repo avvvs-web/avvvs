@@ -6,6 +6,7 @@ export const CONTACT = {
   address: ['AVVVS Ayur Speciality Clinic', '60/3829/A, Annie Hall Road', 'Chalappuram PO, Kozhikode 673002', 'Kerala, India'],
   city: 'Kozhikode, Kerala, India',
   shop: 'https://shop.avvvs.com/',
+  gloveda: 'https://glovedaherbals.com/',
   clinic: 'https://clinic.avvvs.com/',
   social: [
     { label: 'Facebook', href: 'https://www.facebook.com/aryavaidyavilasini' },

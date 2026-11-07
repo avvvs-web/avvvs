@@ -7,6 +7,7 @@ import { JsonLd } from '@/components/JsonLd';
 import { HeritageMotion } from '@/components/HeritageMotion';
 import { POSTS, type Post } from '@/lib/journal';
 import { SITE_URL, abs, breadcrumbLd } from '@/lib/site';
+import { Crumbs, WhereNext } from '@/components/PageParts';
 
 export const metadata: Metadata = {
   title: 'Journal: notes from a century of Ayurveda',
@@ -33,6 +34,7 @@ export default function Journal() {
       <SiteHeader page="journal" />
       <main id="main" className="jr">
         <header className="jr-mast">
+          <Crumbs trail={[{ name: 'Journal' }]} />
           <p className="hp-kicker">From the Vaidya Sala</p>
           <h1 data-split>Journal</h1>
           <p className="jr-lede" data-reveal>Notes from a century of Ayurveda in Kozhikode: the people who kept it, the craft of making medicine, and how to use it well.</p>
@@ -65,6 +67,12 @@ export default function Journal() {
             </li>
           ))}
         </ol>
+
+        <WhereNext items={[
+          { href: '/our-history', kicker: 'Our history', title: 'One family, three generations', note: 'The timeline of AVVVS, from the 1921 pharmacy to today.' },
+          { href: '/manufacturing', kicker: 'Manufacturing', title: 'Where the medicines are made', note: 'The GMP-certified factory in Kozhikode.' },
+          { href: '/#destinations', kicker: 'Work with us', title: 'Five ways to partner', note: 'Manufacturing, the clinic, and the Gloveda range and spas.' },
+        ]} />
       </main>
       <SiteFooter />
       <HeritageMotion />

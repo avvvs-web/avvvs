@@ -28,31 +28,43 @@ export function SiteFooter() {
           <p className="foot-line">Ayurveda medicines, made in Kozhikode since {FOUNDED}.</p>
         </div>
 
-        <div className="foot-col">
-          <h2 className="foot-h">Visit</h2>
-          <address>{CONTACT.address.map((l) => <span key={l}>{l}</span>)}</address>
-        </div>
+        <nav className="foot-col" aria-label="Explore">
+          <h2 className="foot-h">Explore</h2>
+          <ul>
+            <li><Link href="/">The film</Link></li>
+            <li><Link href="/our-history">Our history</Link></li>
+            <li><Link href="/our-history#social-service">Social service</Link></li>
+            <li><Link href="/journal">Journal</Link></li>
+          </ul>
+        </nav>
+
+        <nav className="foot-col" aria-label="Work with us">
+          <h2 className="foot-h">Work with us</h2>
+          <ul>
+            <li><Link href="/manufacturing">AVVVS Manufacturing</Link></li>
+            <li><Link href="/#destinations">Five ways to partner</Link></li>
+            <li><a href="#enquire" data-topic="experience">Gloveda spa partnerships</a></li>
+            <li><a href="#enquire">Partner enquiry</a></li>
+          </ul>
+        </nav>
+
+        <nav className="foot-col" aria-label="Also from AVVVS">
+          <h2 className="foot-h">Also from AVVVS</h2>
+          <ul>
+            <li><a href={CONTACT.clinic} rel="noopener">Ayur Speciality Clinic<span aria-hidden="true"> ↗</span></a></li>
+            <li><a href={CONTACT.shop} rel="noopener">Shop<span aria-hidden="true"> ↗</span></a></li>
+            <li><a href={CONTACT.gloveda} rel="noopener">Gloveda Herbals<span aria-hidden="true"> ↗</span></a></li>
+          </ul>
+        </nav>
 
         <div className="foot-col">
-          <h2 className="foot-h">Write or call</h2>
-          <ul>
+          <h2 className="foot-h">Contact</h2>
+          <address>{CONTACT.address.map((l) => <span key={l}>{l}</span>)}</address>
+          <ul className="foot-reach">
             <li><a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a></li>
             {CONTACT.phones.map((p) => <li key={p}><a href={`tel:${p.replace(/\s/g, '')}`}>{p}</a></li>)}
           </ul>
         </div>
-
-        <nav className="foot-col" aria-label="Footer">
-          <h2 className="foot-h">Work with us</h2>
-          <ul>
-            <li><Link href="/our-history">Our history</Link></li>
-            <li><Link href="/manufacturing">AVVVS Manufacturing</Link></li>
-            <li><Link href="/journal">Journal</Link></li>
-            <li><a href={CONTACT.clinic} rel="noopener">Ayur Speciality Clinic</a></li>
-            <li><a href={CONTACT.shop} rel="noopener">Shop</a></li>
-            <li><a href="https://glovedaherbals.com/" rel="noopener">Gloveda Herbals</a></li>
-            <li><a href="#enquire">Partner enquiry</a></li>
-          </ul>
-        </nav>
       </div>
 
       <div className="foot-base">

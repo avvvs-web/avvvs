@@ -6,6 +6,7 @@ import { EnquiryInvite } from '@/components/EnquiryForm';
 import { ScrollRefresh } from '@/components/ScrollRefresh';
 import { Faq } from '@/components/Faq';
 import { FAQ_HOME } from '@/lib/faq';
+import { JournalStrip } from '@/components/PageParts';
 
 // The homepage carries the brand film "The Golden Thread" as one continuous scroll film
 // (clips and cards in lib/film.tsx). Every factual line comes from avvvs.com.
@@ -18,6 +19,8 @@ export default function Home() {
         <FilmStage />
 
         <Ecosystem />
+
+        <JournalStrip />
 
         <Faq id="faq" title="Questions partners ask" items={FAQ_HOME} />
 

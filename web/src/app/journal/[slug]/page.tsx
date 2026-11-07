@@ -9,6 +9,7 @@ import { HeritageMotion } from '@/components/HeritageMotion';
 import { POSTS, getPost, formatDate, readNext } from '@/lib/journal';
 import { CONTACT } from '@/lib/contact';
 import { SITE_URL, abs, breadcrumbLd } from '@/lib/site';
+import { Crumbs } from '@/components/Crumbs';
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -39,7 +40,7 @@ export default async function JournalPost({ params }: Props) {
       <main id="main" className="jr jr-post">
         <article>
           <header className="jr-head">
-            <nav className="jr-crumb" aria-label="Breadcrumb"><Link href="/journal">Journal</Link><span aria-hidden="true"> / </span><span>{p.kind}</span></nav>
+            <Crumbs trail={[{ name: 'Journal', href: '/journal' }, { name: p.kind }]} />
             <h1 data-split>{p.title}</h1>
             <p className="jr-standfirst" data-reveal>{p.dek}</p>
             <p className="jr-meta">

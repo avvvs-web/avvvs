@@ -10,6 +10,7 @@ import { Faq } from '@/components/Faq';
 import { JsonLd } from '@/components/JsonLd';
 import { FAQ_MANUFACTURING } from '@/lib/faq';
 import { SITE_URL, abs, breadcrumbLd } from '@/lib/site';
+import { WhereNext } from '@/components/PageParts';
 
 export const metadata: Metadata = {
   title: 'Third-party and white-label Ayurveda manufacturing in Kerala',
@@ -63,6 +64,12 @@ export default function Manufacturing() {
           <h2 id="reach-title" data-split>Made to GMP. Sent abroad.</h2>
           <p>Licensed proprietary medicines are produced and packaged to GMP quality standards. AVVVS medicines are marketed throughout India and exported to <span className="m-country">Russia</span>, <span className="m-country">Austria</span>, <span className="m-country">Slovenia</span> and <span className="m-country">Colombia</span>.</p>
         </section>
+
+        <WhereNext items={[
+          { href: '/our-history', kicker: 'Our history', title: 'A century in Kozhikode', note: 'The family behind the factory, three generations since 1921.' },
+          { href: '/journal/mezhu-thailam', kicker: 'Journal', title: 'Inside a formulation', note: 'What goes into Mezhu Thailam, one of the oldest medicines AVVVS makes.' },
+          { href: '/#destinations', kicker: 'Work with us', title: 'Other ways to partner', note: 'The clinic, Gloveda Herbals, and the Gloveda spa partnerships.' },
+        ]} />
 
         <Faq id="mfaq" title="Manufacturing questions" items={FAQ_MANUFACTURING} />
 

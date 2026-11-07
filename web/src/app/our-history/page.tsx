@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import Link from 'next/link';
 import { SiteHeader } from '@/components/SiteHeader';
 import { SiteFooter } from '@/components/SiteFooter';
 import { HeritageMotion, YearsSince } from '@/components/HeritageMotion';
@@ -10,6 +9,8 @@ import { Faq } from '@/components/Faq';
 import { JsonLd } from '@/components/JsonLd';
 import { FAQ_HISTORY } from '@/lib/faq';
 import { SITE_URL, abs, breadcrumbLd } from '@/lib/site';
+import { WhereNext } from '@/components/PageParts';
+import { Crumbs } from '@/components/Crumbs';
 
 export const metadata: Metadata = {
   title: 'Our history: Ayurveda in Kozhikode since 1921',
@@ -52,6 +53,7 @@ export default function OurHistory() {
       <main id="main" className="hp">
         <section className="hp-hero" aria-labelledby="hp-title">
           <div className="hp-hero-copy">
+            <Crumbs trail={[{ name: 'Our history' }]} />
             <p className="hp-kicker">Kozhikode, since {FOUNDED}</p>
             <h1 id="hp-title" data-split>Our history</h1>
             <p className="hp-lede" data-reveal>One family, three generations, and <YearsSince /> years of preparing Ayurveda medicine in Kozhikode.</p>
@@ -96,10 +98,6 @@ export default function OurHistory() {
           <ul className="hp-grew-list">
             {GREW.map(([k, v]) => <li key={k} data-reveal><b>{k}</b><p>{v}</p></li>)}
           </ul>
-          <div className="hp-next" data-reveal>
-            <Link className="btn" href="/manufacturing">See the factory floor</Link>
-            <Link className="hp-more" href="/#destinations">Five ways to work with us</Link>
-          </div>
         </section>
 
         <section id="social-service" className="hp-csr" aria-labelledby="hp-csr-title">
@@ -120,6 +118,12 @@ export default function OurHistory() {
             </figure>
           </div>
         </section>
+
+        <WhereNext items={[
+          { href: '/manufacturing', kicker: 'Manufacturing', title: 'See the factory floor', note: 'The GMP-certified factory in Kozhikode, and what it can make for your brand.' },
+          { href: '/journal/a-pharmacy-in-kozhikode', kicker: 'Journal', title: 'A pharmacy, a blessing, and a hundred years', note: 'The founding story, told at length.' },
+          { href: '/#destinations', kicker: 'Work with us', title: 'Five ways to partner', note: 'Manufacturing, the clinic, and the Gloveda range and spas.' },
+        ]} />
 
         <Faq id="hfaq" title="About our history" items={FAQ_HISTORY} />
 

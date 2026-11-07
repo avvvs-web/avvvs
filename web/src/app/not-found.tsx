@@ -13,6 +13,7 @@ const ROUTES = [
   { href: '/manufacturing', title: 'Manufacturing', note: 'Third-party, white-label and licence manufacturing' },
   { href: '/our-history', title: 'Our history', note: 'One family in Kozhikode, since 1921' },
   { href: '/#destinations', title: 'Work with us', note: 'Five ways to partner with AVVVS' },
+  { href: '/journal', title: 'Journal', note: 'Notes from a century of Ayurveda' },
 ];
 
 // The golden thread runs in, frays, and stops: this is where it ends. The way back is below.

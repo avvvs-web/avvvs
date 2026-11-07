@@ -19,8 +19,13 @@ const MENU: { label: string; note: string; href: string; chapter?: string; page?
   { label: 'Manufacturing', note: 'GMP-certified, and made for your brand', href: '/manufacturing', page: 'manufacturing' },
   { label: 'Work with us', note: 'Five ways to partner with AVVVS', href: '#destinations' },
   { label: 'Journal', note: 'Notes from a century of Ayurveda', href: '/journal', page: 'journal' },
-  { label: 'Clinic', note: 'AVVVS Ayur Speciality Clinic', href: CLINIC_URL, external: true },
-  { label: 'Shop', note: 'AVVVS medicines and products, online', href: SHOP_URL, external: true },
+];
+
+// Other AVVVS sites: kept apart from the pages of this one, in the bar and in the menu.
+const ELSEWHERE: { label: string; href: string; track?: 'clinic' | 'shop' }[] = [
+  { label: 'Clinic', href: CLINIC_URL, track: 'clinic' },
+  { label: 'Shop', href: SHOP_URL, track: 'shop' },
+  { label: 'Gloveda Herbals', href: CONTACT.gloveda },
 ];
 
 /**
@@ -83,8 +88,9 @@ export function SiteHeader({ page }: { page: Page }) {
       <Link href="/manufacturing" onClick={close} aria-current={page === 'manufacturing' ? 'page' : undefined}>Manufacturing</Link>
       <Link href={home ? '#destinations' : '/#destinations'} onClick={close}>Work with us</Link>
       <Link href="/journal" onClick={close} aria-current={page === 'journal' ? 'page' : undefined}>Journal</Link>
-      <a href={CLINIC_URL} className="bar-shop" rel="noopener" onClick={() => { trackOutbound('clinic'); close(); }}>Clinic<span aria-hidden="true"> ↗</span></a>
-      <a href={SHOP_URL} className="bar-shop" rel="noopener" onClick={() => { trackOutbound('shop'); close(); }}>Shop<span aria-hidden="true"> ↗</span></a>
+      <span className="bar-sep" aria-hidden="true" />
+      <a href={CLINIC_URL} className="bar-ext" rel="noopener" onClick={() => { trackOutbound('clinic'); close(); }}>Clinic<span aria-hidden="true"> ↗</span></a>
+      <a href={SHOP_URL} className="bar-ext" rel="noopener" onClick={() => { trackOutbound('shop'); close(); }}>Shop<span aria-hidden="true"> ↗</span></a>
     </>
   );
 
@@ -133,7 +139,15 @@ export function SiteHeader({ page }: { page: Page }) {
             ))}
           </ol>
         </nav>
-        <div className="sheet-foot" style={{ '--i': MENU.length } as React.CSSProperties}>
+        <div className="sheet-else" style={{ '--i': MENU.length } as React.CSSProperties}>
+          <p className="sheet-else-h">Also from AVVVS</p>
+          <ul>
+            {ELSEWHERE.map((e) => (
+              <li key={e.label}><a href={e.href} rel="noopener" onClick={() => { if (e.track) trackOutbound(e.track); close(); }}>{e.label}<span aria-hidden="true"> ↗</span></a></li>
+            ))}
+          </ul>
+        </div>
+        <div className="sheet-foot" style={{ '--i': MENU.length + 1 } as React.CSSProperties}>
           <a className="cta sheet-cta" href="#enquire" data-topic={page === 'manufacturing' ? 'manufacturing' : undefined} onClick={close}>{page === 'manufacturing' ? 'Discuss manufacturing' : 'Partner with AVVVS'}</a>
           <div className="sheet-contact">
             <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>

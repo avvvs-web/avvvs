@@ -853,3 +853,54 @@ html.is-locked { overflow: hidden; }
 .loader-since { font-size: 0.74rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--thread); }
 html:has(.loader:not(.is-leaving)) { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) { .loader, .loader-inner { transition-duration: 0.01s; } }
+
+/* ---------- site structure: bar groups, menu, breadcrumbs, where next, journal strip ---------- */
+.bar-sep { width: 1px; height: 18px; background: var(--line); margin-inline: calc(clamp(18px, 2.6vw, 40px) * -0.35); }
+.bar-nav a.bar-ext { color: var(--muted); font-size: 0.88rem; }
+.bar-nav a.bar-ext:hover { color: var(--ink); }
+
+.sheet-else { display: grid; gap: 10px; padding: 22px 0 0 30px; animation: sheet-in 0.7s var(--ease-out) both; animation-delay: calc(80ms + var(--i) * 60ms); }
+.sheet-else-h { font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); }
+.sheet-else ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 22px; }
+.sheet-else a { color: var(--ink-2); text-decoration: none; font-size: 1.05rem; padding: 4px 0; display: inline-block; }
+.sheet-else a:hover { color: var(--ink); }
+@media (prefers-reduced-motion: reduce) { .sheet-else { animation: none; } }
+
+.crumbs ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 0; font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.crumbs li + li::before { content: "/"; margin: 0 10px; color: var(--thread); }
+.crumbs a { color: var(--accent); text-decoration: none; }
+.crumbs a:hover { text-decoration: underline; text-decoration-color: var(--thread); text-underline-offset: 3px; }
+.crumbs [aria-current="page"] { color: var(--ink-2); }
+.jr-head .crumbs ol { justify-content: center; }
+@media (max-width: 640px) { .jr-head .crumbs ol { justify-content: flex-start; } }
+
+.wn { padding: clamp(64px, 9vw, 120px) var(--gutter-r) clamp(56px, 8vw, 104px) var(--gutter); max-width: 110rem; margin-inline: auto; display: grid; gap: clamp(24px, 3vw, 40px); }
+.jr .wn { padding-inline: 0; }
+.wn-h { font-size: clamp(1.8rem, 1.2rem + 2vw, 3rem); }
+.wn-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--thread); }
+.wn-list li + li { border-left: 1px solid var(--line); }
+.wn-list a { display: grid; grid-template-rows: auto auto auto 1fr; gap: 10px; height: 100%; padding: 26px clamp(16px, 2vw, 32px) 30px; color: inherit; text-decoration: none; transition: background-color 0.4s var(--ease-out); }
+.wn-list li:first-child a { padding-left: 0; }
+.wn-list a:hover { background: var(--bg-2); }
+.wn-list li:first-child a:hover { padding-left: 0; }
+.wn-no { font-family: var(--f-display); color: var(--thread); font-size: 1rem; font-variant-numeric: tabular-nums; }
+.wn-kicker { font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); }
+.wn-title { font-family: var(--f-display); color: var(--ink); font-size: clamp(1.35rem, 1.1rem + 0.9vw, 1.9rem); line-height: 1.12; }
+.wn-note { color: var(--ink-2); font-size: 0.98rem; max-width: 26rem; }
+@media (max-width: 860px) {
+  .wn-list { grid-template-columns: minmax(0, 1fr); }
+  .wn-list li + li { border-left: 0; border-top: 1px solid var(--line); }
+  .wn-list a, .wn-list li:first-child a { padding: 22px 0; }
+}
+
+.jr.jr-strip { padding-top: clamp(72px, 10vw, 140px); padding-bottom: clamp(24px, 4vw, 48px); }
+.jr-strip-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 18px 32px; padding-bottom: clamp(28px, 4vw, 48px); border-bottom: 1px solid var(--line); }
+.jr-strip-head > div { display: grid; gap: 14px; }
+.jr-strip-head h2 { font-size: clamp(2.2rem, 1.2rem + 3.4vw, 4.4rem); line-height: 1; }
+.jr-strip .jr-grid { padding-top: clamp(32px, 4vw, 56px); }
+
+.foot-grid { grid-template-columns: minmax(0, 1.5fr) repeat(4, minmax(0, 1fr)); }
+.foot-reach { margin-top: 14px !important; }
+@media (max-width: 1100px) { .foot-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } .foot-brand { grid-column: 1 / -1; } }
+@media (max-width: 900px) { .foot-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .foot-grid { grid-template-columns: minmax(0, 1fr); } }

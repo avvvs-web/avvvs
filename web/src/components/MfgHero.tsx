@@ -2,6 +2,7 @@
 
 import { useRef } from 'react';
 import Image from 'next/image';
+import { Crumbs } from './Crumbs';
 import { gsap, useGSAP, prefersReducedMotion } from '@/lib/gsap';
 
 export function MfgHero() {
@@ -18,6 +19,7 @@ export function MfgHero() {
   return (
     <section className="m-hero" aria-labelledby="m-title" ref={root}>
       <div className="m-hero-copy">
+        <Crumbs trail={[{ name: 'Manufacturing' }]} />
         <h1 id="m-title">AVVVS Manufacturing</h1>
         <p className="m-lede">Classical and proprietary Ayurveda medicines, made in our GMP-certified factory in Kozhikode. Now made for your brand, too.</p>
         <div className="m-actions">

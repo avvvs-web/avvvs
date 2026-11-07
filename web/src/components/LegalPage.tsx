@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { SiteHeader } from './SiteHeader';
 import { SiteFooter } from './SiteFooter';
+import { Crumbs } from './Crumbs';
 
 export interface LegalSection { id: string; title: string; body: ReactNode }
 
@@ -11,6 +12,7 @@ export function LegalPage({ kicker, title, updated, intro, sections }: { kicker:
       <SiteHeader page="other" />
       <main id="main" className="legal">
         <header className="legal-head">
+          <Crumbs trail={[{ name: title }]} />
           <p className="legal-kicker">{kicker}</p>
           <h1>{title}</h1>
           <p className="legal-updated">Last updated {updated}</p>
