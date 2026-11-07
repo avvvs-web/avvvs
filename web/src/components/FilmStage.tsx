@@ -139,12 +139,15 @@ export function FilmStage() {
 
     setCurrent(0);
 
-    // Idle motion: when the visitor pauses, the frame breathes (a slow push in and out), and on
-    // desktop the footage drifts a few pixels with the pointer. Every layer moves together, so the
-    // frame-matched hand-overs between clips stay invisible. Scrolling settles it straight back.
+    // arriving on a chapter link (/#leaf, say) goes straight to that chapter
+    const hash = window.location.hash.slice(1);
+    if (hash && hash !== 'destinations' && hash !== 'enquire') requestAnimationFrame(() => goToChapter(hash, false));
+
+    // Idle motion: when the visitor pauses, the frame breathes (a slow push in and out). It does
+    // not follow the pointer. Every layer moves together, so the frame-matched hand-overs between
+    // clips stay invisible. Scrolling settles it straight back.
     const media = layers.map((l) => l.querySelector<HTMLElement>('.film-media')!).filter(Boolean);
-    const stage = el.querySelector<HTMLElement>('.film-stage')!;
-    gsap.set(media, { scale: 1.03, transformOrigin: '50% 50%' }); // a little margin for the drift
+    gsap.set(media, { scale: 1.03, transformOrigin: '50% 50%' });
     const breathe = { s: 1.03 };
     let breath: gsap.core.Tween | null = null;
     let idle = 0;
@@ -161,24 +164,11 @@ export function FilmStage() {
     window.addEventListener('scroll', onScroll, { passive: true });
     idle = window.setTimeout(startBreathing, 2500);
 
-    const fine = window.matchMedia('(pointer: fine)').matches;
-    const xTo = media.map((m) => gsap.quickTo(m, 'x', { duration: 1.4, ease: 'power3.out' }));
-    const yTo = media.map((m) => gsap.quickTo(m, 'y', { duration: 1.4, ease: 'power3.out' }));
-    const onPointer = (e: PointerEvent) => {
-      const dx = (e.clientX / window.innerWidth - 0.5) * -16;
-      const dy = (e.clientY / window.innerHeight - 0.5) * -10;
-      xTo.forEach((f) => f(dx)); yTo.forEach((f) => f(dy));
-    };
-    if (fine) stage.addEventListener('pointermove', onPointer);
-
     return () => {
       window.removeEventListener('scroll', onScroll);
-      if (fine) stage.removeEventListener('pointermove', onPointer);
       window.clearTimeout(idle);
       breath?.kill();
     };
-    const hash = window.location.hash.slice(1);
-    if (hash && hash !== 'destinations' && hash !== 'enquire') requestAnimationFrame(() => goToChapter(hash, false));
   }, { scope: root });
 
   return (

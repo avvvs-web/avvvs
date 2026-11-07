@@ -7,7 +7,7 @@ import { goToChapter } from './FilmStage';
 import { CONTACT } from '@/lib/contact';
 import { trackOutbound } from '@/lib/track';
 
-type Page = 'home' | 'manufacturing' | 'heritage' | 'other';
+type Page = 'home' | 'manufacturing' | 'heritage' | 'journal' | 'other';
 
 // The menu sheet on narrow screens. `page` items are routes; the rest are places on the homepage.
 export const SHOP_URL = CONTACT.shop;
@@ -18,6 +18,7 @@ const MENU: { label: string; note: string; href: string; chapter?: string; page?
   { label: 'Our history', note: 'Three generations in Kozhikode, since 1921', href: '/our-history', page: 'heritage' },
   { label: 'Manufacturing', note: 'GMP-certified, and made for your brand', href: '/manufacturing', page: 'manufacturing' },
   { label: 'Work with us', note: 'Five ways to partner with AVVVS', href: '#destinations' },
+  { label: 'Journal', note: 'Notes from a century of Ayurveda', href: '/journal', page: 'journal' },
   { label: 'Clinic', note: 'AVVVS Ayur Speciality Clinic', href: CLINIC_URL, external: true },
   { label: 'Shop', note: 'AVVVS medicines and products, online', href: SHOP_URL, external: true },
 ];
@@ -81,6 +82,7 @@ export function SiteHeader({ page }: { page: Page }) {
       <Link href="/our-history" onClick={close} aria-current={page === 'heritage' ? 'page' : undefined}>Our history</Link>
       <Link href="/manufacturing" onClick={close} aria-current={page === 'manufacturing' ? 'page' : undefined}>Manufacturing</Link>
       <Link href={home ? '#destinations' : '/#destinations'} onClick={close}>Work with us</Link>
+      <Link href="/journal" onClick={close} aria-current={page === 'journal' ? 'page' : undefined}>Journal</Link>
       <a href={CLINIC_URL} className="bar-shop" rel="noopener" onClick={() => { trackOutbound('clinic'); close(); }}>Clinic<span aria-hidden="true"> ↗</span></a>
       <a href={SHOP_URL} className="bar-shop" rel="noopener" onClick={() => { trackOutbound('shop'); close(); }}>Shop<span aria-hidden="true"> ↗</span></a>
     </>

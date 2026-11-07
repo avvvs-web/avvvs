@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Gloock, Manjari } from 'next/font/google';
 import './globals.css';
+import { PageLoader } from '@/components/PageLoader';
 import { EnquiryPanel } from '@/components/EnquiryForm';
 import { JsonLd } from '@/components/JsonLd';
 import { CookieConsent } from '@/components/CookieConsent';
@@ -55,6 +56,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en-IN" className={`${gloock.variable} ${manjari.variable}`}>
       {/* browsers and extensions may stamp a style attribute on body before React hydrates */}
       <body suppressHydrationWarning>
+        <PageLoader />
+        <noscript><style>{'.loader{display:none}'}</style></noscript>
         {children}
         <EnquiryPanel />
         <CookieConsent />

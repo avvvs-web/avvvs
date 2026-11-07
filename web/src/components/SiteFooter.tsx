@@ -46,6 +46,7 @@ export function SiteFooter() {
           <ul>
             <li><Link href="/our-history">Our history</Link></li>
             <li><Link href="/manufacturing">AVVVS Manufacturing</Link></li>
+            <li><Link href="/journal">Journal</Link></li>
             <li><a href={CONTACT.clinic} rel="noopener">Ayur Speciality Clinic</a></li>
             <li><a href={CONTACT.shop} rel="noopener">Shop</a></li>
             <li><a href="https://glovedaherbals.com/" rel="noopener">Gloveda Herbals</a></li>

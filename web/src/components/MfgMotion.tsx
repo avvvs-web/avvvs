@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { whenReady } from '@/lib/ready';
 import { animate, createScope, onScroll, splitText, stagger, type ScrollObserver } from 'animejs';
 import { ScrollTrigger, prefersReducedMotion } from '@/lib/gsap';
 
@@ -20,7 +21,8 @@ export function MfgMotion() {
     const observers: ScrollObserver[] = [];
     const watch = (o: ScrollObserver) => { observers.push(o); return o; };
 
-    const scope = createScope({ root: '#main' }).add(() => {
+    let scope: ReturnType<typeof createScope> | undefined;
+    const cancel = whenReady(() => { scope = createScope({ root: '#main' }).add(() => {
       // hero: the title rises on load, the rest follows
       const hero = document.querySelector<HTMLElement>('.m-hero h1');
       if (hero) {
@@ -99,7 +101,7 @@ export function MfgMotion() {
           });
         });
       }
-    });
+    }); });
 
     // GSAP's pin adds height above the later sections; re-measure whenever it refreshes
     let live = true;
@@ -107,7 +109,7 @@ export function MfgMotion() {
     ScrollTrigger.addEventListener('refresh', remeasure);
     requestAnimationFrame(remeasure);
 
-    return () => { live = false; ScrollTrigger.removeEventListener('refresh', remeasure); scope.revert(); };
+    return () => { live = false; ScrollTrigger.removeEventListener('refresh', remeasure); cancel(); scope?.revert(); };
   }, []);
 
   return null;

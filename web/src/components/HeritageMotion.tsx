@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { animate, createScope, onScroll, splitText, stagger } from 'animejs';
 import { prefersReducedMotion } from '@/lib/gsap';
 import { FOUNDED } from '@/lib/film';
+import { whenReady } from '@/lib/ready';
 
 /** The years since 1921, correct on the day the page is read (the page itself is prerendered). */
 export function YearsSince() {
@@ -22,7 +23,8 @@ const EASE = 'outExpo';
 export function HeritageMotion() {
   useEffect(() => {
     if (prefersReducedMotion()) return;
-    const scope = createScope({ root: '#main' }).add(() => {
+    let scope: ReturnType<typeof createScope> | undefined;
+    const cancel = whenReady(() => { scope = createScope({ root: '#main' }).add(() => {
       document.querySelectorAll<HTMLElement>('#main [data-split]').forEach((h, i) => {
         const { words } = splitText(h, { words: { wrap: 'clip' } });
         animate(words, {
@@ -66,8 +68,8 @@ export function HeritageMotion() {
           autoplay: onScroll({ target: '.hp-count', enter: '80% top', repeat: false }),
         });
       }
-    });
-    return () => scope.revert();
+    }); });
+    return () => { cancel(); scope?.revert(); };
   }, []);
   return null;
 }
