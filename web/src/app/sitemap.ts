@@ -8,6 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: abs('/'), lastModified: now, changeFrequency: 'monthly', priority: 1 },
     { url: abs('/manufacturing'), lastModified: now, changeFrequency: 'monthly', priority: 0.9 },
     { url: abs('/our-history'), lastModified: now, changeFrequency: 'yearly', priority: 0.7 },
+    { url: abs('/social-service'), lastModified: now, changeFrequency: 'yearly', priority: 0.6 },
     { url: abs('/journal'), lastModified: now, changeFrequency: 'monthly', priority: 0.6 },
     ...POSTS.map((p) => ({ url: abs(`/journal/${p.slug}`), lastModified: new Date(p.revised), changeFrequency: 'yearly' as const, priority: 0.5 })),
     { url: abs('/privacy'), lastModified: now, changeFrequency: 'yearly', priority: 0.2 },

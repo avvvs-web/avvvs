@@ -100,29 +100,10 @@ export default function OurHistory() {
           </ul>
         </section>
 
-        <section id="social-service" className="hp-csr" aria-labelledby="hp-csr-title">
-          <div className="hp-csr-copy">
-            <p className="hp-kicker">Social service</p>
-            <h2 id="hp-csr-title" className="hp-h" data-split>Where it all began</h2>
-            <p data-reveal>The founding idea of AVVVS is social service. Kaloor Neelakandan Vaidyar and Ramadas Vaidyar held to it, and under Dr Manoj Kaloor and Dr Reeja Manoj, AVVVS continues on that path today.</p>
-            <p data-reveal>Part of that work happens in schools, in talks with students.</p>
-          </div>
-          <div className="hp-csr-media">
-            <figure data-reveal>
-              <Image src="/media/history/school-talk-1.jpg" width={1280} height={960} sizes="(min-width: 900px) 34vw, 100vw"
-                alt="A speaker with a microphone talks to a classroom of students in school uniform, with a slide projected on the wall behind her." />
-            </figure>
-            <figure data-reveal>
-              <Image src="/media/history/school-talk-2.jpg" width={1280} height={960} sizes="(min-width: 900px) 26vw, 100vw"
-                alt="A speaker addresses rows of students seated in a school hall." />
-            </figure>
-          </div>
-        </section>
-
         <WhereNext items={[
           { href: '/manufacturing', kicker: 'Manufacturing', title: 'See the factory floor', note: 'The GMP-certified factory in Kozhikode, and what it can make for your brand.' },
+          { href: '/social-service', kicker: 'Social service', title: 'The founding idea, today', note: 'Why AVVVS began, and its talks with students in schools.' },
           { href: '/journal/a-pharmacy-in-kozhikode', kicker: 'Journal', title: 'A pharmacy, a blessing, and a hundred years', note: 'The founding story, told at length.' },
-          { href: '/#destinations', kicker: 'Work with us', title: 'Five ways to partner', note: 'Manufacturing, the clinic, and the Gloveda range and spas.' },
         ]} />
 
         <Faq id="hfaq" title="About our history" items={FAQ_HISTORY} />

@@ -7,7 +7,7 @@ import { goToChapter } from './FilmStage';
 import { CONTACT } from '@/lib/contact';
 import { trackOutbound } from '@/lib/track';
 
-type Page = 'home' | 'manufacturing' | 'heritage' | 'journal' | 'other';
+type Page = 'home' | 'manufacturing' | 'heritage' | 'social' | 'journal' | 'other';
 
 // The menu sheet on narrow screens. `page` items are routes; the rest are places on the homepage.
 export const SHOP_URL = CONTACT.shop;
@@ -16,6 +16,7 @@ export const CLINIC_URL = CONTACT.clinic;
 const MENU: { label: string; note: string; href: string; chapter?: string; page?: Page; external?: boolean }[] = [
   { label: 'The film', note: 'The Golden Thread, from forest to medicine', href: '#forest', chapter: 'forest' },
   { label: 'Our history', note: 'Three generations in Kozhikode, since 1921', href: '/our-history', page: 'heritage' },
+  { label: 'Social service', note: 'The founding idea of AVVVS, since 1921', href: '/social-service', page: 'social' },
   { label: 'Manufacturing', note: 'GMP-certified, and made for your brand', href: '/manufacturing', page: 'manufacturing' },
   { label: 'Work with us', note: 'Five ways to partner with AVVVS', href: '#destinations' },
   { label: 'Journal', note: 'Notes from a century of Ayurveda', href: '/journal', page: 'journal' },
