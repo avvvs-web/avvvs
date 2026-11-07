@@ -13,19 +13,19 @@ type Page = 'home' | 'manufacturing' | 'heritage' | 'social' | 'journal' | 'othe
 export const SHOP_URL = CONTACT.shop;
 export const CLINIC_URL = CONTACT.clinic;
 
-const MENU: { label: string; note: string; href: string; chapter?: string; page?: Page; external?: boolean }[] = [
+const MENU: { label: string; note: string; href: string; chapter?: string; page?: Page; external?: 'clinic' | 'shop' }[] = [
   { label: 'The film', note: 'The Golden Thread, from forest to medicine', href: '#forest', chapter: 'forest' },
   { label: 'Our history', note: 'Three generations in Kozhikode, since 1921', href: '/our-history', page: 'heritage' },
   { label: 'Social service', note: 'The founding idea of AVVVS, since 1921', href: '/social-service', page: 'social' },
   { label: 'Manufacturing', note: 'GMP-certified, and made for your brand', href: '/manufacturing', page: 'manufacturing' },
   { label: 'Work with us', note: 'Five ways to partner with AVVVS', href: '#destinations' },
   { label: 'Journal', note: 'Notes from a century of Ayurveda', href: '/journal', page: 'journal' },
+  { label: 'Ayur Clinic', note: 'The AVVVS Ayur Speciality Clinic', href: CLINIC_URL, external: 'clinic' },
+  { label: 'Ayur Store', note: 'AVVVS medicines and products, online', href: SHOP_URL, external: 'shop' },
 ];
 
-// Other AVVVS sites: kept apart from the pages of this one, in the bar and in the menu.
+// Other AVVVS sites that are not headline destinations, in a quiet row under the menu.
 const ELSEWHERE: { label: string; href: string; track?: 'clinic' | 'shop' }[] = [
-  { label: 'Clinic', href: CLINIC_URL, track: 'clinic' },
-  { label: 'Shop', href: SHOP_URL, track: 'shop' },
   { label: 'Gloveda Herbals', href: CONTACT.gloveda },
 ];
 
@@ -97,8 +97,8 @@ export function SiteHeader({ page }: { page: Page }) {
       <Link href={home ? '#destinations' : '/#destinations'} onClick={close}>Work with us</Link>
       <Link href="/journal" onClick={close} aria-current={page === 'journal' ? 'page' : undefined}>Journal</Link>
       <span className="bar-sep" aria-hidden="true" />
-      <a href={CLINIC_URL} className="bar-ext" rel="noopener" onClick={() => { trackOutbound('clinic'); close(); }}>Clinic<span aria-hidden="true"> ↗</span></a>
-      <a href={SHOP_URL} className="bar-ext" rel="noopener" onClick={() => { trackOutbound('shop'); close(); }}>Shop<span aria-hidden="true"> ↗</span></a>
+      <a href={CLINIC_URL} className="bar-ext" rel="noopener" onClick={() => { trackOutbound('clinic'); close(); }}>Ayur Clinic<span aria-hidden="true"> ↗</span></a>
+      <a href={SHOP_URL} className="bar-ext" rel="noopener" onClick={() => { trackOutbound('shop'); close(); }}>Ayur Store<span aria-hidden="true"> ↗</span></a>
     </>
   );
 
@@ -130,9 +130,9 @@ export function SiteHeader({ page }: { page: Page }) {
             {MENU.map((m, i) => (
               <li key={m.label} style={{ '--i': i } as React.CSSProperties}>
                 {m.external ? (
-                  <a href={m.href} rel="noopener" onClick={() => { trackOutbound(m.label === 'Clinic' ? 'clinic' : 'shop'); close(); }}>
+                  <a href={m.href} rel="noopener" onClick={() => { trackOutbound(m.external!); close(); }}>
                   <span className="sheet-no" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-                  <span className="sheet-title">{m.label}</span>
+                  <span className="sheet-title">{m.label}<span className="sheet-ext" aria-hidden="true"> ↗</span></span>
                   <span className="sheet-note">{m.note}</span>
                 </a>
                 ) : (

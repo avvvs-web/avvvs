@@ -51,8 +51,8 @@ export function SiteFooter() {
         <nav className="foot-col" aria-label="Also from AVVVS">
           <h2 className="foot-h">Also from AVVVS</h2>
           <ul>
-            <li><a href={CONTACT.clinic} rel="noopener">Ayur Speciality Clinic<span aria-hidden="true"> ↗</span></a></li>
-            <li><a href={CONTACT.shop} rel="noopener">Shop<span aria-hidden="true"> ↗</span></a></li>
+            <li><a href={CONTACT.clinic} rel="noopener">Ayur Clinic<span aria-hidden="true"> ↗</span></a></li>
+            <li><a href={CONTACT.shop} rel="noopener">Ayur Store<span aria-hidden="true"> ↗</span></a></li>
             <li><a href={CONTACT.gloveda} rel="noopener">Gloveda Herbals<span aria-hidden="true"> ↗</span></a></li>
           </ul>
         </nav>

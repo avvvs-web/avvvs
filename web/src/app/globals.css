@@ -155,7 +155,10 @@ html.menu-open { overflow: hidden; }
 .film { position: relative; background: var(--lamp); color: var(--parch); }
 .film-stage { position: relative; height: 100svh; overflow: hidden; background: var(--lamp); }
 .film-layer { position: absolute; inset: 0; }
-.film-media { position: absolute; inset: 0; }
+.film-media { position: absolute; inset: 0; transform: scale(var(--breathe, 1.03)); transform-origin: 50% 50%; }
+/* the clip on screen (and the one fading out) get their own GPU layer, so the idle breathing
+   scales smoothly; FilmStage marks them .is-live */
+.film-layer.is-live .film-media { will-change: transform; }
 /* no will-change here: it kept every layer of the film on the GPU at once, too much for phones */
 .film-media video, .film-media img { width: 100%; height: 100%; object-fit: cover; }
 .film-media::after {
@@ -500,7 +503,7 @@ html.is-locked { overflow: hidden; }
 /* ---------- reduced motion: no pinning or scrubbing; the film becomes a column of stills with their cards ---------- */
 .no-scrub .film-stage { height: auto; overflow: visible; }
 .no-scrub .film-layer { position: relative; inset: auto; }
-.no-scrub .film-media { position: relative; aspect-ratio: 16 / 9; }
+.no-scrub .film-media { position: relative; aspect-ratio: 16 / 9; transform: none; }
 .no-scrub .film-cards { position: static; display: grid; gap: 40px; padding: 40px var(--gutter-r) 64px var(--gutter); }
 .no-scrub .card, .no-scrub .card-center { position: static; transform: none; width: auto; text-align: left; justify-items: start; }
 .no-scrub .film-layer-light .card h2 { color: var(--ivory); }
@@ -1056,3 +1059,6 @@ html.is-loading { overflow: hidden; }
   .ed-preview { position: static; max-height: none; }
   .ed-meta-row, .ed-row { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* menu: the clinic and store are headline items that leave the site */
+.sheet-ext { font-size: 0.6em; color: var(--thread); vertical-align: 0.35em; margin-left: 2px; }

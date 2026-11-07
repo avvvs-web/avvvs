@@ -144,6 +144,10 @@ export function FilmStage() {
       while (i < offsets.length - 1 && t >= offsets[i + 1] - FADE) i++;
       if (i === current) return;
       current = i;
+      // only the clip on screen and the one fading out under it are given a GPU layer (see
+      // .film-layer.is-live in globals.css): the idle breathing then scales smoothly instead of
+      // re-rasterising, and the hidden clips stay off the GPU
+      layers.forEach((l, k) => l.classList.toggle('is-live', k === i || k === i - 1));
       ensureLoaded(i);
       const clip = CLIPS[i];
       el.classList.toggle('is-light', !!clip.light);
@@ -221,21 +225,20 @@ export function FilmStage() {
     if (hash && hash !== 'destinations' && hash !== 'enquire') requestAnimationFrame(() => goToChapter(hash, false));
 
     // Idle motion: when the visitor pauses, the frame breathes (a slow push in and out). It does
-    // not follow the pointer. Every layer moves together, so the frame-matched hand-overs between
-    // clips stay invisible. Scrolling settles it straight back.
-    const media = layers.map((l) => l.querySelector<HTMLElement>('.film-media')!).filter(Boolean);
-    gsap.set(media, { scale: 1.03, transformOrigin: '50% 50%' });
-    const breathe = { s: 1.03 };
+    // not follow the pointer. One CSS variable on the stage scales every layer together, so the
+    // frame-matched hand-overs between clips stay invisible. Scrolling settles it straight back.
+    const stage = el.querySelector<HTMLElement>('.film-stage')!;
+    gsap.set(stage, { '--breathe': 1.03 });
     let breath: gsap.core.Tween | null = null;
     let idle = 0;
     const filmActive = () => { const st = ScrollTrigger.getById('film'); return !!st && st.isActive; };
     const settle = () => {
-      breath?.kill(); breath = null;
-      gsap.to(breathe, { s: 1.03, duration: 0.6, ease: 'power2.out', onUpdate: () => { gsap.set(media, { scale: breathe.s }); } });
+      breath = null;
+      gsap.to(stage, { '--breathe': 1.03, duration: 0.6, ease: 'power2.out', overwrite: true });
     };
     const startBreathing = () => {
       if (!filmActive() || breath) return;
-      breath = gsap.to(breathe, { s: 1.065, duration: 6, ease: 'sine.inOut', yoyo: true, repeat: -1, onUpdate: () => { gsap.set(media, { scale: breathe.s }); } });
+      breath = gsap.to(stage, { '--breathe': 1.065, duration: 6, ease: 'sine.inOut', yoyo: true, repeat: -1, overwrite: true });
     };
     const onScroll = () => { if (breath) settle(); window.clearTimeout(idle); idle = window.setTimeout(startBreathing, 1100); };
     window.addEventListener('scroll', onScroll, { passive: true });
