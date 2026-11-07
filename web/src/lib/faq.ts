@@ -36,7 +36,7 @@ export const FAQ_HISTORY: QA[] = [
   { q: 'When was AVVVS founded?',
     a: 'Arya Vaidya Vilasini Vaidya Sala was founded in 1921 in Kozhikode, Kerala, by Kaloor Neelakandan Vaidyar (1895–1967), who was personally blessed and advised by Sree Narayana Guru to set up a place of care.' },
   { q: 'Who leads AVVVS today?',
-    a: 'Dr Manoj Kaloor, Managing Director, leads AVVVS with Reeja Manoj. He is the son of K. N. Ramadas Vaidyar and the grandson of the founder, making him the third generation of the family in the work.' },
+    a: 'Dr Manoj Kaloor, Managing Director, leads AVVVS with Dr Reeja Manoj. He is the son of K. N. Ramadas Vaidyar and the grandson of the founder, making him the third generation of the family in the work.' },
   { q: 'How did AVVVS begin?',
     a: 'AVVVS began as a pharmacy that prepared and dispensed Ayurveda medicines for the people of Kozhikode. Its founding idea was social service.' },
 ];

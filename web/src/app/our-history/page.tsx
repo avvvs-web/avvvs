@@ -33,7 +33,7 @@ const TIMELINE = [
   { when: '2021', title: 'A hundred years', text: 'The centenary of Arya Vaidya Vilasini Vaidya Sala.' },
   {
     when: 'Today', title: 'The third generation', who: 'Dr Manoj Kaloor', dates: 'Managing Director',
-    text: 'The son of K. N. Ramadas Vaidyar, he leads AVVVS today with Reeja Manoj.',
+    text: 'The son of K. N. Ramadas Vaidyar, he leads AVVVS today with Dr Reeja Manoj.',
   },
 ] as const;
 
@@ -61,6 +61,12 @@ export default function OurHistory() {
               alt="An open bundle of palm-leaf manuscripts in lamplight, from the AVVVS film." />
           </figure>
         </section>
+
+        <figure className="hp-legacy" data-reveal>
+          <Image src="/media/history/100-years-of-legacy.jpg" width={1365} height={590} sizes="(min-width: 1260px) 1200px, 100vw"
+            alt="Sepia portraits of the founder, Sri Neelakandan Vaidyar (1895–1967), and his son, Sri Ramdas Vaidyar (1934–1998), either side of the K. Neelakandan Vaidyar's Arya Vaidya Vilasini Vaidyasala emblem and the words 100 Years of Legacy." />
+          <figcaption>A hundred years of legacy: the founder, Sri Neelakandan Vaidyar (left), and his son, Sri Ramdas Vaidyar (right).</figcaption>
+        </figure>
 
         <section className="hp-line" aria-labelledby="hp-line-title">
           <h2 id="hp-line-title" className="hp-h" data-split>The thread so far</h2>
@@ -96,6 +102,25 @@ export default function OurHistory() {
           </div>
         </section>
 
+        <section id="social-service" className="hp-csr" aria-labelledby="hp-csr-title">
+          <div className="hp-csr-copy">
+            <p className="hp-kicker">Social service</p>
+            <h2 id="hp-csr-title" className="hp-h" data-split>Where it all began</h2>
+            <p data-reveal>The founding idea of AVVVS is social service. Kaloor Neelakandan Vaidyar and Ramadas Vaidyar held to it, and under Dr Manoj Kaloor and Dr Reeja Manoj, AVVVS continues on that path today.</p>
+            <p data-reveal>Part of that work happens in schools, in talks with students.</p>
+          </div>
+          <div className="hp-csr-media">
+            <figure data-reveal>
+              <Image src="/media/history/school-talk-1.jpg" width={1280} height={960} sizes="(min-width: 900px) 34vw, 100vw"
+                alt="A speaker with a microphone talks to a classroom of students in school uniform, with a slide projected on the wall behind her." />
+            </figure>
+            <figure data-reveal>
+              <Image src="/media/history/school-talk-2.jpg" width={1280} height={960} sizes="(min-width: 900px) 26vw, 100vw"
+                alt="A speaker addresses rows of students seated in a school hall." />
+            </figure>
+          </div>
+        </section>
+
         <Faq id="hfaq" title="About our history" items={FAQ_HISTORY} />
 
         <EnquiryInvite
@@ -114,6 +139,7 @@ export default function OurHistory() {
           { '@type': 'Person', name: 'Kaloor Neelakandan Vaidyar', birthDate: '1895', deathDate: '1967', description: 'Founder of Arya Vaidya Vilasini Vaidya Sala (1921).' },
           { '@type': 'Person', name: 'K. N. Ramadas Vaidyar', birthDate: '1934', deathDate: '1998', description: 'Son of the founder; led AVVVS in the second generation.' },
           { '@type': 'Person', name: 'Dr Manoj Kaloor', jobTitle: 'Managing Director', description: 'Son of K. N. Ramadas Vaidyar; leads AVVVS today, the third generation.' },
+          { '@type': 'Person', name: 'Dr Reeja Manoj', description: 'Leads AVVVS today with Dr Manoj Kaloor.' },
           { '@type': 'Person', name: 'Sree Narayana Guru', description: 'Blessed and advised the founder to set up a place of care.' },
         ],
       }} />
