@@ -27,7 +27,7 @@ export function MfgMotion() {
       const hero = document.querySelector<HTMLElement>('.m-hero h1');
       if (hero) {
         const { words } = splitText(hero, { words: { wrap: 'clip' } });
-        animate(words, { y: ['110%', '0%'], duration: 1200, delay: stagger(70, { start: 150 }), ease: EASE });
+        animate(words, { y: ['140%', '0%'], duration: 1200, delay: stagger(70, { start: 150 }), ease: EASE });
         animate('.m-hero .m-lede, .m-hero .m-actions', { opacity: [0, 1], y: [18, 0], duration: 1000, delay: stagger(120, { start: 550 }), ease: EASE });
       }
 
@@ -35,7 +35,7 @@ export function MfgMotion() {
       document.querySelectorAll<HTMLElement>('#main [data-split]').forEach((h) => {
         const { words } = splitText(h, { words: { wrap: 'clip' } });
         animate(words, {
-          y: ['110%', '0%'], duration: 1100, delay: stagger(60), ease: EASE,
+          y: ['140%', '0%'], duration: 1100, delay: stagger(60), ease: EASE,
           autoplay: watch(onScroll({ target: h, enter: '88% top', repeat: false })),
         });
       });

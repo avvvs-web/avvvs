@@ -1,11 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import { Gloock, Manjari } from 'next/font/google';
 import './globals.css';
-import { PageLoader } from '@/components/PageLoader';
-import { EnquiryPanel } from '@/components/EnquiryForm';
+import { PublicChrome } from '@/components/PublicChrome';
 import { JsonLd } from '@/components/JsonLd';
-import { CookieConsent } from '@/components/CookieConsent';
-import { Analytics } from '@/components/Analytics';
 import { ORG, SITE_URL, organizationLd, websiteLd } from '@/lib/site';
 
 const gloock = Gloock({ weight: '400', subsets: ['latin'], variable: '--font-gloock', display: 'swap' });
@@ -56,12 +53,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en-IN" className={`${gloock.variable} ${manjari.variable} is-loading`}>
       {/* browsers and extensions may stamp a style attribute on body before React hydrates */}
       <body suppressHydrationWarning>
-        <PageLoader />
+        <PublicChrome />
         <noscript><style>{'.loader{display:none}html.is-loading{overflow:visible}'}</style></noscript>
         {children}
-        <EnquiryPanel />
-        <CookieConsent />
-        <Analytics />
         <JsonLd data={organizationLd()} />
         <JsonLd data={websiteLd()} />
       </body>

@@ -6,18 +6,21 @@ import { SiteHeader } from '@/components/SiteHeader';
 import { SiteFooter } from '@/components/SiteFooter';
 import { JsonLd } from '@/components/JsonLd';
 import { HeritageMotion } from '@/components/HeritageMotion';
-import { POSTS, getPost, formatDate, readNext } from '@/lib/journal';
+import { POSTS, formatDate, readNext } from '@/lib/journal';
+import { allPosts, findPost } from '@/lib/posts-db';
 import { CONTACT } from '@/lib/contact';
 import { SITE_URL, abs, breadcrumbLd } from '@/lib/site';
 import { Crumbs } from '@/components/Crumbs';
 
 type Props = { params: Promise<{ slug: string }> };
 
-export const dynamicParams = false;
+// the built-in articles are prerendered; ones published from the admin render on first visit
+export const dynamicParams = true;
+export const revalidate = 60;
 export const generateStaticParams = () => POSTS.map((p) => ({ slug: p.slug }));
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const p = getPost((await params).slug);
+  const p = await findPost((await params).slug);
   if (!p) return {};
   const path = `/journal/${p.slug}`;
   return {
@@ -29,9 +32,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function JournalPost({ params }: Props) {
-  const p = getPost((await params).slug);
+  const p = await findPost((await params).slug);
   if (!p) notFound();
-  const next = readNext(p.slug);
+  const next = readNext(p.slug, 2, await allPosts());
   const tall = p.cover.height > p.cover.width;
 
   return (

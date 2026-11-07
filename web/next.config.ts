@@ -7,6 +7,8 @@ import { PHASE_DEVELOPMENT_SERVER } from 'next/constants';
 export default function config(phase: string): NextConfig {
   return {
     reactStrictMode: true,
+    // Journal images uploaded in the admin live in Vercel Blob
+    images: { remotePatterns: [{ protocol: 'https', hostname: '*.public.blob.vercel-storage.com' }] },
     distDir: phase === PHASE_DEVELOPMENT_SERVER ? '.next-dev' : '.next',
   };
 }

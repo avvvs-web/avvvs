@@ -264,9 +264,9 @@ export const formatDate = (iso: string) =>
   new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 
 /** The next two pieces to read: same kind first, then whatever follows. */
-export function readNext(slug: string, n = 2) {
-  const me = getPost(slug)!;
-  const rest = POSTS.filter((p) => p.slug !== slug);
+export function readNext(slug: string, n = 2, list: Post[] = POSTS) {
+  const me = list.find((p) => p.slug === slug) ?? getPost(slug)!;
+  const rest = list.filter((p) => p.slug !== slug);
   const same = rest.filter((p) => p.kind === me.kind);
   const others = rest.filter((p) => p.kind !== me.kind);
   return [...same, ...others].slice(0, n);

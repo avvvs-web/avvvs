@@ -10,7 +10,7 @@ export const FAQ_HOME: QA[] = [
   { q: 'What does AVVVS make?',
     a: 'AVVVS makes more than 300 classical and proprietary Ayurveda formulations, among them Mezhu Thailam, Rujanth, Slepan, Red Irons and Lakshol. Its factory in Kozhikode has capsule, blister, ointment and cosmetic lines alongside traditional mechanised units.' },
   { q: 'How can a business work with AVVVS?',
-    a: 'There are five ways: AVVVS Manufacturing (third-party, white-label and licence manufacturing), AVVVS Ayur Speciality Clinic partnerships in wellness, leisure and hospitality, Gloveda Herbals skin and hair care, Gloveda Experience for hotel and resort spas, and Gloveda Revive for independent spas and wellness centres.' },
+    a: 'There are five ways: AVVVS Manufacturing (third-party, white-label and licence manufacturing), AVVVS Ayur Speciality Clinic partnerships in wellness, leisure and hospitality, Gloveda Herbals skin and hair care, Gloveda Experience for hotel and resort spas, and Gloveda Revive, which runs standalone AVVVS spas and partners with independent spas and wellness centres.' },
   { q: 'Where are AVVVS medicines sold?',
     a: 'AVVVS medicines are marketed throughout India and exported to Russia, Austria, Slovenia and Colombia.' },
   { q: 'How do I contact AVVVS?',

@@ -28,7 +28,7 @@ export function HeritageMotion() {
       document.querySelectorAll<HTMLElement>('#main [data-split]').forEach((h, i) => {
         const { words } = splitText(h, { words: { wrap: 'clip' } });
         animate(words, {
-          y: ['110%', '0%'], duration: 1200, delay: stagger(70, { start: i === 0 ? 150 : 0 }), ease: EASE,
+          y: ['140%', '0%'], duration: 1200, delay: stagger(70, { start: i === 0 ? 150 : 0 }), ease: EASE,
           autoplay: i === 0 ? true : onScroll({ target: h, enter: '88% top', repeat: false }),
         });
       });

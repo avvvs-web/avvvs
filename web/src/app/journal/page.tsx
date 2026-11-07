@@ -5,7 +5,8 @@ import { SiteHeader } from '@/components/SiteHeader';
 import { SiteFooter } from '@/components/SiteFooter';
 import { JsonLd } from '@/components/JsonLd';
 import { HeritageMotion } from '@/components/HeritageMotion';
-import { POSTS, type Post } from '@/lib/journal';
+import type { Post } from '@/lib/journal';
+import { allPosts } from '@/lib/posts-db';
 import { SITE_URL, abs, breadcrumbLd } from '@/lib/site';
 import { Crumbs, WhereNext } from '@/components/PageParts';
 
@@ -27,7 +28,11 @@ function Meta({ p }: { p: Post }) {
   );
 }
 
-export default function Journal() {
+// articles published from the admin appear here within a minute (and at once, via revalidatePath)
+export const revalidate = 60;
+
+export default async function Journal() {
+  const POSTS = await allPosts();
   const [lead, ...rest] = POSTS;
   return (
     <>

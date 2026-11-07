@@ -1,8 +1,11 @@
 import type { MetadataRoute } from 'next';
 import { abs } from '@/lib/site';
-import { POSTS } from '@/lib/journal';
+import { allPosts } from '@/lib/posts-db';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export const revalidate = 3600;
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const POSTS = await allPosts();
   const now = new Date();
   return [
     { url: abs('/'), lastModified: now, changeFrequency: 'monthly', priority: 1 },

@@ -9,7 +9,7 @@ export const TOPICS = [
     placeholder: 'Tell us about your property or centre' },
   { id: 'experience', label: 'Gloveda Experience', note: 'Ayurveda therapies and products for hotel and resort spas.',
     placeholder: 'Your hotel or resort, and its spa' },
-  { id: 'revive', label: 'Gloveda Revive', note: 'Treatments and products for independent spas and wellness centres.',
+  { id: 'revive', label: 'Gloveda Revive', note: 'Standalone spas run by AVVVS, and treatments and products for independent spas and wellness centres.',
     placeholder: 'Your spa or wellness centre' },
   { id: 'other', label: 'Something else', note: 'Tell us in your own words.',
     placeholder: 'What would you like to talk about?' },

@@ -9,12 +9,16 @@ export const OG_SIZE = { width: 1200, height: 630 };
 const pub = (p: string) => join(process.cwd(), 'public', p);
 const dataUrl = (p: string, type: string) => `data:${type};base64,${readFileSync(pub(p)).toString('base64')}`;
 
-export function ogImage({ still, kicker, title }: { still: string; kicker: string; title: string }) {
+export async function ogImage({ still, kicker, title }: { still: string; kicker: string; title: string }) {
+  // a Journal cover uploaded in the admin is a Blob URL; everything else is a file in public/
+  const src = still.startsWith('https://')
+    ? await fetch(still).then(async (r) => `data:${r.headers.get('content-type') || 'image/jpeg'};base64,${Buffer.from(await r.arrayBuffer()).toString('base64')}`)
+    : dataUrl(still, 'image/jpeg');
   return new ImageResponse(
     (
       <div style={{ width: '100%', height: '100%', display: 'flex', position: 'relative', background: '#0D0B09' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={dataUrl(still, 'image/jpeg')} width={1200} height={675} alt="" style={{ position: 'absolute', top: 0, left: 0, width: 1200, height: 675, objectFit: 'cover' }} />
+        <img src={src} width={1200} height={675} alt="" style={{ position: 'absolute', top: 0, left: 0, width: 1200, height: 675, objectFit: 'cover' }} />
         <div style={{ position: 'absolute', inset: 0, display: 'flex', background: 'linear-gradient(90deg, rgba(13,11,9,0.88) 0%, rgba(13,11,9,0.55) 55%, rgba(13,11,9,0.1) 100%)' }} />
         <div style={{ position: 'absolute', left: 64, top: 56, display: 'flex', background: '#F4EFE5', borderRadius: 10, padding: '14px 18px' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}

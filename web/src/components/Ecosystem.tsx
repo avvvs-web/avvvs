@@ -70,7 +70,7 @@ export function Ecosystem() {
         </li>
         <li className="dest" data-dest="4">
           <h3>Gloveda Revive</h3>
-          <p>Treatments and products for independent spas and wellness centres.</p>
+          <p>Standalone spas run by AVVVS, and treatments and products for independent spas and wellness centres.</p>
           <a href="#enquire" data-topic="revive">Partner with Gloveda Revive</a>
         </li>
       </ul>
