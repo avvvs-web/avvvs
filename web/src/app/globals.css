@@ -911,3 +911,6 @@ html.is-loading { overflow: hidden; }
 @media (max-width: 1060px), (hover: none) {
   .bar { background: rgba(244, 239, 229, 0.97); backdrop-filter: none; -webkit-backdrop-filter: none; }
 }
+
+/* phones: the film's frames drawn on a canvas over the poster (see FilmStage) */
+.film-seq { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; pointer-events: none; }

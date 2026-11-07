@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import Link from 'next/link';
 import { gsap, ScrollTrigger, useGSAP, prefersReducedMotion } from '@/lib/gsap';
 import { CLIPS, FOUNDED, type Clip } from '@/lib/film';
+import SEQ_FRAMES from '@/lib/film-seq.json';
 
 const FADE = 0.2;        // screen-heights over which one layer hands over to the next
 const CARD_FADE = 0.18;  // screen-heights for a card to fade in or out
@@ -60,11 +61,72 @@ export function FilmStage() {
     // a phone held upright only ever sees the centre of the frame: it gets the portrait cut, which
     // is under half the pixels to decode per seek, and sharper there than the cropped 16:9 set
     const portrait = window.innerWidth < 820 && window.innerHeight > window.innerWidth;
+
+    // Phones held upright scrub still frames on a canvas instead of seeking a video: Android's
+    // hardware decoders reset on every seek, which made the film stutter whatever the file.
+    // A frame that is already decoded costs almost nothing to draw.
+    const useSeq = portrait && window.matchMedia('(pointer: coarse)').matches;
+    // Frames arrive as small encoded blobs; only the ones around the playhead are decoded, off the
+    // main thread (createImageBitmap), and drawn 1:1 onto a canvas the size of a frame, which the
+    // GPU scales with object-fit: cover. Bitmaps that fall far behind are released.
+    const FW = 540, FH = 960, AHEAD = 12, BEHIND = 6, KEEP = 24;
+    type Seq = { n: number; base: string; blobs: (Blob | undefined)[]; bmps: Map<number, ImageBitmap>; pending: Set<number>; canvas: HTMLCanvasElement; ctx: CanvasRenderingContext2D; want: number; drawn: number; loading: boolean };
+    const seqs: (Seq | null)[] = videos.map((v, i) => {
+      if (!useSeq || !v) return null;
+      const id = (v.dataset.src || '').split('/').pop()?.replace('.mp4', '') ?? '';
+      const n = (SEQ_FRAMES as Record<string, number>)[id];
+      if (!n) return null;
+      const canvas = document.createElement('canvas');
+      canvas.className = 'film-seq';
+      canvas.width = FW; canvas.height = FH;
+      canvas.setAttribute('aria-hidden', 'true');
+      layers[i].querySelector('.film-media')!.appendChild(canvas);
+      const ctx = canvas.getContext('2d', { alpha: false })!;
+      canvas.style.visibility = 'hidden'; // the poster shows until the first frame is drawn
+      return { n, base: `/media/film/seq/${id}/`, blobs: [], bmps: new Map(), pending: new Set(), canvas, ctx, want: 0, drawn: -1, loading: false };
+    });
+    const drawSeq = (s: Seq) => {
+      let k = -1;
+      for (let d = 0; d <= KEEP && k < 0; d++) {
+        if (s.bmps.has(s.want - d)) k = s.want - d;
+        else if (s.bmps.has(s.want + d)) k = s.want + d;
+      }
+      if (k < 0 || k === s.drawn) return;
+      s.ctx.drawImage(s.bmps.get(k)!, 0, 0, FW, FH);
+      if (s.drawn < 0) s.canvas.style.visibility = '';
+      s.drawn = k;
+    };
+    const decodeAround = (s: Seq) => {
+      for (let f = Math.max(0, s.want - BEHIND); f <= Math.min(s.n - 1, s.want + AHEAD); f++) {
+        const blob = s.blobs[f];
+        if (!blob || s.bmps.has(f) || s.pending.has(f)) continue;
+        s.pending.add(f);
+        createImageBitmap(blob).then((bmp) => {
+          s.pending.delete(f);
+          if (Math.abs(f - s.want) > KEEP) { bmp.close(); return; }
+          s.bmps.set(f, bmp);
+          if (s.drawn < 0 || Math.abs(f - s.want) < Math.abs(s.drawn - s.want)) drawSeq(s);
+        }, () => s.pending.delete(f));
+      }
+      for (const [f, bmp] of s.bmps) if (Math.abs(f - s.want) > KEEP) { bmp.close(); s.bmps.delete(f); }
+    };
+    const loadSeq = (s: Seq) => {
+      if (s.loading) return;
+      s.loading = true;
+      for (let f = 0; f < s.n; f++) {
+        fetch(`${s.base}f_${String(f + 1).padStart(3, '0')}.webp`)
+          .then((r) => (r.ok ? r.blob() : Promise.reject()))
+          .then((b) => { s.blobs[f] = b; if (Math.abs(f - s.want) <= AHEAD) decodeAround(s); })
+          .catch(() => {});
+      }
+    };
     const ensureLoaded = (i: number) => {
       for (let k = Math.max(0, i - 1); k <= Math.min(videos.length - 1, i + 2); k++) {
         const v = videos[k];
         if (!v || loaded.has(k)) continue;
         loaded.add(k);
+        const sq = seqs[k];
+        if (sq) { loadSeq(sq); continue; }
         v.preload = 'auto';
         v.src = (portrait && v.dataset.srcM) || (hd && v.dataset.srcHd) || v.dataset.src!;
         v.addEventListener('seeked', onSeeked);
@@ -116,6 +178,8 @@ export function FilmStage() {
           t: 1, duration: w * (clip.playShare ?? 1),
           onUpdate: () => {
             targets[i] = play.t;
+            const sq = seqs[i];
+            if (sq) { sq.want = Math.round(play.t * (sq.n - 1)); decodeAround(sq); drawSeq(sq); return; }
             if (v.duration) seek(v, play.t * (v.duration - 0.05));
           },
         }, o);
@@ -180,6 +244,7 @@ export function FilmStage() {
     return () => {
       window.removeEventListener('scroll', onScroll);
       videos.forEach((v) => v?.removeEventListener('seeked', onSeeked));
+      seqs.forEach((s) => { if (!s) return; s.bmps.forEach((b) => b.close()); s.canvas.remove(); });
       window.clearTimeout(idle);
       breath?.kill();
     };
