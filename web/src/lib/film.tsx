@@ -16,7 +16,7 @@ import type { ReactNode } from 'react';
 export interface FilmCard {
   in: number;
   out?: number;
-  variant?: 'hero' | 'center';
+  variant?: 'hero' | 'center' | 'right';
   content: ReactNode;
 }
 
@@ -105,17 +105,19 @@ export const CLIPS: Clip[] = [
   },
   {
     // the pour blooms into light and comes out on the capsule grid
-    id: 's11', alt: 'The oil blooms into light, and a regular grid of capsules appears on an ivory surface.', chapter: 'The standard', weight: 2.6, video: `${M}/film/s11.mp4`, still: `${M}/film/stills/k10.jpg`, light: true,
+    id: 's11', alt: 'The camera rises from the bottle into warm light, and a faint world map appears on ivory paper.', chapter: 'The standard', weight: 2.2, video: `${M}/film/s11.mp4`, still: `${M}/film/stills/k10.jpg`, light: true,
     cards: [
-      { in: 0.42, out: 0.68, content: (<><h2>Tradition, made to standard.</h2><p>In our GMP-certified factory in Kozhikode, capsule, blister, ointment and cosmetic lines work alongside traditional mechanised units, and stringent quality control measures are in place.</p></>) },
-      { in: 0.74, out: 0.98, content: (<><h2>Made in Kozhikode. Sent abroad.</h2><p>Marketed throughout India, and exported to Russia, Austria, Slovenia and Colombia.</p></>) },
+      { in: 0.4, out: 0.95, content: (<><h2>Tradition, made to standard.</h2><p>In our GMP-certified factory in Kozhikode, capsule, blister, ointment and cosmetic lines work alongside traditional mechanised units, and stringent quality control measures are in place.</p></>) },
     ],
   },
-  // the camera rises off the grid into light and the gold thread draws across ivory paper:
-  // the stage releases straight into the destinations
+  // gold routes run out from Kozhikode across the map, then the frame fades through white to the
+  // gold thread on ivory paper: the stage releases straight into the destinations
   {
-    id: 's14', alt: 'The camera rises into light as a single gold thread draws itself across ivory paper.', weight: 1.8, video: `${M}/film/s14.mp4`, still: `${M}/film/stills/k11.jpg`, light: true,
-    cards: [{ in: 0.45, out: 0.98, variant: 'center', content: (<><h2>Where the thread goes next is up to you.</h2></>) }],
+    id: 's14', alt: 'Gold threads run from Kozhikode across a world map to Austria, Slovenia, Russia and Colombia; then a single gold thread draws itself across ivory paper.', weight: 2.8, video: `${M}/film/s14.mp4`, still: `${M}/film/stills/k11.jpg`, light: true,
+    cards: [
+      { in: 0.04, out: 0.5, variant: 'right', content: (<><h2>Made in Kozhikode. Sent abroad.</h2><p>Marketed throughout India, and exported to Russia, Austria, Slovenia and Colombia.</p></>) },
+      { in: 0.66, out: 0.98, variant: 'center', content: (<><h2>Where the thread goes next is up to you.</h2></>) },
+    ],
   },
 ];
 

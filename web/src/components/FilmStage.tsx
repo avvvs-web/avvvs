@@ -191,7 +191,7 @@ export function FilmStage() {
 }
 
 function Layer({ clip, first }: { clip: Clip; first: boolean }) {
-  const cls = ['card', 'card-hero', 'card-center'];
+  const cls = ['card', 'card-hero', 'card-center', 'card-right'];
   return (
     <div className={`film-layer${clip.light ? ' film-layer-light' : ''}`} id={chapterId(clip)} data-clip={clip.id}>
       <div className="film-media">
@@ -205,7 +205,7 @@ function Layer({ clip, first }: { clip: Clip; first: boolean }) {
       </div>
       <div className="film-cards">
         {clip.cards?.map((c, k) => (
-          <div key={k} className={[cls[0], c.variant === 'hero' && cls[1], c.variant === 'center' && cls[2]].filter(Boolean).join(' ')}
+          <div key={k} className={[cls[0], c.variant === 'hero' && cls[1], c.variant === 'center' && cls[2], c.variant === 'right' && cls[3]].filter(Boolean).join(' ')}
             data-in={c.in} data-out={c.out ?? 1}>
             {c.content}
           </div>
