@@ -34,9 +34,21 @@ export function FilmStage() {
 
     // where each clip's playhead should be (0-1), so a clip that loads late can catch up
     const targets = layers.map(() => 0);
+    // Seeks never queue up: while the decoder is still busy with one, only the latest target is
+    // kept and applied when it finishes. Phones otherwise fall behind and the scroll stutters.
+    const pending = new Map<HTMLVideoElement, number>();
+    const seek = (v: HTMLVideoElement, time: number) => {
+      if (v.seeking) { pending.set(v, time); return; }
+      if (Math.abs(v.currentTime - time) > 0.01) v.currentTime = time;
+    };
+    const onSeeked = (e: Event) => {
+      const v = e.currentTarget as HTMLVideoElement;
+      const next = pending.get(v);
+      if (next !== undefined) { pending.delete(v); seek(v, next); }
+    };
     const seekTo = (k: number) => {
       const v = videos[k];
-      if (v && v.duration) v.currentTime = targets[k] * (v.duration - 0.05);
+      if (v && v.duration) seek(v, targets[k] * (v.duration - 0.05));
     };
 
     // load a clip only when it is near, so the page doesn't pull every video at once
@@ -45,13 +57,17 @@ export function FilmStage() {
     const net = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
     const hd = window.innerWidth >= 1100 && window.innerWidth * window.devicePixelRatio >= 1700
       && !net?.saveData && !['slow-2g', '2g', '3g'].includes(net?.effectiveType ?? '');
+    // a phone held upright only ever sees the centre of the frame: it gets the portrait cut, which
+    // is under half the pixels to decode per seek, and sharper there than the cropped 16:9 set
+    const portrait = window.innerWidth < 820 && window.innerHeight > window.innerWidth;
     const ensureLoaded = (i: number) => {
       for (let k = Math.max(0, i - 1); k <= Math.min(videos.length - 1, i + 2); k++) {
         const v = videos[k];
         if (!v || loaded.has(k)) continue;
         loaded.add(k);
         v.preload = 'auto';
-        v.src = (hd && v.dataset.srcHd) || v.dataset.src!;
+        v.src = (portrait && v.dataset.srcM) || (hd && v.dataset.srcHd) || v.dataset.src!;
+        v.addEventListener('seeked', onSeeked);
         v.load();
         // some mobile browsers only paint seeked frames after one play() call
         v.addEventListener('loadedmetadata', () => seekTo(k), { once: true });
@@ -100,10 +116,7 @@ export function FilmStage() {
           t: 1, duration: w * (clip.playShare ?? 1),
           onUpdate: () => {
             targets[i] = play.t;
-            if (v.duration) {
-              const target = play.t * (v.duration - 0.05);
-              if (Math.abs(v.currentTime - target) > 0.01) v.currentTime = target;
-            }
+            if (v.duration) seek(v, play.t * (v.duration - 0.05));
           },
         }, o);
       } else {
@@ -166,6 +179,7 @@ export function FilmStage() {
 
     return () => {
       window.removeEventListener('scroll', onScroll);
+      videos.forEach((v) => v?.removeEventListener('seeked', onSeeked));
       window.clearTimeout(idle);
       breath?.kill();
     };
@@ -187,7 +201,8 @@ function Layer({ clip, first }: { clip: Clip; first: boolean }) {
       <div className="film-media">
         {clip.video ? (
           // src is set when the clip comes near (data-src); the poster shows until then
-          <video data-src={clip.video} data-src-hd={clip.video.includes('/film/') ? clip.video.replace('/film/', '/film/hd/') : undefined} poster={clip.still} muted playsInline preload="none" role="img" aria-label={clip.alt} />
+          <video data-src={clip.video} data-src-hd={clip.video.includes('/film/') ? clip.video.replace('/film/', '/film/hd/') : undefined}
+            data-src-m={clip.video.includes('/film/') ? clip.video.replace('/film/', '/film/m/') : undefined} poster={clip.still} muted playsInline preload="none" role="img" aria-label={clip.alt} />
         ) : (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={clip.still} alt={clip.alt} fetchPriority={first ? 'high' : 'low'} loading={first ? 'eager' : 'lazy'} />

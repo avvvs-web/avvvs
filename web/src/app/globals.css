@@ -156,7 +156,8 @@ html.menu-open { overflow: hidden; }
 .film-stage { position: relative; height: 100svh; overflow: hidden; background: var(--lamp); }
 .film-layer { position: absolute; inset: 0; }
 .film-media { position: absolute; inset: 0; }
-.film-media video, .film-media img { width: 100%; height: 100%; object-fit: cover; will-change: transform; }
+/* no will-change here: it kept every layer of the film on the GPU at once, too much for phones */
+.film-media video, .film-media img { width: 100%; height: 100%; object-fit: cover; }
 .film-media::after {
   /* a low scrim so cards read over any frame; bright frames don't need it */
   content: ""; position: absolute; inset: 0; pointer-events: none;
@@ -851,7 +852,7 @@ html.is-locked { overflow: hidden; }
 .loader.is-leaving .loader-inner { transform: translateY(-10px) scale(0.98); }
 .loader-name { margin-top: 18px; font-family: var(--f-display); font-size: clamp(1.15rem, 1rem + 0.5vw, 1.45rem); color: var(--ink); letter-spacing: -0.005em; }
 .loader-since { font-size: 0.74rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--thread); }
-html:has(.loader:not(.is-leaving)) { overflow: hidden; }
+html.is-loading { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) { .loader, .loader-inner { transition-duration: 0.01s; } }
 
 /* ---------- site structure: bar groups, menu, breadcrumbs, where next, journal strip ---------- */
@@ -904,3 +905,9 @@ html:has(.loader:not(.is-leaving)) { overflow: hidden; }
 @media (max-width: 1100px) { .foot-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } .foot-brand { grid-column: 1 / -1; } }
 @media (max-width: 900px) { .foot-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 520px) { .foot-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* phones and tablets: an opaque bar instead of a live blur over the moving film (the blur was
+   recomputed on every frame of scroll) */
+@media (max-width: 1060px), (hover: none) {
+  .bar { background: rgba(244, 239, 229, 0.97); backdrop-filter: none; -webkit-backdrop-filter: none; }
+}

@@ -43,10 +43,16 @@ export function SiteHeader({ page }: { page: Page }) {
     const fill = el.querySelector<HTMLElement>('.bar-thread span');
     let last = window.scrollY;
     let raf = 0;
+    // the page's length is measured when it changes, not on every scroll frame (reading it right
+    // after the film's writes forced a layout per frame)
+    let max = 0;
+    const measure = () => { max = document.documentElement.scrollHeight - window.innerHeight; };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(document.body);
     const update = () => {
       raf = 0;
       const y = window.scrollY;
-      const max = document.documentElement.scrollHeight - window.innerHeight;
       if (fill) fill.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`;
       // hide only on a deliberate scroll down, well past the top; any scroll up brings it back
       if (Math.abs(y - last) > 6) {
@@ -59,7 +65,8 @@ export function SiteHeader({ page }: { page: Page }) {
     update();
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll);
-    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); cancelAnimationFrame(raf); };
+    window.addEventListener('resize', measure);
+    return () => { ro.disconnect(); window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); window.removeEventListener('resize', measure); cancelAnimationFrame(raf); };
   }, []);
 
   // the sheet: Escape closes it, the page behind doesn't scroll, and it closes if the screen widens

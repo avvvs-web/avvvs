@@ -24,6 +24,7 @@ export function PageLoader() {
       done = true;
       timers.push(window.setTimeout(() => {
         setPhase('leaving');
+        document.documentElement.classList.remove('is-loading');
         markReady();
         timers.push(window.setTimeout(() => setPhase('off'), 900));
       }, Math.max(0, MIN_MS - (performance.now() - start))));
