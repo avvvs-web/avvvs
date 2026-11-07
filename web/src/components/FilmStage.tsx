@@ -138,6 +138,45 @@ export function FilmStage() {
     });
 
     setCurrent(0);
+
+    // Idle motion: when the visitor pauses, the frame breathes (a slow push in and out), and on
+    // desktop the footage drifts a few pixels with the pointer. Every layer moves together, so the
+    // frame-matched hand-overs between clips stay invisible. Scrolling settles it straight back.
+    const media = layers.map((l) => l.querySelector<HTMLElement>('.film-media')!).filter(Boolean);
+    const stage = el.querySelector<HTMLElement>('.film-stage')!;
+    gsap.set(media, { scale: 1.03, transformOrigin: '50% 50%' }); // a little margin for the drift
+    const breathe = { s: 1.03 };
+    let breath: gsap.core.Tween | null = null;
+    let idle = 0;
+    const filmActive = () => { const st = ScrollTrigger.getById('film'); return !!st && st.isActive; };
+    const settle = () => {
+      breath?.kill(); breath = null;
+      gsap.to(breathe, { s: 1.03, duration: 0.6, ease: 'power2.out', onUpdate: () => { gsap.set(media, { scale: breathe.s }); } });
+    };
+    const startBreathing = () => {
+      if (!filmActive() || breath) return;
+      breath = gsap.to(breathe, { s: 1.065, duration: 6, ease: 'sine.inOut', yoyo: true, repeat: -1, onUpdate: () => { gsap.set(media, { scale: breathe.s }); } });
+    };
+    const onScroll = () => { if (breath) settle(); window.clearTimeout(idle); idle = window.setTimeout(startBreathing, 1100); };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    idle = window.setTimeout(startBreathing, 2500);
+
+    const fine = window.matchMedia('(pointer: fine)').matches;
+    const xTo = media.map((m) => gsap.quickTo(m, 'x', { duration: 1.4, ease: 'power3.out' }));
+    const yTo = media.map((m) => gsap.quickTo(m, 'y', { duration: 1.4, ease: 'power3.out' }));
+    const onPointer = (e: PointerEvent) => {
+      const dx = (e.clientX / window.innerWidth - 0.5) * -16;
+      const dy = (e.clientY / window.innerHeight - 0.5) * -10;
+      xTo.forEach((f) => f(dx)); yTo.forEach((f) => f(dy));
+    };
+    if (fine) stage.addEventListener('pointermove', onPointer);
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (fine) stage.removeEventListener('pointermove', onPointer);
+      window.clearTimeout(idle);
+      breath?.kill();
+    };
     const hash = window.location.hash.slice(1);
     if (hash && hash !== 'destinations' && hash !== 'enquire') requestAnimationFrame(() => goToChapter(hash, false));
   }, { scope: root });
