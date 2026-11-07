@@ -3,7 +3,7 @@
  "S03": "349df96c-5340-4e52-9560-3f0880ec6368",
  "S04": "e582c28a-f2c3-4acb-9c90-a7d5d64dda56",
  "S05": "8df2f05d-4c19-4ad8-a047-20341b20de4f",
- "S11": "199baa95-02a6-4a39-a9e6-12b37072435c",
+ "S11": "62a98b5e-67ab-4535-bc18-4285eadb38ff",
  "S12": "27cfd5cf-cbfe-4e1c-ab27-77d42b41dbbf",
  "S13": "2beaa8d9-da9d-4cd3-9b90-d5ecb95594ae",
  "S06": "49dff6e3-200b-4988-b96a-9fa3b38c2188",
@@ -17,5 +17,7 @@
  "S10_alternates": {
   "7d613e02-2e5f-4b2c-8ffd-4c556526747f": "vessel lifts away (underside turns to wood): clips/v1/S10_v3_lift.mp4",
   "e17b42c9-61e0-4ac2-aa92-c9116f0b11cd": "submitted before the user stopped it; not downloaded"
- }
+ },
+ "K11_hard_capsules": "ed6950d1-fb1e-47a0-b344-9339f2737a75",
+ "_changes_capsules": "AVVVS doesn't sell softgels (user, 2026-11-07): new K11 with two-piece hard capsules (old: keyframes/_replaced_K11_softgels.png), S11 regenerated K10 -> K11, S14 rebuilt with no new generation: S11's last frame held 1.4 s (slow 2% push, brightening) + 0.8 s fade through white + S13_v2 tail from 2.6 s. Old takes in clips/v1."
 }
