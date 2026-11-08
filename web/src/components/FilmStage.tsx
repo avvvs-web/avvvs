@@ -270,7 +270,7 @@ function HeritageType() {
     <div className="heritage" aria-labelledby="heritage-title">
       <h2 id="heritage-title" className="heritage-year"><span>1921</span> <span className="heritage-place">Kozhikode</span></h2>
       <ol className="heritage-lines">
-        <li><p>Founded by Kaloor Neelakandan Vaidyar as a pharmacy for the people of Kozhikode, and carried by his family for three generations.</p></li>
+        <li><p>Founded by Kaloor Neelakandan Vaidyar as a pharmacy for the people of Kozhikode, and carried by his family for four generations.</p></li>
         <li className="milestones">
           <span><b className="heritage-years" suppressHydrationWarning>{yearsSinceFounding()}</b> years of AVVVS</span>
           <Link className="heritage-more" href="/our-history">Our history</Link>

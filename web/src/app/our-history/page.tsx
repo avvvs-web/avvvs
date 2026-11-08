@@ -15,9 +15,9 @@ import { Crumbs } from '@/components/Crumbs';
 export const metadata: Metadata = {
   title: 'Our history: Ayurveda in Kozhikode since 1921',
   description:
-    'Arya Vaidya Vilasini Vaidya Sala was founded in Kozhikode in 1921 by Kaloor Neelakandan Vaidyar as a pharmacy, with the blessings of Sree Narayana Guru, and has been carried by his family for three generations.',
+    'Arya Vaidya Vilasini Vaidya Sala was founded in Kozhikode in 1921 by Kaloor Neelakandan Vaidyar as a pharmacy, with the blessings of Sree Narayana Guru, and has been carried by his family for four generations.',
   alternates: { canonical: '/our-history' },
-  openGraph: { url: '/our-history', title: 'Our history · AVVVS since 1921', description: 'One family, three generations, since 1921.' },
+  openGraph: { url: '/our-history', title: 'Our history · AVVVS since 1921', description: 'One family, four generations, since 1921.' },
 };
 
 // Every line restates avvvs.com/about-us (research/01-about-us-notes.md) or what the user confirmed.
@@ -36,6 +36,7 @@ const TIMELINE = [
     when: 'Today', title: 'The third generation', who: 'Dr Manoj Kaloor', dates: 'Managing Director',
     text: 'The son of K. N. Ramadas Vaidyar, he leads AVVVS today with Dr Reeja Manoj.',
   },
+  { when: 'And now', title: 'The fourth generation', text: 'A fourth generation of the family carries the work on with them.' },
 ] as const;
 
 const GREW = [
@@ -56,7 +57,7 @@ export default function OurHistory() {
             <Crumbs trail={[{ name: 'Our history' }]} />
             <p className="hp-kicker">Kozhikode, since {FOUNDED}</p>
             <h1 id="hp-title" data-split>Our history</h1>
-            <p className="hp-lede" data-reveal>One family, three generations, and <YearsSince /> years of preparing Ayurveda medicine in Kozhikode.</p>
+            <p className="hp-lede" data-reveal>One family, four generations, and <YearsSince /> years of preparing Ayurveda medicine in Kozhikode.</p>
           </div>
           <figure className="hp-hero-media is-banner">
             <Image src="/media/history/100-years-of-legacy.jpg" width={1365} height={590} priority sizes="(min-width: 900px) 58vw, 100vw"

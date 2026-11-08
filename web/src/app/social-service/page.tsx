@@ -68,7 +68,7 @@ export default function SocialService() {
         </section>
 
         <WhereNext items={[
-          { href: '/our-history', kicker: 'Our history', title: 'One family, three generations', note: 'How the 1921 pharmacy became AVVVS.' },
+          { href: '/our-history', kicker: 'Our history', title: 'One family, four generations', note: 'How the 1921 pharmacy became AVVVS.' },
           { href: '/journal/a-pharmacy-in-kozhikode', kicker: 'Journal', title: 'A pharmacy, a blessing, and a hundred years', note: 'The founding story, told at length.' },
           { href: '/journal/the-clinic', kicker: 'Journal', title: 'Inside the Ayur Speciality Clinic', note: 'The place of care, as it is today.' },
         ]} />

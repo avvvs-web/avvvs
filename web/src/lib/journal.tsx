@@ -51,9 +51,9 @@ export const POSTS: Post[] = [
       <>
         <p>In 1921, Kaloor Neelakandan Vaidyar opened a pharmacy in Kozhikode. He did so at the urging of Sree Narayana Guru, who personally encouraged him to use his knowledge to build a place of care for people who had little access to it.</p>
         <p>The pharmacy prepared Ayurveda medicines and dispensed them. Its purpose was plain, and it has not changed: make medicines of good quality, and care for the community they are made for. AVVVS still describes its founding idea in two words. Social service.</p>
-        <h2>Three generations</h2>
+        <h2>Four generations</h2>
         <p>The founder&rsquo;s son, K. N. Ramadas Vaidyar (1934&ndash;1998), carried the work into its second generation. He was known well beyond it too, in Kozhikode&rsquo;s literary circles, for his satire.</p>
-        <p>Today AVVVS is in its third generation, led by Managing Director Dr Manoj Kaloor, Ramadas Vaidyar&rsquo;s son, with Dr Reeja Manoj.</p>
+        <p>The third generation is Managing Director Dr Manoj Kaloor, Ramadas Vaidyar&rsquo;s son, who leads AVVVS today with Dr Reeja Manoj, and a fourth generation of the family now carries the work on with them.</p>
         <h2>What changed, and what did not</h2>
         <p>The pharmacy became a manufacturer. AVVVS now makes classical and proprietary Ayurveda medicines in a GMP-certified factory in Kozhikode, where capsule, blister, ointment and cosmetic lines run beside traditional mechanised units. Its medicines are marketed across India and exported to Russia, Austria, Slovenia and Colombia, and its clinical work grew into the AVVVS Ayur Speciality Clinic.</p>
         <p>Through all of it, the Vaidya Sala has tried to do one difficult thing well: keep pace with new technology without giving up the traditions it was built on.</p>
