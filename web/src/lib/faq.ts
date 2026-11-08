@@ -12,7 +12,7 @@ export const FAQ_HOME: QA[] = [
   { q: 'How can a business work with AVVVS?',
     a: 'There are five ways: AVVVS Manufacturing (third-party, white-label and licence manufacturing), AVVVS Ayur Speciality Clinic partnerships in wellness, leisure and hospitality, Gloveda Herbals skin and hair care, Gloveda Experience for hotel and resort spas, and Gloveda Revive, which runs standalone AVVVS spas and partners with independent spas and wellness centres.' },
   { q: 'Where are AVVVS medicines sold?',
-    a: 'AVVVS medicines are marketed throughout India and exported to Russia, Austria, Slovenia and Colombia.' },
+    a: 'AVVVS medicines are sold throughout India and exported to the United States, Russia, Austria, Slovenia, Colombia and beyond.' },
   { q: 'How do I contact AVVVS?',
     a: 'Email mail@avvvs.com or call +91 80892 02091 or +91 90375 14016. The address is AVVVS Ayur Speciality Clinic, 60/3829/A, Annie Hall Road, Chalappuram PO, Kozhikode 673002, Kerala, India. Partners can also use the enquiry form on this site.' },
 ];

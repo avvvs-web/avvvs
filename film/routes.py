@@ -31,6 +31,8 @@ ROUTES = [                                  # (destination, lift of the arc, sta
     (P(1285, 450), 0.30, 0.50),            # Ljubljana, Slovenia
     (P(1592, 330), 0.18, 0.65),            # Moscow, Russia
     (P(65, 755), 0.20, 0.80),              # Bogota, Colombia
+    (P(-170, 300), 0.05, 0.95),            # the United States: the map stops at the Caribbean, so
+                                            # this thread runs out of the left edge at its latitude
 ]
 DRAW = 1.25                                # seconds for one thread to reach its city
 GOLD, GOLD_HI = (176, 136, 62), (214, 178, 108)

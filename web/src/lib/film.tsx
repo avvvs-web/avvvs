@@ -113,9 +113,9 @@ export const CLIPS: Clip[] = [
   // gold routes run out from Kozhikode across the map, then the frame fades through white to the
   // gold thread on ivory paper: the stage releases straight into the destinations
   {
-    id: 's14', alt: 'Gold threads run from Kozhikode across a world map to Austria, Slovenia, Russia and Colombia; then a single gold thread draws itself across ivory paper.', weight: 2.8, video: `${M}/film/s14.mp4`, still: `${M}/film/stills/k11.jpg`, light: true,
+    id: 's14', alt: 'Gold threads run from Kozhikode across a world map to Austria, Slovenia, Russia, Colombia and on towards the United States; then a single gold thread draws itself across ivory paper.', weight: 2.8, video: `${M}/film/s14.mp4`, still: `${M}/film/stills/k11.jpg`, light: true,
     cards: [
-      { in: 0.04, out: 0.5, variant: 'right', content: (<><h2>Made in Kozhikode. Sent abroad.</h2><p>Marketed throughout India, and exported to Russia, Austria, Slovenia and Colombia.</p></>) },
+      { in: 0.04, out: 0.5, variant: 'right', content: (<><h2>Made in Kerala. Carried across the world.</h2><p>Sold throughout India, and exported to the United States, Russia, Austria, Slovenia, Colombia and beyond.</p></>) },
       { in: 0.66, out: 0.98, variant: 'center', content: (<><h2>Where the thread goes next is up to you.</h2></>) },
     ],
   },

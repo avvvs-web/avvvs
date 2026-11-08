@@ -55,7 +55,7 @@ export const POSTS: Post[] = [
         <p>The founder&rsquo;s son, K. N. Ramadas Vaidyar (1934&ndash;1998), carried the work into its second generation. He was known well beyond it too, in Kozhikode&rsquo;s literary circles, for his satire.</p>
         <p>The third generation is Managing Director Dr Manoj Kaloor, Ramadas Vaidyar&rsquo;s son, who leads AVVVS today with Dr Reeja Manoj, and a fourth generation of the family now carries the work on with them.</p>
         <h2>What changed, and what did not</h2>
-        <p>The pharmacy became a manufacturer. AVVVS now makes classical and proprietary Ayurveda medicines in a GMP-certified factory in Kozhikode, where capsule, blister, ointment and cosmetic lines run beside traditional mechanised units. Its medicines are marketed across India and exported to Russia, Austria, Slovenia and Colombia, and its clinical work grew into the AVVVS Ayur Speciality Clinic.</p>
+        <p>The pharmacy became a manufacturer. AVVVS now makes classical and proprietary Ayurveda medicines in a GMP-certified factory in Kozhikode, where capsule, blister, ointment and cosmetic lines run beside traditional mechanised units. Its medicines are sold across India and exported to the United States, Russia, Austria, Slovenia, Colombia and beyond, and its clinical work grew into the AVVVS Ayur Speciality Clinic.</p>
         <p>Through all of it, the Vaidya Sala has tried to do one difficult thing well: keep pace with new technology without giving up the traditions it was built on.</p>
         <blockquote>
           <p>To become a premier, multifaceted, ethical business organisation, dedicated to quality and governed by tradition, in the field of Ayurveda.</p>

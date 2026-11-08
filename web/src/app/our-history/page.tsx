@@ -43,7 +43,7 @@ const GREW = [
   ['300+', 'classical and proprietary formulations, among them Mezhu Thailam, Rujanth, Slepan, Red Irons and Lakshol.'],
   ['GMP', 'certified factory in Kozhikode, with traditional mechanised units alongside capsule, blister, ointment and cosmetic lines.'],
   ['Clinics', 'The clinical arm grew into the AVVVS Ayur Speciality Clinics.'],
-  ['Abroad', 'Marketed throughout India, and exported to Russia, Austria, Slovenia and Colombia.'],
+  ['Abroad', 'Sold throughout India, and exported to the United States, Russia, Austria, Slovenia, Colombia and beyond.'],
 ] as const;
 
 export default function OurHistory() {
