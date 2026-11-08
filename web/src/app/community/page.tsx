@@ -11,15 +11,15 @@ import { FOUNDED } from '@/lib/film';
 import { SITE_URL, abs, breadcrumbLd } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: 'Social service: the founding idea of AVVVS',
+  title: 'Community: the founding idea of AVVVS',
   description:
     'Social service has been the founding idea of Arya Vaidya Vilasini Vaidya Sala since 1921, when Sree Narayana Guru encouraged its founder to build a place of care. Today part of that work happens in schools, in talks with students.',
-  alternates: { canonical: '/social-service' },
-  openGraph: { url: '/social-service', title: 'Social service · AVVVS', description: 'The founding idea of AVVVS, since 1921.' },
+  alternates: { canonical: '/community' },
+  openGraph: { url: '/community', title: 'Community · AVVVS', description: 'The founding idea of AVVVS, since 1921.' },
 };
 
 // Every line restates avvvs.com/about-us (its CSR section) or the founding story already on the site.
-export default function SocialService() {
+export default function Community() {
   return (
     <>
       <SiteHeader page="social" />
@@ -27,9 +27,9 @@ export default function SocialService() {
       <main id="main" className="hp ss">
         <section className="hp-hero" aria-labelledby="ss-title">
           <div className="hp-hero-copy">
-            <Crumbs trail={[{ name: 'Social service' }]} />
+            <Crumbs trail={[{ name: 'Community' }]} />
             <p className="hp-kicker">Corporate social responsibility</p>
-            <h1 id="ss-title" data-split>Social service</h1>
+            <h1 id="ss-title" data-split>Community</h1>
             <p className="hp-lede" data-reveal>The founding idea of AVVVS, since {FOUNDED}.</p>
           </div>
           <figure className="hp-hero-media">
@@ -81,9 +81,9 @@ export default function SocialService() {
 
       <SiteFooter />
       <HeritageMotion />
-      <JsonLd data={breadcrumbLd([{ name: 'Social service', path: '/social-service' }])} />
+      <JsonLd data={breadcrumbLd([{ name: 'Community', path: '/community' }])} />
       <JsonLd data={{
-        '@context': 'https://schema.org', '@type': 'WebPage', url: abs('/social-service'), name: 'Social service',
+        '@context': 'https://schema.org', '@type': 'WebPage', url: abs('/community'), name: 'Community',
         about: { '@id': `${SITE_URL}/#organization` },
         description: 'The founding idea of Arya Vaidya Vilasini Vaidya Sala, and its talks with students in schools.',
       }} />

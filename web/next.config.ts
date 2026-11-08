@@ -8,6 +8,8 @@ export default function config(phase: string): NextConfig {
   return {
     reactStrictMode: true,
     // Journal images uploaded in the admin live in Vercel Blob
+    // the CSR page was first published as Social service
+    async redirects() { return [{ source: '/social-service', destination: '/community', permanent: true }]; },
     images: { remotePatterns: [{ protocol: 'https', hostname: '*.public.blob.vercel-storage.com' }] },
     distDir: phase === PHASE_DEVELOPMENT_SERVER ? '.next-dev' : '.next',
   };

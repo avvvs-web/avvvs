@@ -16,7 +16,7 @@ export const CLINIC_URL = CONTACT.clinic;
 const MENU: { label: string; note: string; href: string; chapter?: string; page?: Page; external?: 'clinic' | 'shop' }[] = [
   { label: 'The film', note: 'The Golden Thread, from forest to medicine', href: '#forest', chapter: 'forest' },
   { label: 'Our history', note: 'Four generations in Kozhikode, since 1921', href: '/our-history', page: 'heritage' },
-  { label: 'Social service', note: 'The founding idea of AVVVS, since 1921', href: '/social-service', page: 'social' },
+  { label: 'Community', note: 'The founding idea of AVVVS, since 1921', href: '/community', page: 'social' },
   { label: 'Manufacturing', note: 'GMP-certified, and made for your brand', href: '/manufacturing', page: 'manufacturing' },
   { label: 'Work with us', note: 'Five ways to partner with AVVVS', href: '#destinations' },
   { label: 'Journal', note: 'Notes from a century of Ayurveda', href: '/journal', page: 'journal' },

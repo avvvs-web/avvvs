@@ -33,7 +33,7 @@ export function SiteFooter() {
           <ul>
             <li><Link href="/">The film</Link></li>
             <li><Link href="/our-history">Our history</Link></li>
-            <li><Link href="/social-service">Social service</Link></li>
+            <li><Link href="/community">Community</Link></li>
             <li><Link href="/journal">Journal</Link></li>
           </ul>
         </nav>

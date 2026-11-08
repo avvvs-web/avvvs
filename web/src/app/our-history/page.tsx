@@ -98,7 +98,7 @@ export default function OurHistory() {
 
         <WhereNext items={[
           { href: '/manufacturing', kicker: 'Manufacturing', title: 'See the factory floor', note: 'The GMP-certified factory in Kozhikode, and what it can make for your brand.' },
-          { href: '/social-service', kicker: 'Social service', title: 'The founding idea, today', note: 'Why AVVVS began, and its talks with students in schools.' },
+          { href: '/community', kicker: 'Community', title: 'The founding idea, today', note: 'Why AVVVS began, and its talks with students in schools.' },
           { href: '/journal/a-pharmacy-in-kozhikode', kicker: 'Journal', title: 'A pharmacy, a blessing, and a hundred years', note: 'The founding story, told at length.' },
         ]} />
 
