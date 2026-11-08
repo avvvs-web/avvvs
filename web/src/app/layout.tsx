@@ -1,11 +1,17 @@
 import type { Metadata, Viewport } from 'next';
-import { Gloock, Manjari } from 'next/font/google';
+import { Manjari } from 'next/font/google';
+import localFont from 'next/font/local';
 import './globals.css';
 import { PublicChrome } from '@/components/PublicChrome';
 import { JsonLd } from '@/components/JsonLd';
 import { ORG, SITE_URL, organizationLd, websiteLd, INDEXABLE } from '@/lib/site';
 
-const gloock = Gloock({ weight: '400', subsets: ['latin'], variable: '--font-gloock', display: 'swap' });
+// Headings: Castle T (URW), self-hosted. Next measures a Times New Roman fallback to match its
+// metrics, so nothing shifts while it loads.
+const castle = localFont({
+  src: [{ path: '../fonts/CastleT.woff2', weight: '400', style: 'normal' }],
+  variable: '--font-castle', display: 'swap', fallback: ['Iowan Old Style', 'Palatino Linotype', 'Georgia', 'serif'], adjustFontFallback: 'Times New Roman',
+});
 const manjari = Manjari({ weight: ['100', '400', '700'], subsets: ['latin', 'malayalam'], variable: '--font-manjari', display: 'swap' });
 
 export const metadata: Metadata = {
@@ -51,7 +57,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-IN" className={`${gloock.variable} ${manjari.variable}`}>
+    <html lang="en-IN" className={`${castle.variable} ${manjari.variable}`}>
       {/* browsers and extensions may stamp a style attribute on body before React hydrates */}
       <body suppressHydrationWarning>
         <PublicChrome />

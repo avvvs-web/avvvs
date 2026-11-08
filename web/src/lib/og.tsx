@@ -7,6 +7,9 @@ import { ImageResponse } from 'next/og';
 export const OG_SIZE = { width: 1200, height: 630 };
 
 const pub = (p: string) => join(process.cwd(), 'public', p);
+// the share cards' titles use the site's heading face (the image renderer reads WOFF, not WOFF2)
+const castle = () => readFileSync(join(process.cwd(), 'src/fonts/CastleT.woff'));
+
 const dataUrl = (p: string, type: string) => `data:${type};base64,${readFileSync(pub(p)).toString('base64')}`;
 
 export async function ogImage({ still, kicker, title }: { still: string; kicker: string; title: string }) {
@@ -26,11 +29,11 @@ export async function ogImage({ still, kicker, title }: { still: string; kicker:
         </div>
         <div style={{ position: 'absolute', left: 64, right: 220, bottom: 64, display: 'flex', flexDirection: 'column' }}>
           <div style={{ display: 'flex', fontSize: 24, letterSpacing: 4, textTransform: 'uppercase', color: '#E2C68E', marginBottom: 18 }}>{kicker}</div>
-          <div style={{ display: 'flex', fontSize: 62, lineHeight: 1.08, color: '#F4EFE5', fontWeight: 600 }}>{title}</div>
+          <div style={{ display: 'flex', fontSize: 66, lineHeight: 1.06, color: '#F4EFE5', fontFamily: 'CastleT', fontWeight: 400 }}>{title}</div>
           <div style={{ display: 'flex', width: 120, height: 3, background: '#C3A46A', marginTop: 28 }} />
         </div>
       </div>
     ),
-    OG_SIZE,
+    { ...OG_SIZE, fonts: [{ name: 'CastleT', data: castle(), weight: 400, style: 'normal' }] },
   );
 }

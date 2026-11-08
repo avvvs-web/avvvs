@@ -28,7 +28,7 @@
   --gold-hi: #E2C68E;
   --parch: #E8D9B9;
   --ivory: #F4EFE5;
-  --f-display: var(--font-gloock), "Gloock", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --f-display: var(--font-castle), "CastleT", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
   --f-body: var(--font-manjari), "Manjari", "Nirmala UI", "Segoe UI", system-ui, sans-serif;
   --gutter: max(20px, env(safe-area-inset-left, 0px));
   --gutter-r: max(20px, env(safe-area-inset-right, 0px));
