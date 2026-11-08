@@ -45,7 +45,8 @@ export function MfgMotion() {
       if (statement) {
         const { words } = splitText(statement, { words: true });
         animate(words, {
-          opacity: [0.16, 1], duration: 400, delay: stagger(90), ease: 'linear',
+          // starts at 0.5, not fainter: the resting words keep 3:1 against the band (WCAG, large text)
+          opacity: [0.5, 1], duration: 400, delay: stagger(90), ease: 'linear',
           autoplay: watch(onScroll({ target: statement, enter: '85% top', leave: '40% bottom', sync: 0.4 })),
         });
       }

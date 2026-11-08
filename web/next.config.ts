@@ -7,10 +7,16 @@ import { PHASE_DEVELOPMENT_SERVER } from 'next/constants';
 export default function config(phase: string): NextConfig {
   return {
     reactStrictMode: true,
-    // Journal images uploaded in the admin live in Vercel Blob
     // the CSR page was first published as Social service
     async redirects() { return [{ source: '/social-service', destination: '/community', permanent: true }]; },
-    images: { remotePatterns: [{ protocol: 'https', hostname: '*.public.blob.vercel-storage.com' }] },
+    images: {
+      // AVIF first (about half the weight of JPEG), WebP as the fallback
+      formats: ['image/avif', 'image/webp'],
+      // Journal images uploaded in the admin live in Vercel Blob
+      remotePatterns: [{ protocol: 'https', hostname: '*.public.blob.vercel-storage.com' }],
+    },
+    // the stylesheet is inlined into each page's HTML, so it no longer blocks the first paint
+    experimental: { inlineCss: true },
     distDir: phase === PHASE_DEVELOPMENT_SERVER ? '.next-dev' : '.next',
   };
 }

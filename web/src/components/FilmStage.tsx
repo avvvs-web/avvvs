@@ -120,11 +120,15 @@ export function FilmStage() {
           .catch(() => {});
       }
     };
+    // Until the visitor first scrolls, only the opening clip loads (the page's first load stays
+    // light); from the first scroll, the clip on screen plus two ahead and one behind.
+    let started = false;
     const ensureLoaded = (i: number) => {
-      for (let k = Math.max(0, i - 1); k <= Math.min(videos.length - 1, i + 2); k++) {
+      for (let k = Math.max(0, i - 1); k <= Math.min(videos.length - 1, started ? i + 2 : i); k++) {
         const v = videos[k];
         if (!v || loaded.has(k)) continue;
         loaded.add(k);
+        if (!v.poster && v.dataset.poster) v.poster = v.dataset.poster;
         const sq = seqs[k];
         if (sq) { loadSeq(sq); continue; }
         v.preload = 'auto';
@@ -137,6 +141,8 @@ export function FilmStage() {
       }
     };
     ensureLoaded(0);
+    const onFirstScroll = () => { started = true; ensureLoaded(Math.max(0, current)); };
+    window.addEventListener('scroll', onFirstScroll, { passive: true, once: true });
 
     let current = -1;
     const setCurrent = (t: number) => {
@@ -221,6 +227,7 @@ export function FilmStage() {
     if (hash && hash !== 'destinations' && hash !== 'enquire') requestAnimationFrame(() => goToChapter(hash, false));
 
     return () => {
+      window.removeEventListener('scroll', onFirstScroll);
       videos.forEach((v) => v?.removeEventListener('seeked', onSeeked));
       seqs.forEach((s) => { if (!s) return; s.bmps.forEach((b) => b.close()); s.canvas.remove(); });
     };
@@ -235,6 +242,9 @@ export function FilmStage() {
   );
 }
 
+// posters are WebP (a third of the JPEG weight); only the opening clip's poster loads with the page
+const webp = (src: string) => src.replace(/\.jpg$/, '.webp');
+
 function Layer({ clip, first }: { clip: Clip; first: boolean }) {
   const cls = ['card', 'card-hero', 'card-center', 'card-right'];
   return (
@@ -243,7 +253,7 @@ function Layer({ clip, first }: { clip: Clip; first: boolean }) {
         {clip.video ? (
           // src is set when the clip comes near (data-src); the poster shows until then
           <video data-src={clip.video} data-src-hd={clip.video.includes('/film/') ? clip.video.replace('/film/', '/film/hd/') : undefined}
-            data-src-m={clip.video.includes('/film/') ? clip.video.replace('/film/', '/film/m/') : undefined} poster={clip.still} muted playsInline preload="none" role="img" aria-label={clip.alt} />
+            data-src-m={clip.video.includes('/film/') ? clip.video.replace('/film/', '/film/m/') : undefined} poster={first ? webp(clip.still) : undefined} data-poster={webp(clip.still)} muted playsInline preload="none" aria-label={clip.alt} />
         ) : (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={clip.still} alt={clip.alt} fetchPriority={first ? 'high' : 'low'} loading={first ? 'eager' : 'lazy'} />

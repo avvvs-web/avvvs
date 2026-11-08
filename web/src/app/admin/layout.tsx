@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import './admin.css';
 
 // The Journal admin: kept out of search and out of the public site's chrome.
 export const metadata: Metadata = {

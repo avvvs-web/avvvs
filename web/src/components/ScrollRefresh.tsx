@@ -9,11 +9,12 @@ export function ScrollRefresh() {
   useEffect(() => {
     const root = document.documentElement;
     root.classList.toggle('no-scrub', prefersReducedMotion());
-    const refresh = () => ScrollTrigger.refresh();
-    window.addEventListener('load', refresh);
-    document.fonts?.ready.then(refresh);
-    const t = window.setTimeout(refresh, 300);
-    return () => { window.removeEventListener('load', refresh); window.clearTimeout(t); root.classList.remove('no-scrub'); };
+    // One re-measure once the page and its fonts have both settled. (ScrollTrigger already
+    // measures on load; refreshing three times over forced repeated layout.)
+    let live = true;
+    const loaded = document.readyState === 'complete' ? Promise.resolve() : new Promise<void>((r) => window.addEventListener('load', () => r(), { once: true }));
+    Promise.all([document.fonts?.ready ?? Promise.resolve(), loaded]).then(() => { if (live) ScrollTrigger.refresh(); });
+    return () => { live = false; root.classList.remove('no-scrub'); };
   }, []);
   return null;
 }
