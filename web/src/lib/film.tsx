@@ -101,7 +101,7 @@ export const CLIPS: Clip[] = [
   },
   {
     id: 's10', alt: 'The finished oil is poured through white cotton cloth into an amber glass bottle on dark wood.', weight: 1.6, video: `${M}/film/s10.mp4`, still: `${M}/film/stills/k09.jpg`,
-    cards: [{ in: 0.15, out: 0.95, content: (<><h2>One of more than 300.</h2><p>AVVVS makes more than 300 formulations: classical medicines prepared to the texts, and proprietary formulae made in-house, Mezhu Thailam, Rujanth, Slepan, Red Irons and Lakshol among them.</p></>) }],
+    cards: [{ in: 0.15, out: 0.95, content: (<><h2>One of more than 300.</h2><p>AVVVS makes more than 300 formulations: classical medicines prepared to the texts, and proprietary formulae made in-house.</p></>) }],
   },
   {
     // the pour blooms into light and comes out on the capsule grid
