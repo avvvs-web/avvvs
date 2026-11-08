@@ -51,11 +51,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-IN" className={`${gloock.variable} ${manjari.variable} is-loading`}>
+    <html lang="en-IN" className={`${gloock.variable} ${manjari.variable}`}>
       {/* browsers and extensions may stamp a style attribute on body before React hydrates */}
       <body suppressHydrationWarning>
         <PublicChrome />
-        <noscript><style>{'.loader{display:none}html.is-loading{overflow:visible}'}</style></noscript>
+        <noscript><style>{'.loader{display:none}'}</style></noscript>
         {children}
         <JsonLd data={organizationLd()} />
         <JsonLd data={websiteLd()} />

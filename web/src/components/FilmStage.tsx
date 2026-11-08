@@ -66,11 +66,15 @@ export function FilmStage() {
     // hardware decoders reset on every seek, which made the film stutter whatever the file.
     // A frame that is already decoded costs almost nothing to draw.
     const useSeq = portrait && window.matchMedia('(pointer: coarse)').matches;
-    // Frames arrive as small encoded blobs; only the ones around the playhead are decoded, off the
-    // main thread (createImageBitmap), and drawn 1:1 onto a canvas the size of a frame, which the
-    // GPU scales with object-fit: cover. Bitmaps that fall far behind are released.
-    const FW = 540, FH = 960, AHEAD = 12, BEHIND = 6, KEEP = 24;
-    type Seq = { n: number; base: string; blobs: (Blob | undefined)[]; bmps: Map<number, ImageBitmap>; pending: Set<number>; canvas: HTMLCanvasElement; ctx: CanvasRenderingContext2D; want: number; drawn: number; loading: boolean };
+    // Frames arrive as small encoded blobs; only the few around the playhead of the clip on screen
+    // are decoded (off the main thread with createImageBitmap, or through a plain image where a
+    // browser can't), and drawn 1:1 onto a canvas the size of a frame, which the GPU scales with
+    // object-fit: cover. iOS Safari caps the memory a tab may hold in decoded images, so clips
+    // that are not on screen release theirs (their canvas keeps its last frame), and frames are
+    // fetched a few at a time, nearest first, rather than hundreds at once.
+    const FW = 540, FH = 960, AHEAD = 8, BEHIND = 3, KEEP = 10, IN_FLIGHT = 6;
+    type Frame = { img: CanvasImageSource; close: () => void };
+    type Seq = { i: number; n: number; base: string; blobs: (Blob | undefined)[]; frames: Map<number, Frame>; pending: Set<number>; canvas: HTMLCanvasElement; ctx: CanvasRenderingContext2D; want: number; drawn: number; loading: boolean };
     const seqs: (Seq | null)[] = videos.map((v, i) => {
       if (!useSeq || !v) return null;
       const id = (v.dataset.src || '').split('/').pop()?.replace('.mp4', '') ?? '';
@@ -83,42 +87,71 @@ export function FilmStage() {
       layers[i].querySelector('.film-media')!.appendChild(canvas);
       const ctx = canvas.getContext('2d', { alpha: false })!;
       canvas.style.visibility = 'hidden'; // the poster shows until the first frame is drawn
-      return { n, base: `/media/film/seq/${id}/`, blobs: [], bmps: new Map(), pending: new Set(), canvas, ctx, want: 0, drawn: -1, loading: false };
+      return { i, n, base: `/media/film/seq/${id}/`, blobs: [], frames: new Map(), pending: new Set(), canvas, ctx, want: 0, drawn: -1, loading: false };
     });
+    // the clips allowed to hold decoded frames: the one on screen, and the one fading out under it
+    let liveSeq = new Set<number>([0]);
+    const decode = async (blob: Blob): Promise<Frame> => {
+      try {
+        const bmp = await createImageBitmap(blob);
+        return { img: bmp, close: () => bmp.close() };
+      } catch {
+        const url = URL.createObjectURL(blob);
+        const img = new Image();
+        img.src = url;
+        await img.decode();
+        return { img, close: () => URL.revokeObjectURL(url) };
+      }
+    };
     const drawSeq = (s: Seq) => {
       let k = -1;
       for (let d = 0; d <= KEEP && k < 0; d++) {
-        if (s.bmps.has(s.want - d)) k = s.want - d;
-        else if (s.bmps.has(s.want + d)) k = s.want + d;
+        if (s.frames.has(s.want - d)) k = s.want - d;
+        else if (s.frames.has(s.want + d)) k = s.want + d;
       }
       if (k < 0 || k === s.drawn) return;
-      s.ctx.drawImage(s.bmps.get(k)!, 0, 0, FW, FH);
+      s.ctx.drawImage(s.frames.get(k)!.img, 0, 0, FW, FH);
       if (s.drawn < 0) s.canvas.style.visibility = '';
       s.drawn = k;
     };
+    const releaseSeq = (s: Seq) => { s.frames.forEach((f) => f.close()); s.frames.clear(); };
     const decodeAround = (s: Seq) => {
+      if (!liveSeq.has(s.i) && s.drawn >= 0) return; // off screen: its canvas already shows a frame
       for (let f = Math.max(0, s.want - BEHIND); f <= Math.min(s.n - 1, s.want + AHEAD); f++) {
         const blob = s.blobs[f];
-        if (!blob || s.bmps.has(f) || s.pending.has(f)) continue;
+        if (!blob || s.frames.has(f) || s.pending.has(f)) continue;
         s.pending.add(f);
-        createImageBitmap(blob).then((bmp) => {
+        decode(blob).then((fr) => {
           s.pending.delete(f);
-          if (Math.abs(f - s.want) > KEEP) { bmp.close(); return; }
-          s.bmps.set(f, bmp);
+          if (Math.abs(f - s.want) > KEEP || (!liveSeq.has(s.i) && s.drawn >= 0)) { fr.close(); return; }
+          s.frames.set(f, fr);
           if (s.drawn < 0 || Math.abs(f - s.want) < Math.abs(s.drawn - s.want)) drawSeq(s);
+          if (!liveSeq.has(s.i) && s.drawn >= 0) releaseSeq(s); // off screen: one frame on its canvas is enough
         }, () => s.pending.delete(f));
       }
-      for (const [f, bmp] of s.bmps) if (Math.abs(f - s.want) > KEEP) { bmp.close(); s.bmps.delete(f); }
+      for (const [f, fr] of s.frames) if (Math.abs(f - s.want) > KEEP) { fr.close(); s.frames.delete(f); }
+    };
+    // one queue for every clip's frame requests, a few in flight at a time
+    const queue: { s: Seq; f: number }[] = [];
+    let inFlight = 0;
+    const pump = () => {
+      while (inFlight < IN_FLIGHT && queue.length) {
+        // nearest to its clip's playhead first, and the clip on screen before the ones ahead
+        queue.sort((x, y) => (liveSeq.has(y.s.i) ? 1 : 0) - (liveSeq.has(x.s.i) ? 1 : 0) || Math.abs(x.f - x.s.want) - Math.abs(y.f - y.s.want));
+        const { s, f } = queue.shift()!;
+        inFlight++;
+        fetch(`${s.base}f_${String(f + 1).padStart(3, '0')}.webp`)
+          .then((r) => (r.ok ? r.blob() : Promise.reject()))
+          .then((b) => { s.blobs[f] = b; if (Math.abs(f - s.want) <= AHEAD) decodeAround(s); })
+          .catch(() => {})
+          .finally(() => { inFlight--; pump(); });
+      }
     };
     const loadSeq = (s: Seq) => {
       if (s.loading) return;
       s.loading = true;
-      for (let f = 0; f < s.n; f++) {
-        fetch(`${s.base}f_${String(f + 1).padStart(3, '0')}.webp`)
-          .then((r) => (r.ok ? r.blob() : Promise.reject()))
-          .then((b) => { s.blobs[f] = b; if (Math.abs(f - s.want) <= AHEAD) decodeAround(s); })
-          .catch(() => {});
-      }
+      for (let f = 0; f < s.n; f++) queue.push({ s, f });
+      pump();
     };
     // Until the visitor first scrolls, only the opening clip loads (the page's first load stays
     // light); from the first scroll, the clip on screen plus two ahead and one behind.
@@ -150,6 +183,8 @@ export function FilmStage() {
       while (i < offsets.length - 1 && t >= offsets[i + 1] - FADE) i++;
       if (i === current) return;
       current = i;
+      liveSeq = new Set([i, i - 1]);
+      seqs.forEach((sq) => { if (sq && !liveSeq.has(sq.i)) releaseSeq(sq); else if (sq) decodeAround(sq); });
       ensureLoaded(i);
       const clip = CLIPS[i];
       el.classList.toggle('is-light', !!clip.light);
@@ -229,7 +264,8 @@ export function FilmStage() {
     return () => {
       window.removeEventListener('scroll', onFirstScroll);
       videos.forEach((v) => v?.removeEventListener('seeked', onSeeked));
-      seqs.forEach((s) => { if (!s) return; s.bmps.forEach((b) => b.close()); s.canvas.remove(); });
+      queue.length = 0;
+      seqs.forEach((s) => { if (!s) return; releaseSeq(s); s.canvas.remove(); });
     };
   }, { scope: root });
 
