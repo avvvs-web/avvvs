@@ -17,9 +17,9 @@ becomes the manuscript cord, gathers into the drop, and is handed to the partner
 | Knowledge | `film/s05.mp4` | The veins become the grooves of a palm-leaf manuscript | **Knowledge, kept in leaves.** Kerala's physicians recorded their formulations on palm-leaf manuscripts. → **Copied by hand. Passed down.** Each line was cut with a stylus, darkened with soot and carried from one generation to the next. |
 | 1921 | `film/s06.mp4` | Pull back to the open, lamp-lit bundle | **1921 Kozhikode** · Founded by Kaloor Neelakandan Vaidyar as a pharmacy for the people of Kozhikode, and carried by his family for three generations. · [years since 1921, live] years of AVVVS · link: Our story since 1921 (the full history is on `/our-history`) |
 | | `film/s07.mp4` | The binding cord glows and lifts away; fade to black | **One thread, unbroken since 1921.** |
-| Formulation | `b4-thread.mp4` (Blender) | Threads gather; a gold drop forms and falls into oil | **Many ingredients.** Roots, leaves, bark, seeds and oils, each with its own part to play. → **One formulation.** Brought together to formulas documented through the generations. |
-| Medicine | `film/s09.mp4` | The ripples open into a bronze uruli of simmering oil | **Then, medicine.** A thailam, a classical medicated oil, is made by cooking herbs slowly into oil until it carries them. |
-| | `film/s10.mp4` | The oil is poured through cloth into a bottle | **More than 300 formulations.** Classical medicines prepared to the texts, and proprietary formulae made in-house: Mezhu Thailam, Rujanth, Slepan, Red Irons and Lakshol among them. |
+| Formulation | `b4-thread.mp4` (Blender) | Threads gather; a gold drop forms and falls into oil | **Many ingredients.** Roots, leaves, bark, seeds and oils, each with its own part to play. → **One formulation.** Brought together exactly as its formula was written down, and handed on through the generations. |
+| Medicine | `film/s09.mp4` | The ripples open into a bronze uruli of simmering oil | **Then, medicine.** Prepared slowly, step by step, the way its formula has always asked. (Kept generic to any medicine, not the thailam method: user, 2026-11-08.) |
+| | `film/s10.mp4` | The oil is poured through cloth into a bottle | **One of more than 300.** AVVVS makes more than 300 formulations: classical medicines prepared to the texts, and proprietary formulae made in-house, Mezhu Thailam, Rujanth, Slepan, Red Irons and Lakshol among them. (The film follows one medicine, then widens out: user flagged the old "One formulation" / "300 formulations" disconnect, 2026-11-08.) |
 | Precision | `film/s11.mp4` | The camera rises from the bottle into warm light; a faint world map appears on ivory paper | **Tradition, made to standard.** In our GMP-certified factory in Kozhikode, capsule, blister, ointment and cosmetic lines work alongside traditional mechanised units, and stringent quality control measures are in place. |
 | | `film/s14.mp4` (built by `film/build_s14.sh`) | Gold routes run from Kozhikode to Vienna, Ljubljana, Moscow and Bogotá (drawn in code by `film/routes.py`, so the geography is exact); then a fade through white to a gold thread on ivory paper | **Made in Kozhikode. Sent abroad.** Marketed throughout India, and exported to Russia, Austria, Slovenia and Colombia. → **Where the thread goes next is up to you.** |
 | AVVVS | live Three.js | The thread carries on under the mark to five destinations | One thread, five ways to work with us: AVVVS Manufacturing · AVVVS Ayur Speciality Clinic · Gloveda Herbals · Gloveda Experience · Gloveda Revive |
@@ -27,7 +27,7 @@ becomes the manuscript cord, gathers into the drop, and is handed to the partner
 ## Copy rules
 - Every factual line comes from avvvs.com (`research/`) or from the user. No medical claims.
 - Awaiting AVVVS approval: the Sree Narayana Guru line, the line about Ramadas Vaidyar's wit, the
-  Gloveda Experience and Revive descriptions, the clinic description, and the thailam line.
+  Gloveda Experience and Revive descriptions, and the clinic description. (The thailam line was replaced with a generic one, 2026-11-08.)
 - Type is set on the page, never burned into video.
 
 ## Adding or replacing a clip

@@ -92,16 +92,16 @@ export const CLIPS: Clip[] = [
     id: 'thread', alt: 'Golden threads gather into a single drop that falls into still oil and sends out rings.', chapter: 'The formula', weight: 3, video: `${M}/b4-thread.mp4`, still: `${M}/b4-thread.jpg`,
     cards: [
       { in: 0.06, out: 0.34, variant: 'center', content: (<><h2>Many ingredients.</h2><p>Roots, leaves, bark, seeds and oils, each with its own part to play.</p></>) },
-      { in: 0.42, out: 0.62, variant: 'center', content: (<><h2>One formulation.</h2><p>Brought together to formulas documented through the generations.</p></>) },
+      { in: 0.42, out: 0.62, variant: 'center', content: (<><h2>One formulation.</h2><p>Brought together exactly as its formula was written down, and handed on through the generations.</p></>) },
     ],
   },
   {
     id: 's09', alt: 'The rings open out into a wide bronze uruli of golden-brown medicated oil, gently simmering.', chapter: 'The medicine', weight: 2, video: `${M}/film/s09.mp4`, still: `${M}/film/stills/k08.jpg`,
-    cards: [{ in: 0.2, out: 0.95, content: (<><h2>Then, medicine.</h2><p>A thailam, a classical medicated oil, is made by cooking herbs slowly into oil until it carries them.</p></>) }],
+    cards: [{ in: 0.2, out: 0.95, content: (<><h2>Then, medicine.</h2><p>Prepared slowly, step by step, the way its formula has always asked.</p></>) }],
   },
   {
     id: 's10', alt: 'The finished oil is poured through white cotton cloth into an amber glass bottle on dark wood.', weight: 1.6, video: `${M}/film/s10.mp4`, still: `${M}/film/stills/k09.jpg`,
-    cards: [{ in: 0.15, out: 0.95, content: (<><h2>More than 300 formulations.</h2><p>Classical medicines prepared to the texts, and proprietary formulae made in-house: Mezhu Thailam, Rujanth, Slepan, Red Irons and Lakshol among them.</p></>) }],
+    cards: [{ in: 0.15, out: 0.95, content: (<><h2>One of more than 300.</h2><p>AVVVS makes more than 300 formulations: classical medicines prepared to the texts, and proprietary formulae made in-house, Mezhu Thailam, Rujanth, Slepan, Red Irons and Lakshol among them.</p></>) }],
   },
   {
     // the pour blooms into light and comes out on the capsule grid
