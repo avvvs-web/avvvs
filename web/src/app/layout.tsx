@@ -3,7 +3,7 @@ import { Gloock, Manjari } from 'next/font/google';
 import './globals.css';
 import { PublicChrome } from '@/components/PublicChrome';
 import { JsonLd } from '@/components/JsonLd';
-import { ORG, SITE_URL, organizationLd, websiteLd } from '@/lib/site';
+import { ORG, SITE_URL, organizationLd, websiteLd, INDEXABLE } from '@/lib/site';
 
 const gloock = Gloock({ weight: '400', subsets: ['latin'], variable: '--font-gloock', display: 'swap' });
 const manjari = Manjari({ weight: ['100', '400', '700'], subsets: ['latin', 'malayalam'], variable: '--font-manjari', display: 'swap' });
@@ -21,7 +21,6 @@ export const metadata: Metadata = {
   creator: ORG.name,
   publisher: ORG.name,
   category: 'Ayurveda',
-  alternates: { canonical: '/' },
   formatDetection: { telephone: false, address: false, email: false },
   openGraph: {
     type: 'website', siteName: ORG.name, locale: 'en_IN', url: '/',
@@ -36,7 +35,9 @@ export const metadata: Metadata = {
       ? { 'facebook-domain-verification': process.env.NEXT_PUBLIC_META_DOMAIN_VERIFICATION }
       : undefined,
   },
-  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1, 'max-video-preview': -1 } },
+  robots: INDEXABLE
+    ? { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1, 'max-video-preview': -1 } }
+    : { index: false, follow: false },
 };
 
 // the site is light only (decided 2026-11-07)

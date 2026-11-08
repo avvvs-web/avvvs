@@ -9,14 +9,14 @@ import { MfgMotion } from '@/components/MfgMotion';
 import { Faq } from '@/components/Faq';
 import { JsonLd } from '@/components/JsonLd';
 import { FAQ_MANUFACTURING } from '@/lib/faq';
-import { SITE_URL, abs, breadcrumbLd } from '@/lib/site';
+import { SITE_URL, abs, breadcrumbLd, alternatesFor } from '@/lib/site';
 import { WhereNext } from '@/components/PageParts';
 
 export const metadata: Metadata = {
   title: 'Third-party and white-label Ayurveda manufacturing in Kerala',
   description:
     "AVVVS Manufacturing makes classical and proprietary Ayurveda medicines in a GMP-certified factory in Kozhikode, Kerala: third-party, white-label and licence manufacturing of capsules, ointments, medicated oils, classical medicines and cosmetics.",
-  alternates: { canonical: '/manufacturing' },
+  alternates: alternatesFor('/manufacturing'),
   openGraph: {
     url: '/manufacturing', title: 'AVVVS Manufacturing · GMP-certified Ayurveda manufacturing in Kozhikode',
     description: 'Your Ayurveda products, made in our GMP-certified factory: third-party, white-label and licence manufacturing.',

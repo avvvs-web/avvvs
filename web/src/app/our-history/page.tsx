@@ -8,7 +8,7 @@ import { EnquiryInvite } from '@/components/EnquiryForm';
 import { Faq } from '@/components/Faq';
 import { JsonLd } from '@/components/JsonLd';
 import { FAQ_HISTORY } from '@/lib/faq';
-import { SITE_URL, abs, breadcrumbLd } from '@/lib/site';
+import { SITE_URL, abs, breadcrumbLd, alternatesFor } from '@/lib/site';
 import { WhereNext } from '@/components/PageParts';
 import { Crumbs } from '@/components/Crumbs';
 
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   title: 'Our history: Ayurveda in Kozhikode since 1921',
   description:
     'Arya Vaidya Vilasini Vaidya Sala was founded in Kozhikode in 1921 by Kaloor Neelakandan Vaidyar as a pharmacy, with the blessings of Sree Narayana Guru, and has been carried by his family for four generations.',
-  alternates: { canonical: '/our-history' },
+  alternates: alternatesFor('/our-history'),
   openGraph: { url: '/our-history', title: 'Our history · AVVVS since 1921', description: 'One family, four generations, since 1921.' },
 };
 

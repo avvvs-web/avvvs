@@ -7,14 +7,14 @@ import { JsonLd } from '@/components/JsonLd';
 import { HeritageMotion } from '@/components/HeritageMotion';
 import type { Post } from '@/lib/journal';
 import { allPosts } from '@/lib/posts-db';
-import { SITE_URL, abs, breadcrumbLd } from '@/lib/site';
+import { SITE_URL, abs, breadcrumbLd, alternatesFor } from '@/lib/site';
 import { Crumbs, WhereNext } from '@/components/PageParts';
 
 export const metadata: Metadata = {
   title: 'Journal: notes from a century of Ayurveda',
   description:
     'Writing from Arya Vaidya Vilasini Vaidya Sala, Kozhikode: the people and history of AVVVS, why Kerala became the home of Ayurveda, how to use it wisely, and what goes into the medicines we make.',
-  alternates: { canonical: '/journal' },
+  alternates: alternatesFor('/journal'),
   openGraph: { url: '/journal', title: 'Journal · AVVVS', description: 'Notes from a century of Ayurveda in Kozhikode.' },
 };
 

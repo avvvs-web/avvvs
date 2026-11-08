@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { alternatesFor } from '@/lib/site';
 import { LegalPage } from '@/components/LegalPage';
 import { CookieSettingsLink } from '@/components/CookieConsent';
 import { CONTACT } from '@/lib/contact';
@@ -9,7 +10,7 @@ import { CONTACT } from '@/lib/contact';
 export const metadata: Metadata = {
   title: 'Privacy Policy',
   description: 'How Arya Vaidya Vilasini Vaidya Sala (AVVVS) handles the personal information you share through this website.',
-  alternates: { canonical: '/privacy' },
+  alternates: alternatesFor('/privacy'),
 };
 
 const mail = <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>;

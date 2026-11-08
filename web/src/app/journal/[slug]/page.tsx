@@ -9,7 +9,7 @@ import { HeritageMotion } from '@/components/HeritageMotion';
 import { POSTS, formatDate, readNext } from '@/lib/journal';
 import { allPosts, findPost } from '@/lib/posts-db';
 import { CONTACT } from '@/lib/contact';
-import { SITE_URL, abs, breadcrumbLd } from '@/lib/site';
+import { SITE_URL, abs, breadcrumbLd, alternatesFor } from '@/lib/site';
 import { Crumbs } from '@/components/Crumbs';
 
 type Props = { params: Promise<{ slug: string }> };
@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: p.title,
     description: p.dek,
-    alternates: { canonical: path },
+    alternates: alternatesFor(path),
     openGraph: { type: 'article', url: path, title: p.title, description: p.dek, publishedTime: p.published, modifiedTime: p.revised, section: p.kind },
   };
 }

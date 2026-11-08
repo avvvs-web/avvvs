@@ -1,10 +1,23 @@
 import { CONTACT } from './contact';
 import { FOUNDED } from './film';
 
-// The public address of the site. Set NEXT_PUBLIC_SITE_URL when the domain is decided;
-// canonical links, the sitemap, social cards and structured data all follow it.
+// The public address of the site, resolved at build time in next.config.ts (NEXT_PUBLIC_SITE_URL,
+// else the Vercel production domain). Canonical links, hreflang, the sitemap, share cards and
+// structured data all follow it.
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://avvvs.com').replace(/\/$/, '');
 export const abs = (path = '/') => `${SITE_URL}${path === '/' ? '' : path}`;
+
+/** Vercel preview deployments are kept out of search: only production is indexable. */
+export const INDEXABLE = process.env.NEXT_PUBLIC_DEPLOY_ENV !== 'preview';
+
+/**
+ * A page's canonical link and its hreflang set. The site is one English edition for India, so
+ * every page names itself for en-IN and as the x-default for everyone else.
+ */
+export const alternatesFor = (path: string) => ({
+  canonical: path,
+  languages: { 'en-IN': path, 'x-default': path },
+});
 
 export const ORG = {
   name: 'Arya Vaidya Vilasini Vaidya Sala',

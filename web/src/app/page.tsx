@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { SiteHeader } from '@/components/SiteHeader';
 import { SiteFooter } from '@/components/SiteFooter';
 import { FilmStage } from '@/components/FilmStage';
@@ -7,6 +8,9 @@ import { ScrollRefresh } from '@/components/ScrollRefresh';
 import { Faq } from '@/components/Faq';
 import { FAQ_HOME } from '@/lib/faq';
 import { JournalStrip } from '@/components/PageParts';
+import { alternatesFor } from '@/lib/site';
+
+export const metadata: Metadata = { alternates: alternatesFor('/') };
 
 // The homepage carries the brand film "The Golden Thread" as one continuous scroll film
 // (clips and cards in lib/film.tsx). Every factual line comes from avvvs.com.

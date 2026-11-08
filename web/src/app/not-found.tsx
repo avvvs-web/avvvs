@@ -5,6 +5,8 @@ import { SiteFooter } from '@/components/SiteFooter';
 
 export const metadata: Metadata = {
   title: 'Page not found',
+  // noindex here too, so it overrides the site-wide "index, follow" (Next.js adds its own noindex
+  // as well); no canonical, so a missing page never claims to be another
   robots: { index: false, follow: true },
 };
 

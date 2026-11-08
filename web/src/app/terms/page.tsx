@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { alternatesFor } from '@/lib/site';
 import Link from 'next/link';
 import { LegalPage } from '@/components/LegalPage';
 import { CONTACT } from '@/lib/contact';
@@ -8,7 +9,7 @@ import { CONTACT } from '@/lib/contact';
 export const metadata: Metadata = {
   title: 'Terms of Use',
   description: 'The terms that apply when you use the Arya Vaidya Vilasini Vaidya Sala (AVVVS) website.',
-  alternates: { canonical: '/terms' },
+  alternates: alternatesFor('/terms'),
 };
 
 export default function Terms() {

@@ -8,13 +8,13 @@ import { JsonLd } from '@/components/JsonLd';
 import { Crumbs } from '@/components/Crumbs';
 import { WhereNext } from '@/components/PageParts';
 import { FOUNDED } from '@/lib/film';
-import { SITE_URL, abs, breadcrumbLd } from '@/lib/site';
+import { SITE_URL, abs, breadcrumbLd, alternatesFor } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Community: the founding idea of AVVVS',
   description:
     'Social service has been the founding idea of Arya Vaidya Vilasini Vaidya Sala since 1921, when Sree Narayana Guru encouraged its founder to build a place of care. Today part of that work happens in schools, in talks with students.',
-  alternates: { canonical: '/community' },
+  alternates: alternatesFor('/community'),
   openGraph: { url: '/community', title: 'Community · AVVVS', description: 'The founding idea of AVVVS, since 1921.' },
 };
 
