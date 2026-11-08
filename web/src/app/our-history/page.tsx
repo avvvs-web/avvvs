@@ -58,17 +58,12 @@ export default function OurHistory() {
             <h1 id="hp-title" data-split>Our history</h1>
             <p className="hp-lede" data-reveal>One family, three generations, and <YearsSince /> years of preparing Ayurveda medicine in Kozhikode.</p>
           </div>
-          <figure className="hp-hero-media">
-            <Image src="/media/film/stills/k05.jpg" width={1920} height={1080} priority sizes="(min-width: 900px) 55vw, 100vw"
-              alt="An open bundle of palm-leaf manuscripts in lamplight, from the AVVVS film." />
+          <figure className="hp-hero-media is-banner">
+            <Image src="/media/history/100-years-of-legacy.jpg" width={1365} height={590} priority sizes="(min-width: 900px) 58vw, 100vw"
+              alt="Sepia portraits of the founder, Sri Neelakandan Vaidyar (1895–1967), and his son, Sri Ramdas Vaidyar (1934–1998), either side of the K. Neelakandan Vaidyar's Arya Vaidya Vilasini Vaidyasala emblem and the words 100 Years of Legacy." />
+            <figcaption>A hundred years of legacy: the founder, Sri Neelakandan Vaidyar (left), and his son, Sri Ramdas Vaidyar (right).</figcaption>
           </figure>
         </section>
-
-        <figure className="hp-legacy" data-reveal>
-          <Image src="/media/history/100-years-of-legacy.jpg" width={1365} height={590} sizes="(min-width: 1260px) 1200px, 100vw"
-            alt="Sepia portraits of the founder, Sri Neelakandan Vaidyar (1895–1967), and his son, Sri Ramdas Vaidyar (1934–1998), either side of the K. Neelakandan Vaidyar's Arya Vaidya Vilasini Vaidyasala emblem and the words 100 Years of Legacy." />
-          <figcaption>A hundred years of legacy: the founder, Sri Neelakandan Vaidyar (left), and his son, Sri Ramdas Vaidyar (right).</figcaption>
-        </figure>
 
         <section className="hp-line" aria-labelledby="hp-line-title">
           <h2 id="hp-line-title" className="hp-h" data-split>The thread so far</h2>
