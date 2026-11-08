@@ -12,7 +12,7 @@ becomes the manuscript cord, gathers into the drop, and is handed to the partner
 |---|---|---|---|
 | Forest | `film/s01.mp4` (Kling) | Dawn over the Western Ghats; the camera sinks through the canopy | **Arya Vaidya Vilasini Vaidya Sala** · ആര്യവൈദ്യ വിലാസിനി വൈദ്യശാല · Kozhikode, Kerala · since 1921 → **Every medicine begins in a forest.** For generations, Kerala's physicians have gathered their herbs from the Sahyadri, the Western Ghats. This is where the thread starts. |
 | | `film/s02.mp4` | Through the understory to a Tulsi plant in a shaft of light | **First, the right plant.** Each formulation calls for particular herbs, known by name and gathered with care. |
-| Leaf | `film/s03.mp4` | A hand picks one leaf | **Chosen by hand.** Knowing which leaf to take, and when, is the first part of the craft. |
+| Leaf | `film/s03.mp4` | A hand picks one leaf | **Chosen by hand.** Knowing which part of each plant to take, whether leaf, root, bark or seed, and when, is where the craft begins. |
 | | `film/s04.mp4` | The leaf turned to the sun; its veins glow gold | **Inside every leaf, a thread.** |
 | Knowledge | `film/s05.mp4` | The veins become the grooves of a palm-leaf manuscript | **Knowledge, kept in leaves.** Kerala's physicians recorded their formulations on palm-leaf manuscripts. → **Copied by hand. Passed down.** Each line was cut with a stylus, darkened with soot and carried from one generation to the next. |
 | 1921 | `film/s06.mp4` | Pull back to the open, lamp-lit bundle | **1921 Kozhikode** · Founded by Kaloor Neelakandan Vaidyar as a pharmacy for the people of Kozhikode, and carried by his family for three generations. · [years since 1921, live] years of AVVVS · link: Our story since 1921 (the full history is on `/our-history`) |

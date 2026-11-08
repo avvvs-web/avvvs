@@ -67,7 +67,7 @@ export const CLIPS: Clip[] = [
   },
   {
     id: 's03', alt: 'A hand reaches in and picks one leaf from the plant.', chapter: 'The leaf', weight: 1.4, video: `${M}/film/s03.mp4`, still: `${M}/film/stills/k02.jpg`,
-    cards: [{ in: 0.2, out: 0.95, content: (<><h2>Chosen by hand.</h2><p>Knowing which leaf to take, and when, is the first part of the craft.</p></>) }],
+    cards: [{ in: 0.2, out: 0.95, content: (<><h2>Chosen by hand.</h2><p>Knowing which part of each plant to take, whether leaf, root, bark or seed, and when, is where the craft begins.</p></>) }],
   },
   {
     // held to the sun, the veins glow gold: the film's thread appears for the first time
