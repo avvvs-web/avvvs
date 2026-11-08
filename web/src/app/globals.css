@@ -943,3 +943,11 @@ html.is-locked { overflow: hidden; }
 
 /* menu: the clinic and store are headline items that leave the site */
 .sheet-ext { font-size: 0.6em; color: var(--thread-ink); vertical-align: 0.35em; margin-left: 2px; }
+
+/* narrow desktops (just above where the bar folds into the menu): tighter links, so the capitalised
+   names and the longer Manufacturing button still clear each other */
+@media (min-width: 1061px) and (max-width: 1240px) {
+  .bar-nav { gap: 16px; }
+  .bar-nav a { font-size: 0.9rem; }
+  .bar-sep { margin-inline: -4px; }
+}

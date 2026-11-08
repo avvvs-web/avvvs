@@ -14,11 +14,11 @@ export const SHOP_URL = CONTACT.shop;
 export const CLINIC_URL = CONTACT.clinic;
 
 const MENU: { label: string; note: string; href: string; chapter?: string; page?: Page; external?: 'clinic' | 'shop' }[] = [
-  { label: 'The film', note: 'The Golden Thread, from forest to medicine', href: '#forest', chapter: 'forest' },
-  { label: 'Our history', note: 'Four generations in Kozhikode, since 1921', href: '/our-history', page: 'heritage' },
+  { label: 'The Film', note: 'The Golden Thread, from forest to medicine', href: '#forest', chapter: 'forest' },
+  { label: 'Our History', note: 'Four generations in Kozhikode, since 1921', href: '/our-history', page: 'heritage' },
   { label: 'Community', note: 'The founding idea of AVVVS, since 1921', href: '/community', page: 'social' },
   { label: 'Manufacturing', note: 'GMP-certified, and made for your brand', href: '/manufacturing', page: 'manufacturing' },
-  { label: 'Work with us', note: 'Five ways to partner with AVVVS', href: '#destinations' },
+  { label: 'Work With Us', note: 'Five ways to partner with AVVVS', href: '#destinations' },
   { label: 'Journal', note: 'Notes from a century of Ayurveda', href: '/journal', page: 'journal' },
   { label: 'Ayur Clinic', note: 'The AVVVS Ayur Speciality Clinic', href: CLINIC_URL, external: 'clinic' },
   { label: 'Ayur Store', note: 'AVVVS medicines and products, online', href: SHOP_URL, external: 'shop' },
@@ -92,9 +92,9 @@ export function SiteHeader({ page }: { page: Page }) {
 
   const links = (
     <>
-      <Link href="/our-history" onClick={close} aria-current={page === 'heritage' ? 'page' : undefined}>Our history</Link>
+      <Link href="/our-history" onClick={close} aria-current={page === 'heritage' ? 'page' : undefined}>Our History</Link>
       <Link href="/manufacturing" onClick={close} aria-current={page === 'manufacturing' ? 'page' : undefined}>Manufacturing</Link>
-      <Link href={home ? '#destinations' : '/#destinations'} onClick={close}>Work with us</Link>
+      <Link href={home ? '#destinations' : '/#destinations'} onClick={close}>Work With Us</Link>
       <Link href="/journal" onClick={close} aria-current={page === 'journal' ? 'page' : undefined}>Journal</Link>
       <span className="bar-sep" aria-hidden="true" />
       <a href={CLINIC_URL} className="bar-ext" rel="noopener" onClick={() => { trackOutbound('clinic'); close(); }}>Ayur Clinic<span aria-hidden="true"> ↗</span></a>

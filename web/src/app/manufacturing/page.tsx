@@ -61,7 +61,7 @@ export default function Manufacturing() {
         </section>
 
         <section className="m-reach" aria-labelledby="reach-title">
-          <h2 id="reach-title" data-split>Made to GMP. Sent abroad.</h2>
+          <h2 id="reach-title" data-split>Made to GMP, sent abroad</h2>
           <p>Licensed proprietary medicines are produced and packaged to GMP quality standards. AVVVS medicines are sold throughout India and exported to <span className="m-country">the United States</span>, <span className="m-country">Russia</span>, <span className="m-country">Austria</span>, <span className="m-country">Slovenia</span>, <span className="m-country">Colombia</span> and beyond.</p>
         </section>
 

@@ -136,7 +136,7 @@ export function EnquiryPanel() {
             <svg className="ef-done-mark" viewBox="0 0 64 64" aria-hidden="true">
               <circle cx="32" cy="32" r="30" /><path d="M20 33 L29 42 L45 24" />
             </svg>
-            <h2 id={`${uid}-title`}>Thank you{first ? `, ${first}` : ''}.</h2>
+            <h2 id={`${uid}-title`}>Thank you{first ? `, ${first}` : ''}</h2>
             <p>Your enquiry about {topic?.label.toLowerCase()} has reached the AVVVS team. The right person will reply to you at <b>{values.email}</b>.</p>
             <p className="ef-muted">If it is urgent, call us on <a href={`tel:${CONTACT.phones[0].replace(/\s/g, '')}`}>{CONTACT.phones[0]}</a>.</p>
             <button type="button" className="ef-btn ef-btn-quiet" onClick={close}>Back to the site</button>

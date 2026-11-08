@@ -34,7 +34,7 @@ export default function NotFound() {
 
         <div className="nf-copy">
           <p className="nf-kicker">404 · Page not found</p>
-          <h1>This thread ends here.</h1>
+          <h1>This thread ends here</h1>
           <p className="nf-lede">The page you were looking for isn&apos;t on this site, or it has moved. Pick the thread up again from one of these.</p>
         </div>
 
