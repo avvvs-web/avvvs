@@ -88,15 +88,18 @@ interface Landing { dest: number; at: number; bead: THREE.Mesh } // where along 
 interface ThreadPath { meshes: THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>[]; geo: THREE.BufferGeometry; dest: number; from: number; to: number; landings: Landing[] }
 
 export function startNetwork(section: HTMLElement, { reduced = false } = {}): Network {
-  const canvas = section.querySelector<HTMLCanvasElement>('.eco-canvas')!;
-  const mark = section.querySelector<HTMLElement>('.eco-mark')!;
+  const canvas = section.querySelector<HTMLCanvasElement>('.eco-canvas');
+  if (!canvas) return { setActive() {}, setReveal() {}, dispose() {} };
+  const mark = section.querySelector<HTMLElement>('.eco-mark');
   const dests = [...section.querySelectorAll<HTMLElement>('.dest')];
+  if (!dests.length) return { setActive() {}, setReveal() {}, dispose() {} };
 
   let renderer: THREE.WebGLRenderer;
   try {
     renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, premultipliedAlpha: false });
   } catch {
-    return { setActive() {}, setReveal() {}, dispose() {} }; // no WebGL: the destinations still work as plain links
+    // Graceful 2D canvas fallback when WebGL is unavailable
+    return start2DFallback(canvas, section, dests, { reduced });
   }
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
   const scene = new THREE.Scene();
@@ -111,6 +114,18 @@ export function startNetwork(section: HTMLElement, { reduced = false } = {}): Ne
   const colors = {
     back: new THREE.Color(COLORS.back), front: new THREE.Color(COLORS.front), hi: new THREE.Color(COLORS.hi),
   };
+
+  const onContextLost = (e: Event) => {
+    e.preventDefault();
+    running = false;
+    cancelAnimationFrame(raf);
+  };
+  const onContextRestored = () => {
+    rebuild();
+    if (running) raf = requestAnimationFrame(frame);
+  };
+  canvas.addEventListener('webglcontextlost', onContextLost, false);
+  canvas.addEventListener('webglcontextrestored', onContextRestored, false);
 
   dests.forEach((d, i) => {
     d.addEventListener('pointerenter', () => (hot[i] = 1));
@@ -166,6 +181,7 @@ export function startNetwork(section: HTMLElement, { reduced = false } = {}): Ne
     if (disposed) return;
     const r = section.getBoundingClientRect();
     const w = r.width, h = r.height;
+    if (w <= 0 || h <= 0) return;
     renderer.setSize(w, h, false);
     camera.left = 0; camera.right = w; camera.top = 0; camera.bottom = h;
     camera.updateProjectionMatrix();
@@ -176,7 +192,9 @@ export function startNetwork(section: HTMLElement, { reduced = false } = {}): Ne
     });
     paths.length = 0;
 
-    const list = section.querySelector<HTMLElement>('.eco-list')!.getBoundingClientRect();
+    const listEl = section.querySelector<HTMLElement>('.eco-list');
+    if (!listEl) return;
+    const list = listEl.getBoundingClientRect();
     const box = (d: HTMLElement) => { const b = d.getBoundingClientRect(); return { l: b.left - r.left, r: b.right - r.left, t: b.top - r.top }; };
     const narrow = matchMedia('(max-width: 900px)').matches; // same breakpoint as the CSS stack
 
@@ -259,12 +277,14 @@ export function startNetwork(section: HTMLElement, { reduced = false } = {}): Ne
   addEventListener('resize', onResize);
   document.fonts?.ready.then(rebuild);
   // the mark is an image: measure again once it has its real size
-  const img = mark.querySelector('img');
+  const img = mark?.querySelector('img');
   if (img && !img.complete) img.addEventListener('load', rebuild, { once: true });
   rebuild();
   function dispose() {
     disposed = true; running = false;
     cancelAnimationFrame(raf); clearTimeout(rt);
+    canvas?.removeEventListener('webglcontextlost', onContextLost);
+    canvas?.removeEventListener('webglcontextrestored', onContextRestored);
     removeEventListener('resize', onResize);
     paths.forEach((p) => { p.meshes.forEach((m) => m.material.dispose()); p.geo.dispose(); });
     paths.length = 0;
@@ -272,4 +292,124 @@ export function startNetwork(section: HTMLElement, { reduced = false } = {}): Ne
     renderer.dispose();
   }
   return { setActive, setReveal, dispose };
+}
+
+function start2DFallback(
+  canvas: HTMLCanvasElement,
+  section: HTMLElement,
+  dests: HTMLElement[],
+  { reduced = false } = {}
+): Network {
+  let activeCanvas = canvas;
+  let ctx = activeCanvas.getContext('2d');
+  if (!ctx) {
+    // If canvas was previously touched by WebGL, replace with a fresh 2D canvas
+    const freshCanvas = document.createElement('canvas');
+    freshCanvas.className = canvas.className;
+    freshCanvas.setAttribute('aria-hidden', 'true');
+    canvas.replaceWith(freshCanvas);
+    activeCanvas = freshCanvas;
+    ctx = activeCanvas.getContext('2d');
+  }
+  if (!ctx) return { setActive() {}, setReveal() {}, dispose() {} };
+
+  let progress = reduced ? 1 : 0;
+  let disposed = false;
+
+  function rebuild() {
+    if (disposed) return;
+    const r = section.getBoundingClientRect();
+    const w = r.width, h = r.height;
+    if (w <= 0 || h <= 0) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    activeCanvas.width = Math.round(w * dpr);
+    activeCanvas.height = Math.round(h * dpr);
+    ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    const listEl = section.querySelector<HTMLElement>('.eco-list');
+    if (!listEl) return;
+    const list = listEl.getBoundingClientRect();
+    const box = (d: HTMLElement) => {
+      const b = d.getBoundingClientRect();
+      return { l: b.left - r.left, r: b.right - r.left, t: b.top - r.top };
+    };
+    const narrow = window.matchMedia('(max-width: 900px)').matches;
+
+    ctx!.clearRect(0, 0, w, h);
+    ctx!.strokeStyle = COLORS.front;
+    ctx!.fillStyle = COLORS.front;
+    ctx!.lineWidth = 1.6;
+    ctx!.lineCap = 'round';
+    ctx!.lineJoin = 'round';
+
+    if (narrow) {
+      const gx = w - Math.max(14, (w - (list.right - r.left)) / 2 + 12);
+      const tops = dests.map((d) => box(d).t + 10);
+      const first = tops[0], last = tops[tops.length - 1];
+
+      // Thread down right edge
+      ctx!.beginPath();
+      ctx!.moveTo(w, 0);
+      ctx!.bezierCurveTo(w - 4, first * 0.4, gx, first * 0.6, gx, first);
+      if (last > first + 1) ctx!.lineTo(gx, last);
+      ctx!.stroke();
+
+      // Beads beside each destination
+      tops.forEach((y) => {
+        ctx!.beginPath();
+        ctx!.arc(gx, y, 3.2, 0, Math.PI * 2);
+        ctx!.fill();
+      });
+    } else {
+      const lineY = list.top - r.top + 14;
+      const x0 = list.left - r.left;
+      const x1 = list.right - r.left;
+      const turn = Math.min(160, x0 + 120);
+
+      // Main line from left edge across destinations
+      ctx!.beginPath();
+      ctx!.moveTo(6, 0);
+      ctx!.bezierCurveTo(6, lineY * 0.75, Math.max(6, x0 - turn * 0.5), lineY, x0 + 40, lineY);
+      ctx!.lineTo(x1, lineY);
+      ctx!.stroke();
+
+      // Vertical drops to each destination
+      dests.forEach((d) => {
+        const b = box(d);
+        const x = b.l + 1.5;
+        const dropY = b.t - 10;
+        ctx!.beginPath();
+        ctx!.moveTo(x, lineY);
+        ctx!.lineTo(x, dropY);
+        ctx!.stroke();
+
+        ctx!.beginPath();
+        ctx!.arc(x, dropY, 3.2, 0, Math.PI * 2);
+        ctx!.fill();
+      });
+    }
+  }
+
+  let rt: number | undefined;
+  const onResize = () => { clearTimeout(rt); rt = window.setTimeout(rebuild, 150); };
+  window.addEventListener('resize', onResize);
+  document.fonts?.ready.then(rebuild);
+  const mark = section.querySelector<HTMLElement>('.eco-mark');
+  const img = mark?.querySelector('img');
+  if (img && !img.complete) img.addEventListener('load', rebuild, { once: true });
+
+  rebuild();
+
+  return {
+    setActive() {},
+    setReveal(p: number) {
+      progress = p;
+    },
+    dispose() {
+      disposed = true;
+      clearTimeout(rt);
+      window.removeEventListener('resize', onResize);
+      if (ctx) ctx.clearRect(0, 0, activeCanvas.width, activeCanvas.height);
+    },
+  };
 }

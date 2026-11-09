@@ -36,7 +36,7 @@ export function MfgMotion() {
         const { words } = splitText(h, { words: { wrap: 'clip' } });
         animate(words, {
           y: ['140%', '0%'], duration: 1100, delay: stagger(60), ease: EASE,
-          autoplay: watch(onScroll({ target: h, enter: '88% top', repeat: false })),
+          autoplay: watch(onScroll({ target: h, enter: '88% top', leave: '0% bottom', sync: 'play', repeat: false })),
         });
       });
 
@@ -52,7 +52,7 @@ export function MfgMotion() {
       }
       animate('.m-aside', {
         opacity: [0, 1], y: [24, 0], duration: 1000, ease: EASE,
-        autoplay: watch(onScroll({ target: '.m-aside', enter: '90% top', repeat: false })),
+        autoplay: watch(onScroll({ target: '.m-aside', enter: '90% top', leave: '0% bottom', sync: 'play', repeat: false })),
       });
 
       // more than 300 formulations
@@ -64,22 +64,22 @@ export function MfgMotion() {
         animate(n, {
           v: to, duration: 1800, ease: 'outQuart', modifier: Math.round,
           onUpdate: () => { count.textContent = String(n.v); },
-          autoplay: watch(onScroll({ target: count, enter: '85% top', repeat: false })),
+          autoplay: watch(onScroll({ target: count, enter: '85% top', leave: '0% bottom', sync: 'play', repeat: false })),
         });
       }
 
       // what we can make: each way slides up with its rule drawing across
       animate('.m-ways > div', {
         opacity: [0, 1], y: [36, 0], duration: 1000, delay: stagger(140), ease: EASE,
-        autoplay: watch(onScroll({ target: '.m-ways', enter: '85% top', repeat: false })),
+        autoplay: watch(onScroll({ target: '.m-ways', enter: '85% top', leave: '0% bottom', sync: 'play', repeat: false })),
       });
       animate('.m-ways > div', {
         '--rule': [0, 1], duration: 1200, delay: stagger(140, { start: 150 }), ease: 'inOutQuart',
-        autoplay: watch(onScroll({ target: '.m-ways', enter: '85% top', repeat: false })),
+        autoplay: watch(onScroll({ target: '.m-ways', enter: '85% top', leave: '0% bottom', sync: 'play', repeat: false })),
       });
       animate('.m-formats h3, .m-formats li, .m-formats p', {
         opacity: [0, 1], x: [-18, 0], duration: 900, delay: stagger(80), ease: EASE,
-        autoplay: watch(onScroll({ target: '.m-formats', enter: '85% top', repeat: false })),
+        autoplay: watch(onScroll({ target: '.m-formats', enter: '85% top', leave: '0% bottom', sync: 'play', repeat: false })),
       });
 
       // the export markets, underlined in gold one by one, in step with the scroll
@@ -94,11 +94,23 @@ export function MfgMotion() {
           const img = s.querySelector('img');
           if (img) animate(img, {
             clipPath: ['inset(0 0 100% 0)', 'inset(0 0 0% 0)'], scale: [1.08, 1], duration: 1300, ease: EASE,
-            autoplay: watch(onScroll({ target: s, enter: '85% top', repeat: false })),
+            onUpdate: (self) => {
+              if (self.progress >= 1) {
+                img.style.removeProperty('clip-path');
+                img.style.removeProperty('-webkit-clip-path');
+              } else if (img.style.clipPath) {
+                img.style.setProperty('-webkit-clip-path', img.style.clipPath);
+              }
+            },
+            onComplete: () => {
+              img.style.removeProperty('clip-path');
+              img.style.removeProperty('-webkit-clip-path');
+            },
+            autoplay: watch(onScroll({ target: s, enter: '85% top', leave: '0% bottom', sync: 'play', repeat: false })),
           });
           animate(s.querySelectorAll('h3, p'), {
             opacity: [0, 1], y: [20, 0], duration: 900, delay: stagger(100, { start: 250 }), ease: EASE,
-            autoplay: watch(onScroll({ target: s, enter: '85% top', repeat: false })),
+            autoplay: watch(onScroll({ target: s, enter: '85% top', leave: '0% bottom', sync: 'play', repeat: false })),
           });
         });
       }

@@ -13,7 +13,23 @@ export function MfgHero() {
     // the photograph opens downward onto the floor
     gsap.fromTo('.m-hero-media img',
       { clipPath: 'inset(0 0 100% 0)', scale: 1.08 },
-      { clipPath: 'inset(0 0 0% 0)', scale: 1, duration: 1.6, ease: 'expo.out', delay: 0.1 });
+      {
+        clipPath: 'inset(0 0 0% 0)',
+        scale: 1,
+        duration: 1.6,
+        ease: 'expo.out',
+        delay: 0.1,
+        onUpdate: function () {
+          const img = document.querySelector<HTMLElement>('.m-hero-media img');
+          if (img?.style.clipPath) img.style.setProperty('-webkit-clip-path', img.style.clipPath);
+        },
+        onComplete: () => {
+          gsap.set('.m-hero-media img', { clearProps: 'clipPath,scale' });
+          const img = document.querySelector<HTMLElement>('.m-hero-media img');
+          img?.style.removeProperty('-webkit-clip-path');
+        },
+      }
+    );
   }, { scope: root });
 
   return (

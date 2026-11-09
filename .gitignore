@@ -26,3 +26,9 @@ animatic/
 lookdev/
 research/assets/
 research/html/
+
+# --- the pharmacy app is its own repo (github.com/arjunmurali-2/avvvspharmacy)
+store/
+
+# --- the clinic app is its own repo (github.com/arjunmurali-2/avvvsclinic)
+clinic/

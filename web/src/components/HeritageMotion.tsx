@@ -29,16 +29,39 @@ export function HeritageMotion() {
         const { words } = splitText(h, { words: { wrap: 'clip' } });
         animate(words, {
           y: ['140%', '0%'], duration: 1200, delay: stagger(70, { start: i === 0 ? 150 : 0 }), ease: EASE,
-          autoplay: i === 0 ? true : onScroll({ target: h, enter: '88% top', repeat: false }),
+          autoplay: i === 0 ? true : onScroll({ target: h, enter: '88% top', leave: '0% bottom', sync: 'play', repeat: false }),
         });
       });
       document.querySelectorAll<HTMLElement>('#main [data-reveal]').forEach((el) => {
         animate(el, {
           opacity: [0, 1], y: [28, 0], duration: 1100, ease: EASE,
-          autoplay: onScroll({ target: el, enter: '88% top', repeat: false }),
+          autoplay: onScroll({ target: el, enter: '88% top', leave: '0% bottom', sync: 'play', repeat: false }),
         });
       });
-      animate('.hp-hero-media img', { clipPath: ['inset(0 0 100% 0)', 'inset(0 0 0% 0)'], scale: [1.08, 1], duration: 1600, delay: 200, ease: EASE });
+      animate('.hp-hero-media img', {
+        clipPath: ['inset(0 0 100% 0)', 'inset(0 0 0% 0)'],
+        scale: [1.08, 1],
+        duration: 1600,
+        delay: 200,
+        ease: EASE,
+        onUpdate: (self) => {
+          const el = document.querySelector<HTMLElement>('.hp-hero-media img');
+          if (!el) return;
+          if (self.progress >= 1) {
+            el.style.removeProperty('clip-path');
+            el.style.removeProperty('-webkit-clip-path');
+          } else if (el.style.clipPath) {
+            el.style.setProperty('-webkit-clip-path', el.style.clipPath);
+          }
+        },
+        onComplete: () => {
+          const el = document.querySelector<HTMLElement>('.hp-hero-media img');
+          if (el) {
+            el.style.removeProperty('clip-path');
+            el.style.removeProperty('-webkit-clip-path');
+          }
+        },
+      });
 
       // the thread fills as the timeline is read; each bead lights as the fill reaches it
       const line = document.querySelector<HTMLElement>('.hp-timeline');

@@ -17,24 +17,46 @@ export function Ecosystem() {
     let network: Network | null = null;
     let loading = false;
     let cancelled = false; // dev StrictMode runs this twice: the first run must not leave a renderer behind
+    let active = false;
+
     const reveal = ScrollTrigger.create({
       trigger: el, start: 'top 75%', end: 'center center', scrub: true,
       onUpdate: (self) => network?.setReveal(self.progress),
       onRefresh: (self) => network?.setReveal(self.progress),
     });
-    ScrollTrigger.create({
-      trigger: el, start: 'top bottom+=400', end: 'bottom top',
-      onToggle: async (self) => {
-        if (!network && !loading) {
-          loading = true;
+
+    const init = async (isActive: boolean) => {
+      active = isActive;
+      if (!network && !loading && active) {
+        loading = true;
+        try {
           const { startNetwork } = await import('@/lib/network');
           if (cancelled) return;
           network = startNetwork(el, { reduced });
           network.setReveal(reveal.progress);
+          network.setActive(active);
+        } catch {
+          // chunk load failure fallback
+        } finally {
+          loading = false;
         }
-        network?.setActive(self.isActive);
-      },
+      } else {
+        network?.setActive(active);
+      }
+    };
+
+    ScrollTrigger.create({
+      trigger: el, start: 'top bottom+=400', end: 'bottom top',
+      onToggle: (self) => init(self.isActive),
+      onRefresh: (self) => init(self.isActive),
     });
+
+    // If section is already in or near viewport on initial mount:
+    const r = el.getBoundingClientRect();
+    if (r.top <= window.innerHeight + 400 && r.bottom >= 0) {
+      init(true);
+    }
+
     return () => { cancelled = true; network?.dispose(); network = null; };
   }, { scope: root });
 

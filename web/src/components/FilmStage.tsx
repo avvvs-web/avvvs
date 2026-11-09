@@ -31,7 +31,12 @@ export function FilmStage() {
     const videos = layers.map((l) => l.querySelector('video'));
     const years = el.querySelector<HTMLElement>('.heritage-years');
     if (years) years.textContent = String(yearsSinceFounding());
-    if (reduced) return;
+    if (reduced) {
+      videos.forEach((v) => {
+        if (v && !v.poster && v.dataset.poster) v.poster = v.dataset.poster;
+      });
+      return;
+    }
 
     // where each clip's playhead should be (0-1), so a clip that loads late can catch up
     const targets = layers.map(() => 0);
@@ -80,13 +85,16 @@ export function FilmStage() {
       const id = (v.dataset.src || '').split('/').pop()?.replace('.mp4', '') ?? '';
       const n = (SEQ_FRAMES as Record<string, number>)[id];
       if (!n) return null;
+      const media = layers[i].querySelector('.film-media');
+      if (!media) return null;
       const canvas = document.createElement('canvas');
       canvas.className = 'film-seq';
       canvas.width = FW; canvas.height = FH;
       canvas.setAttribute('aria-hidden', 'true');
-      layers[i].querySelector('.film-media')!.appendChild(canvas);
-      const ctx = canvas.getContext('2d', { alpha: false })!;
+      const ctx = canvas.getContext('2d', { alpha: false });
+      if (!ctx) return null;
       canvas.style.visibility = 'hidden'; // the poster shows until the first frame is drawn
+      media.appendChild(canvas);
       return { i, n, base: `/media/film/seq/${id}/`, blobs: [], frames: new Map(), pending: new Set(), canvas, ctx, want: 0, drawn: -1, loading: false };
     });
     // the clips allowed to hold decoded frames: the one on screen, and the one fading out under it
@@ -110,9 +118,15 @@ export function FilmStage() {
         else if (s.frames.has(s.want + d)) k = s.want + d;
       }
       if (k < 0 || k === s.drawn) return;
-      s.ctx.drawImage(s.frames.get(k)!.img, 0, 0, FW, FH);
-      if (s.drawn < 0) s.canvas.style.visibility = '';
-      s.drawn = k;
+      const frame = s.frames.get(k);
+      if (!frame) return;
+      try {
+        s.ctx.drawImage(frame.img, 0, 0, FW, FH);
+        if (s.drawn < 0) s.canvas.style.visibility = '';
+        s.drawn = k;
+      } catch {
+        // if drawing fails, retain the underlying poster still
+      }
     };
     const releaseSeq = (s: Seq) => { s.frames.forEach((f) => f.close()); s.frames.clear(); };
     const decodeAround = (s: Seq) => {
@@ -278,7 +292,7 @@ export function FilmStage() {
   );
 }
 
-// posters are WebP (a third of the JPEG weight); only the opening clip's poster loads with the page
+// posters are WebP (a third of the JPEG weight); rendered on all video layers for robust fallback
 const webp = (src: string) => src.replace(/\.jpg$/, '.webp');
 
 function Layer({ clip, first }: { clip: Clip; first: boolean }) {
@@ -289,7 +303,7 @@ function Layer({ clip, first }: { clip: Clip; first: boolean }) {
         {clip.video ? (
           // src is set when the clip comes near (data-src); the poster shows until then
           <video data-src={clip.video} data-src-hd={clip.video.includes('/film/') ? clip.video.replace('/film/', '/film/hd/') : undefined}
-            data-src-m={clip.video.includes('/film/') ? clip.video.replace('/film/', '/film/m/') : undefined} poster={first ? webp(clip.still) : undefined} data-poster={webp(clip.still)} muted playsInline preload="none" aria-label={clip.alt} />
+            data-src-m={clip.video.includes('/film/') ? clip.video.replace('/film/', '/film/m/') : undefined} poster={webp(clip.still)} data-poster={webp(clip.still)} muted playsInline preload="none" aria-label={clip.alt} />
         ) : (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={clip.still} alt={clip.alt} fetchPriority={first ? 'high' : 'low'} loading={first ? 'eager' : 'lazy'} />
