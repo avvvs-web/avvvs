@@ -41,7 +41,7 @@ export const CLIPS: Clip[] = [
           <>
             <h1 id="hero-title">Arya Vaidya Vilasini Vaidya Sala</h1>
             <p className="ml" lang="ml">ആര്യവൈദ്യ വിലാസിനി വൈദ്യശാല</p>
-            <p className="meta">Kozhikode, Kerala · since 1921</p>
+            <p className="meta">Kozhikode, Kerala · Since 1921</p>
             <p className="cue" aria-hidden="true">Scroll to begin</p>
           </>
         ),
@@ -50,8 +50,8 @@ export const CLIPS: Clip[] = [
         in: 0.45, out: 0.95,
         content: (
           <>
-            <h2>Every medicine begins in a forest</h2>
-            <p>For generations, Kerala&apos;s physicians have gathered their herbs from the Sahyadri, the Western Ghats. This is where the thread starts.</p>
+            <h2>The wisdom of Ayurveda begins with nature</h2>
+            <p>For generations, Kerala&apos;s physicians have drawn on the medicinal wealth of the Sahyadri, the Western Ghats. This is where the thread starts.</p>
           </>
         ),
       },
@@ -59,11 +59,11 @@ export const CLIPS: Clip[] = [
   },
   {
     id: 's02', alt: 'Through the green understory of the forest to a single tulsi plant standing in a shaft of light.', weight: 2, frames: 's02',
-    cards: [{ in: 0.35, out: 0.95, content: (<><h2 id="story">First, the right plant</h2><p>Each formulation calls for particular herbs, known by name and gathered with care.</p></>) }],
+    cards: [{ in: 0.35, out: 0.95, content: (<><h2 id="story">First, the right plant</h2><p>Each formulation calls for specific herbs, selected with precision and gathered with care.</p></>) }],
   },
   {
     id: 's03', alt: 'A hand reaches in and picks one leaf from the plant.', chapter: 'The leaf', weight: 1.4, frames: 's03',
-    cards: [{ in: 0.2, out: 0.95, content: (<><h2>Chosen by hand</h2><p>Knowing which part of each plant to take, whether leaf, root, bark or seed, and when, is where the craft begins.</p></>) }],
+    cards: [{ in: 0.2, out: 0.95, content: (<><h2>Chosen by hand</h2><p>Knowing which part of each plant to use, whether leaf, root, bark or seed, and the right time to gather it, is where the craft begins.</p></>) }],
   },
   {
     // held to the sun, the veins glow gold: the film's thread appears for the first time
@@ -73,8 +73,8 @@ export const CLIPS: Clip[] = [
   {
     id: 's05', alt: 'The glowing veins become the inscribed lines of a palm-leaf manuscript.', chapter: 'The manuscripts', weight: 2.2, frames: 's05',
     cards: [
-      { in: 0.15, out: 0.5, content: (<><h2>Knowledge, kept in leaves</h2><p>Kerala&apos;s physicians recorded their formulations on palm-leaf manuscripts.</p></>) },
-      { in: 0.58, out: 0.95, content: (<><h2>Copied by hand, passed down</h2><p>Each line was cut with a stylus, darkened with soot and carried from one generation to the next.</p></>) },
+      { in: 0.15, out: 0.5, content: (<><h2>Knowledge, kept in leaves</h2><p>Kerala&apos;s physicians used to record their formulations on palm-leaf manuscripts.</p></>) },
+      { in: 0.58, out: 0.95, content: (<><h2>Copied by hand, preserved through time</h2><p>Each line was cut with a stylus, darkened with soot and carried from one generation to the next.</p></>) },
     ],
   },
   // the manuscripts: the 1921 type plays over the held frame
@@ -87,23 +87,23 @@ export const CLIPS: Clip[] = [
   {
     id: 'thread', alt: 'Golden threads gather into a single drop that falls into still oil and sends out rings.', chapter: 'The formula', weight: 3, frames: 'b4-thread',
     cards: [
-      { in: 0.06, out: 0.34, variant: 'center', content: (<><h2>Many ingredients</h2><p>Roots, leaves, bark, seeds and oils, each with its own part to play.</p></>) },
-      { in: 0.42, out: 0.62, variant: 'center', content: (<><h2>One formulation</h2><p>Brought together exactly as its formula was written down, and handed on through the generations.</p></>) },
+      { in: 0.06, out: 0.34, variant: 'center', content: (<><h2>Many ingredients</h2><p>Roots, leaves, bark, seeds and oils, each with an essence of its own.</p></>) },
+      { in: 0.42, out: 0.62, variant: 'center', content: (<><h2>One formulation</h2><p>Brought together as it was written and passed down through the generations.</p></>) },
     ],
   },
   {
     id: 's09', alt: 'The rings open out into a wide bronze uruli of golden-brown medicated oil, gently simmering.', chapter: 'The medicine', weight: 2, frames: 's09',
-    cards: [{ in: 0.2, out: 0.95, content: (<><h2>Then, medicine</h2><p>Prepared slowly, step by step, the way its formula has always asked.</p></>) }],
+    cards: [{ in: 0.2, out: 0.95, content: (<><h2>300+ formulations</h2><p>AVVVS makes more than 300 formulations, including classical medicines prepared according to traditional texts and proprietary formulations developed in-house.</p></>) }],
   },
   {
     id: 's10', alt: 'The finished oil is poured through white cotton cloth into an amber glass bottle on dark wood.', weight: 1.6, frames: 's10',
-    cards: [{ in: 0.15, out: 0.95, content: (<><h2>One of more than 300</h2><p>AVVVS makes more than 300 formulations: classical medicines prepared to the texts, and proprietary formulae made in-house.</p></>) }],
+    cards: [{ in: 0.15, out: 0.95, content: (<><h2>Made with precision</h2><p>Prepared slowly, step by step, in tune with the original formula.</p></>) }],
   },
   {
     // the pour blooms into light and comes out on the capsule grid
     id: 's11', alt: 'The camera rises from the bottle into warm light, and a faint world map appears on ivory paper.', chapter: 'The standard', weight: 2.2, frames: 's11', light: true,
     cards: [
-      { in: 0.4, out: 0.95, content: (<><h2>Tradition, made to standard</h2><p>In our GMP-certified factory in Kozhikode, capsule, blister, ointment and cosmetic lines work alongside traditional mechanised units, and stringent quality control measures are in place.</p></>) },
+      { in: 0.4, out: 0.95, content: (<><h2>Tradition meets modern standards</h2><p>At our GMP-certified manufacturing facility in Kozhikode, capsule, blister-packaging, ointment and cosmetic production lines operate alongside traditional manufacturing units, supported by stringent quality-control measures.</p></>) },
     ],
   },
   // gold routes run out from Kozhikode across the map, then the frame fades through white to the
@@ -111,8 +111,7 @@ export const CLIPS: Clip[] = [
   {
     id: 's14', alt: 'Gold threads run from Kozhikode across a world map to Austria, Slovenia, Russia, Colombia and on towards the United States; then a single gold thread draws itself across ivory paper.', weight: 2.8, frames: 's14', light: true,
     cards: [
-      { in: 0.04, out: 0.5, variant: 'right', content: (<><h2>Made in Kerala, carried across the world</h2><p>Sold throughout India, and exported to the United States, Russia, Austria, Slovenia, Colombia and beyond.</p></>) },
-      { in: 0.66, out: 0.98, variant: 'center', content: (<><h2>Where the thread goes next is up to you</h2></>) },
+      { in: 0.04, out: 0.5, variant: 'right', content: (<><h2>Made in Kerala, carried across the world</h2><p>Our products are sold across India and exported to the United States, Russia, Austria, Slovenia, Colombia and beyond.</p></>) },
     ],
   },
 ];

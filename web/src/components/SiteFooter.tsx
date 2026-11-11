@@ -6,6 +6,7 @@ import { AvvvsLockup } from './Logo';
 import { CookieSettingsLink } from './CookieConsent';
 import { CONTACT } from '@/lib/contact';
 import { FOUNDED } from '@/lib/film';
+import { scrollPageTo } from '@/lib/scroll';
 
 // The pages are prerendered, so the year is corrected in the browser and never goes stale.
 function useYear() {
@@ -25,7 +26,7 @@ export function SiteFooter() {
         <div className="foot-brand">
           <AvvvsLockup height={56} className="foot-lockup" />
           <p className="ml" lang="ml">ആര്യവൈദ്യ വിലാസിനി വൈദ്യശാല</p>
-          <p className="foot-line">Ayurveda medicines, made in Kozhikode since {FOUNDED}.</p>
+          <p className="foot-line">Ayurveda medicines, made in Kozhikode, Kerala since {FOUNDED}.</p>
         </div>
 
         <nav className="foot-col" aria-label="Explore">
@@ -77,7 +78,7 @@ export function SiteFooter() {
         <ul className="foot-social" aria-label="AVVVS elsewhere">
           {CONTACT.social.map((s) => <li key={s.label}><a href={s.href} rel="noopener">{s.label}</a></li>)}
         </ul>
-        <a className="foot-top" href="#top" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
+        <a className="foot-top" href="#top" onClick={(e) => { e.preventDefault(); scrollPageTo(0); }}>
           Back to the start <span aria-hidden="true">↑</span>
         </a>
       </div>

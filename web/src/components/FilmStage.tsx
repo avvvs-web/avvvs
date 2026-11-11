@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { gsap, ScrollTrigger, useGSAP, prefersReducedMotion } from '@/lib/gsap';
 import { CLIPS, FOUNDED, type Clip } from '@/lib/film';
 import { whenReady } from '@/lib/ready';
+import { scrollPageTo } from '@/lib/scroll';
 import FRAME_COUNTS from '@/lib/film-frames.json';
 
 const FADE = 0.12;       // screen-heights over which one clip dissolves into the first frame of the next
@@ -349,17 +350,32 @@ export function FilmStage() {
     const sleep = () => { awake = false; releaseDecoded(); };
     const wake = () => { if (awake) return; awake = true; lastKey = ''; dirty = true; decodeNear(); pump(); };
 
-    const tl = gsap.timeline({
-      defaults: { ease: 'none' },
-      scrollTrigger: {
-        id: 'film', trigger: el, start: 'top top', end: () => `+=${window.innerHeight * total}`,
-        // the film eases after the scroll: a little on touch screens, which already glide, and
-        // more with a mouse, whose wheel moves the page in steps
-        pin: el.querySelector('.film-stage'), scrub: window.matchMedia('(pointer: coarse)').matches ? 0.5 : 0.9, anticipatePin: 1,
-        // past the film, its decoded frames are let go; the canvas keeps the last picture
-        onLeave: sleep, onEnterBack: wake,
-      },
-      onUpdate: () => setTime(tl.time()),
+    // The film's time follows the scroll through two gentle lags in a row, so its speed changes
+    // gradually as well as its position: nothing lurches when the scroll starts, stops or is
+    // nudged. (An eased tween restarted on every scroll update, which is what a scrubbed
+    // timeline does, pulses instead.) It is driven by the clock, so it feels the same on a
+    // 60 Hz phone and a 165 Hz monitor.
+    const tl = gsap.timeline({ paused: true, defaults: { ease: 'none' }, onUpdate: () => setTime(tl.time()) });
+    const LAG = window.matchMedia('(pointer: coarse)').matches ? 0.09 : 0.1; // seconds, for each of the two lags
+    let goal = 0, mid = 0, now = 0, clock = performance.now();
+    const follow = () => {
+      const t = performance.now();
+      const dt = Math.min(0.1, (t - clock) / 1000);
+      clock = t;
+      if (Math.abs(goal - now) < 0.0002 && Math.abs(goal - mid) < 0.0002) { if (now !== goal) { now = mid = goal; tl.time(now); } return; }
+      const k = 1 - Math.exp(-dt / LAG);
+      mid += (goal - mid) * k;
+      now += (mid - now) * k;
+      tl.time(now);
+    };
+    gsap.ticker.add(follow, false, true); // ahead of the draw, so each frame is drawn at its own time
+    ScrollTrigger.create({
+      id: 'film', trigger: el, start: 'top top', end: () => `+=${window.innerHeight * total}`,
+      pin: el.querySelector('.film-stage'), anticipatePin: 1,
+      onUpdate: (self) => { goal = self.progress * total; },
+      onRefresh: (self) => { goal = mid = now = self.progress * total; tl.time(now); },
+      // past the film, its decoded frames are let go; the canvas keeps the last picture
+      onLeave: sleep, onEnterBack: wake,
     });
     tl.set({}, {}, total); // the timeline spans the whole film
 
@@ -429,6 +445,7 @@ export function FilmStage() {
       gen++;
       cancelReady();
       gsap.ticker.remove(tick);
+      gsap.ticker.remove(follow);
       window.clearTimeout(resizeTimer);
       window.removeEventListener('scroll', onFirstScroll);
       window.removeEventListener('resize', onResize);
@@ -488,7 +505,7 @@ const chapterId = (clip: Clip) => ({ forest: 'forest', s03: 'leaf', s05: 'knowle
 function HeritageType() {
   return (
     <div className="heritage" role="group" aria-labelledby="heritage-title">
-      <h2 id="heritage-title" className="heritage-year"><span>1921</span> <span className="heritage-place">Kozhikode</span></h2>
+      <h2 id="heritage-title" className="heritage-year"><span>1921</span> <span className="heritage-place">Kozhikode, Kerala</span></h2>
       <ol className="heritage-lines">
         <li><p>Founded by Kaloor Neelakandan Vaidyar as a pharmacy for the people of Kozhikode, and carried by his family for four generations.</p></li>
         <li className="milestones">
@@ -510,6 +527,6 @@ export function goToChapter(id: string, smooth = true): boolean {
   const st = ScrollTrigger.getById('film');
   const ch = CHAPTERS.find((c) => CHAPTER_IDS[c.label] === id);
   if (!st || !ch) return false;
-  window.scrollTo({ top: st.start + (ch.at / total) * (st.end - st.start) + 2, behavior: smooth && !prefersReducedMotion() ? 'smooth' : 'auto' });
+  scrollPageTo(st.start + (ch.at / total) * (st.end - st.start) + 2, smooth);
   return true;
 }

@@ -961,3 +961,7 @@ html.is-locked { overflow: hidden; }
   .bar-nav a { font-size: 0.86rem; }
   .bar-nav a.bar-ext { font-size: 0.84rem; }
 }
+
+/* ---------- smooth scrolling (components/SmoothScroll.tsx) ---------- */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }

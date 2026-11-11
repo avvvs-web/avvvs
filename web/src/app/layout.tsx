@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     template: '%s · AVVVS',
   },
   description:
-    'AVVVS has prepared Ayurveda medicines in Kozhikode, Kerala since 1921. More than 300 classical and proprietary formulations, a GMP-certified factory, and third-party, white-label and licence manufacturing for partner brands.',
+    'AVVVS has prepared Ayurveda medicines in Kozhikode, Kerala since 1921. More than 300 classical and proprietary formulations, a GMP-certified factory, and third-party and white-label manufacturing for partner brands.',
   applicationName: 'AVVVS',
   authors: [{ name: ORG.name, url: SITE_URL }],
   creator: ORG.name,

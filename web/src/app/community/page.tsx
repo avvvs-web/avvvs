@@ -41,10 +41,10 @@ export default function Community() {
         <section className="ss-why" aria-labelledby="ss-why-title">
           <h2 id="ss-why-title" className="hp-h" data-split>Where it all began</h2>
           <div className="ss-why-body">
-            <p className="ss-statement" data-reveal>In {FOUNDED}, Sree Narayana Guru encouraged Kaloor Neelakandan Vaidyar to use what he knew to build a place of care for people who had little access to it.</p>
+            <p className="ss-statement" data-reveal>In {FOUNDED}, inspired by the guidance of Sree Narayana Guru, Kaloor Neelakandan Vaidyar founded AVVVS in Kozhikode as an Ayurvedic pharmacy and hospital with a vision rooted in social service.</p>
             <div className="ss-why-aside" data-reveal>
-              <p>That place began as a pharmacy in Kozhikode, and the idea behind it has not changed. AVVVS still names social service as its founding idea.</p>
-              <p>Kaloor Neelakandan Vaidyar and Ramadas Vaidyar held to it, and under Dr Manoj Kaloor and Dr Reeja Manoj, AVVVS continues on that path today.</p>
+              <p>His son, K. N. Ramadas Vaidyar, a gold medallist from Kannur Ayurveda College, carried the legacy forward while gaining recognition as a satirist in Kerala&apos;s literary circles.</p>
+              <p>Today, the third generation, led by Dr. Manoj Kaloor and Dr. Reeja Manoj, continues this journey, with the fourth generation preparing to carry the legacy forward.</p>
             </div>
           </div>
         </section>
@@ -53,7 +53,7 @@ export default function Community() {
           <div className="hp-csr-copy">
             <p className="hp-kicker">In schools</p>
             <h2 id="ss-schools-title" className="hp-h" data-split>Talks with students</h2>
-            <p data-reveal>Part of that work happens in schools. AVVVS visits classrooms and school halls to talk with students.</p>
+            <p data-reveal>AVVVS doctors visit schools and classrooms to interact with students, share health knowledge and encourage healthy habits from an early age.</p>
           </div>
           <div className="hp-csr-media">
             <figure data-reveal>

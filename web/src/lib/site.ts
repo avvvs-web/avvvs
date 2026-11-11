@@ -26,7 +26,7 @@ export const ORG = {
   founded: FOUNDED,
   description:
     `Arya Vaidya Vilasini Vaidya Sala (AVVVS) is an Ayurveda institution in Kozhikode, Kerala, founded in ${FOUNDED}. ` +
-    'It makes more than 300 classical and proprietary Ayurveda formulations in a GMP-certified factory, and offers third-party, white-label and licence manufacturing, clinic partnerships, and Gloveda spa partnerships.',
+    'It makes more than 300 classical and proprietary Ayurveda formulations in a GMP-certified factory, and offers third-party and white-label manufacturing, clinic partnerships, and Gloveda clinic partnerships.',
 };
 
 /** Schema.org Organization: the one entity every page belongs to. */
@@ -47,7 +47,7 @@ export function organizationLd() {
     employee: [{ '@type': 'Person', name: 'Dr Manoj Kaloor', jobTitle: 'Managing Director' }],
     address: {
       '@type': 'PostalAddress',
-      streetAddress: '60/3829/A, Annie Hall Road, Chalappuram PO',
+      streetAddress: 'Corporate Office, Kaloor Central, Annie Hall Road, Chalappuram PO',
       addressLocality: 'Kozhikode',
       addressRegion: 'Kerala',
       postalCode: '673002',

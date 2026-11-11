@@ -15,18 +15,17 @@ import { WhereNext } from '@/components/PageParts';
 export const metadata: Metadata = {
   title: 'Third-party and white-label Ayurveda manufacturing in Kerala',
   description:
-    "AVVVS Manufacturing makes classical and proprietary Ayurveda medicines in a GMP-certified factory in Kozhikode, Kerala: third-party, white-label and licence manufacturing of capsules, ointments, medicated oils, classical medicines and cosmetics.",
+    "AVVVS Manufacturing makes classical and proprietary Ayurveda medicines in a GMP-certified factory in Kozhikode, Kerala: third-party and white-label manufacturing of capsules, ointments, medicated oils, classical medicines and cosmetics.",
   alternates: alternatesFor('/manufacturing'),
   openGraph: {
     url: '/manufacturing', title: 'AVVVS Manufacturing · GMP-certified Ayurveda manufacturing in Kozhikode',
-    description: 'Your Ayurveda products, made in our GMP-certified factory: third-party, white-label and licence manufacturing.',
+    description: 'Your Ayurveda products, made in our GMP-certified factory: third-party and white-label manufacturing.',
   },
 };
 
 const WAYS = [
   ['Third-party manufacturing', 'Your formulation, made in our GMP-certified factory.'],
   ['White label', 'Our formulations, packed under your brand.'],
-  ['Licence manufacture', 'Ayurveda products developed by AVVVS and manufactured under licence.'],
 ] as const;
 
 const FORMATS = ['Capsules, blister-packed', 'Ointments', 'Medicated oils', 'Classical medicines', 'Cosmetic products'];
@@ -87,7 +86,7 @@ export default function Manufacturing() {
       <JsonLd data={breadcrumbLd([{ name: 'Manufacturing', path: '/manufacturing' }])} />
       <JsonLd data={{
         '@context': 'https://schema.org', '@type': 'Service', '@id': `${abs('/manufacturing')}#service`,
-        name: 'Third-party, white-label and licence Ayurveda manufacturing',
+        name: 'Third-party and white-label Ayurveda manufacturing',
         serviceType: 'Ayurveda contract manufacturing',
         provider: { '@id': `${SITE_URL}/#organization` },
         areaServed: [{ '@type': 'Country', name: 'India' }, 'Worldwide'],

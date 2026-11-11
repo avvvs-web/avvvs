@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 const ROUTES = [
   { href: '/', title: 'The film', note: 'The Golden Thread, from forest to medicine' },
-  { href: '/manufacturing', title: 'Manufacturing', note: 'Third-party, white-label and licence manufacturing' },
+  { href: '/manufacturing', title: 'Manufacturing', note: 'Third-party and white-label manufacturing' },
   { href: '/our-history', title: 'Our history', note: 'One family in Kozhikode, since 1921' },
   { href: '/#destinations', title: 'Work with us', note: 'Five ways to partner with AVVVS' },
   { href: '/journal', title: 'Journal', note: 'Notes from a century of Ayurveda' },

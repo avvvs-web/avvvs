@@ -45,7 +45,7 @@ export function PageLoader() {
       <div className="loader-inner">
         <OrbWeaving size={148} scale={0.8} speed={0.85} color="#A8853F" surface="light" />
         <p className="loader-name">Arya Vaidya Vilasini Vaidya Sala</p>
-        <p className="loader-since">Kozhikode, since 1921</p>
+        <p className="loader-since">Kozhikode, Kerala, since 1921</p>
       </div>
     </div>
   );

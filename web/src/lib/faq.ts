@@ -6,15 +6,15 @@ export interface QA { q: string; a: string }
 
 export const FAQ_HOME: QA[] = [
   { q: 'What is AVVVS?',
-    a: 'AVVVS is Arya Vaidya Vilasini Vaidya Sala, an Ayurveda institution in Kozhikode, Kerala, India. It was founded in 1921 by Kaloor Neelakandan Vaidyar as a pharmacy preparing and dispensing Ayurveda medicines, and today makes classical and proprietary Ayurveda medicines in its own GMP-certified factory.' },
+    a: 'Founded in 1921 by Kaloor Neelakandan Vaidyar, AVVVS (Arya Vaidya Vilasini Vaidya Sala) is a Kozhikode-based Ayurvedic institution with over a century of expertise. With its own certified manufacturing facility, AVVVS produces and supplies its range of classical and proprietary medicines, while also offering white-label manufacturing and brand partnerships. The facility holds GMP, ISO 9001, ISO 22716, HACCP and FSSAI certifications.' },
   { q: 'What does AVVVS make?',
-    a: 'AVVVS makes more than 300 classical and proprietary Ayurveda formulations, among them Mezhu Thailam, Rujanth, Slepan, Red Irons and Lakshol. Its factory in Kozhikode has capsule, blister, ointment and cosmetic lines alongside traditional mechanised units.' },
+    a: 'AVVVS manufactures over 300 classical and proprietary Ayurvedic formulations, including Mezhu Thailam, Rujanth, Slepan, Red Irons and Lakshol. Its Kozhikode facility is equipped with capsule, blister, ointment and cosmetic manufacturing lines, alongside facilities for producing classical Ayurvedic formulations.' },
   { q: 'How can a business work with AVVVS?',
-    a: 'There are five ways: AVVVS Manufacturing (third-party, white-label and licence manufacturing), AVVVS Ayur Speciality Clinic partnerships in wellness, leisure and hospitality, Gloveda Herbals skin and hair care, Gloveda Experience for hotel and resort spas, and Gloveda Revive, which runs standalone AVVVS spas and partners with independent spas and wellness centres.' },
+    a: 'There are five ways: AVVVS Manufacturing Division (own products, third-party manufacturing, white-label); AVVVS Ayur Speciality Clinic (in-clinic and online consultations, treatment programmes); Gloveda Herbals (retail and resort partnerships, clinic and wellness centre distribution, domestic and export opportunities); Gloveda Experience (standalone luxury clinics, five-star properties, luxury Ayurvedic resorts); and Gloveda Revive (premium standalone clinics, Ayurvedic treatment centres, hospitals and wellness facilities).' },
   { q: 'Where are AVVVS medicines sold?',
     a: 'AVVVS medicines are sold throughout India and exported to the United States, Russia, Austria, Slovenia, Colombia and beyond.' },
   { q: 'How do I contact AVVVS?',
-    a: 'Email mail@avvvs.com or call +91 80892 02091 or +91 90375 14016. The address is AVVVS Ayur Speciality Clinic, 60/3829/A, Annie Hall Road, Chalappuram PO, Kozhikode 673002, Kerala, India. Partners can also use the enquiry form on this site.' },
+    a: 'Email mail@avvvs.com or call +91 80892 02091 or +91 80892 02092. The address is Arya Vaidya Vilasini Vaidya Sala Corporate Office, Kaloor Central, Annie Hall Road, Chalappuram PO, Kozhikode 673002, Kerala, India. Partners can also use the enquiry form on this site.' },
 ];
 
 export const FAQ_MANUFACTURING: QA[] = [
@@ -22,10 +22,8 @@ export const FAQ_MANUFACTURING: QA[] = [
     a: 'Yes. AVVVS makes partner formulations in its GMP-certified factory in Kozhikode, Kerala.' },
   { q: 'Can AVVVS make white-label Ayurveda products?',
     a: 'Yes. AVVVS formulations can be packed under your brand as white-label products.' },
-  { q: 'What is licence manufacture at AVVVS?',
-    a: 'Licence manufacture means Ayurveda products developed by AVVVS are manufactured under licence for a partner.' },
   { q: 'Is the AVVVS factory GMP-certified?',
-    a: 'Yes. Licensed proprietary medicines are produced and packaged to GMP quality standards, and raw material sourcing, storage, manufacturing, packaging and logistics are held to international standards with stringent quality control measures in place.' },
+    a: 'Yes. The facility also holds ISO 9001, ISO 22716, HACCP and FSSAI certifications.' },
   { q: 'Which formats can AVVVS manufacture?',
     a: 'Capsules (blister-packed), ointments, medicated oils, classical medicines and cosmetic products.' },
   { q: 'How do I start a manufacturing enquiry?',
@@ -34,9 +32,9 @@ export const FAQ_MANUFACTURING: QA[] = [
 
 export const FAQ_HISTORY: QA[] = [
   { q: 'When was AVVVS founded?',
-    a: 'Arya Vaidya Vilasini Vaidya Sala was founded in 1921 in Kozhikode, Kerala, by Kaloor Neelakandan Vaidyar (1895–1967), who was personally blessed and advised by Sree Narayana Guru to set up a place of care.' },
+    a: 'Arya Vaidya Vilasini Vaidya Sala was founded in 1921 in Kozhikode, Kerala, by Kaloor Neelakandan Vaidyar (1895–1967), who was personally blessed and advised by Sree Narayana Guru to study Ayurveda and set up a place of care.' },
   { q: 'Who leads AVVVS today?',
     a: 'Dr Manoj Kaloor, Managing Director, leads AVVVS with Dr Reeja Manoj. He is the son of K. N. Ramadas Vaidyar and the grandson of the founder, making him the third generation of the family in the work.' },
   { q: 'How did AVVVS begin?',
-    a: 'AVVVS began as a pharmacy that prepared and dispensed Ayurveda medicines for the people of Kozhikode. Its founding idea was social service.' },
+    a: 'AVVVS began as a pharmacy and hospital that prepared and dispensed Ayurveda medicines for the people of Kozhikode. Its founding idea was social service.' },
 ];

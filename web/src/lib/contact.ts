@@ -2,8 +2,8 @@
 // (research/html/home.html). Change them here and the header sheet and footer follow.
 export const CONTACT = {
   email: 'mail@avvvs.com',
-  phones: ['+91 80892 02091', '+91 90375 14016'],
-  address: ['AVVVS Ayur Speciality Clinic', '60/3829/A, Annie Hall Road', 'Chalappuram PO, Kozhikode 673002', 'Kerala, India'],
+  phones: ['+91 80892 02091', '+91 80892 02092'],
+  address: ['Arya Vaidya Vilasini Vaidya Sala', 'Corporate Office, Kaloor Central', 'Annie Hall Road, Chalappuram PO', 'Kozhikode 673002, Kerala, India'],
   city: 'Kozhikode, Kerala, India',
   shop: 'https://shop.avvvs.com/',
   gloveda: 'https://glovedaherbals.com/',

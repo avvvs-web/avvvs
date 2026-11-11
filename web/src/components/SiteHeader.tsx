@@ -6,6 +6,7 @@ import { AvvvsLockup } from './Logo';
 import { goToChapter } from './FilmStage';
 import { CONTACT } from '@/lib/contact';
 import { trackOutbound } from '@/lib/track';
+import { scrollPageTo, holdPageScroll } from '@/lib/scroll';
 
 type Page = 'home' | 'manufacturing' | 'heritage' | 'social' | 'journal' | 'other';
 
@@ -71,12 +72,13 @@ export function SiteHeader({ page }: { page: Page }) {
     if (!open) return;
     const root = document.documentElement;
     root.classList.add('menu-open');
+    holdPageScroll(true);
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false); };
     const wide = window.matchMedia('(min-width: 1061px)');
     const onWide = () => { if (wide.matches) setOpen(false); };
     window.addEventListener('keydown', onKey);
     wide.addEventListener('change', onWide);
-    return () => { root.classList.remove('menu-open'); window.removeEventListener('keydown', onKey); wide.removeEventListener('change', onWide); };
+    return () => { holdPageScroll(false); root.classList.remove('menu-open'); window.removeEventListener('keydown', onKey); wide.removeEventListener('change', onWide); };
   }, [open]);
 
   // in-page film chapters can't be reached by a plain anchor (they live in the pinned stage)
@@ -103,7 +105,7 @@ export function SiteHeader({ page }: { page: Page }) {
     <header className={`bar${open ? ' is-open' : ''}`} id="top" ref={bar}>
       <div className="bar-row">
         <Link className="bar-mark" href={home ? '#top' : '/'} aria-label={home ? 'AVVVS, back to the start' : 'AVVVS home'}
-          onClick={(e) => { close(); if (home) { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); } }}>
+          onClick={(e) => { close(); if (home) { e.preventDefault(); scrollPageTo(0); } }}>
           <AvvvsLockup height={40} alt="" />
         </Link>
         <nav className="bar-nav" aria-label="Main">

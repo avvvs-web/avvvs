@@ -66,33 +66,33 @@ export function Ecosystem() {
       <div className="eco-mark">
         <h2 id="eco-title">
           <span className="eco-word"><AvvvsMark height={120} /></span>
-          <span className="eco-since">One thread, five ways to work with us</span>
+          <span className="eco-since">Where the thread goes next is up to you</span>
         </h2>
       </div>
       <ul className="eco-list">
         <li className="dest" data-dest="0">
-          <h3>AVVVS Manufacturing</h3>
-          <p>Classical and proprietary medicines made in our GMP-certified factory, and third-party and white-label production for your brand.</p>
+          <h3>Manufacturing Division</h3>
+          <p>Classical and proprietary medicines manufactured at our GMP-certified facility, alongside third-party and white-label manufacturing services for your brand.</p>
           <Link href="/manufacturing">See the factory floor</Link>
         </li>
         <li className="dest" data-dest="1">
-          <h3>AVVVS Ayur Speciality Clinic</h3>
-          <p>Specialist outpatient Ayurveda care, from women&apos;s health to lifestyle, skin and hair. Premium centres are run with partners in wellness, leisure and hospitality.</p>
+          <h3>AVVVS Ayur Specialty Clinic</h3>
+          <p>The first clinical venture under AVVVS, offering specialised care for headaches, chronic pain, obesity, lifestyle disorders, fertility, skin and hair concerns, and maternal health.</p>
           <a href="https://clinic.avvvs.com/" rel="noopener">Visit the clinic</a>
         </li>
         <li className="dest" data-dest="2">
           <h3>Gloveda Herbals</h3>
-          <p>Botanical skin care and hair care from our own range, sold direct.</p>
+          <p>Our Ayurvedic skincare and haircare range, rooted in nature and generations of wisdom.</p>
           <a href="https://glovedaherbals.com/" rel="noopener">See the Gloveda range</a>
         </li>
         <li className="dest" data-dest="3">
           <h3>Gloveda Experience</h3>
-          <p>Ayurveda therapies and products for hotel and resort spas.</p>
-          <a href="#enquire" data-topic="experience">Bring Gloveda to your spa</a>
+          <p>A chain of luxury Ayur-Medi cosmetic clinics bringing over a century of Ayurvedic medical expertise to standalone destinations, five-star properties and high-end Ayurvedic resorts.</p>
+          <a href="#enquire" data-topic="experience">Bring Gloveda Experience to your property</a>
         </li>
         <li className="dest" data-dest="4">
           <h3>Gloveda Revive</h3>
-          <p>Standalone spas run by AVVVS, and treatments and products for independent spas and wellness centres.</p>
+          <p>A chain of Ayur-Medi cosmetic clinics combining traditional Ayurvedic care with modern skin and hair treatments, operating as standalone clinics or within established premium Ayurvedic hospitals and treatment centres.</p>
           <a href="#enquire" data-topic="revive">Partner with Gloveda Revive</a>
         </li>
       </ul>

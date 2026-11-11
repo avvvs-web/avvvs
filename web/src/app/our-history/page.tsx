@@ -15,7 +15,7 @@ import { Crumbs } from '@/components/Crumbs';
 export const metadata: Metadata = {
   title: 'Our history: Ayurveda in Kozhikode since 1921',
   description:
-    'Arya Vaidya Vilasini Vaidya Sala was founded in Kozhikode in 1921 by Kaloor Neelakandan Vaidyar as a pharmacy, with the blessings of Sree Narayana Guru, and has been carried by his family for four generations.',
+    'Arya Vaidya Vilasini Vaidya Sala was founded in Kozhikode in 1921 by Kaloor Neelakandan Vaidyar as a pharmacy and hospital, with the blessings of Sree Narayana Guru, and has been carried by his family for four generations.',
   alternates: alternatesFor('/our-history'),
   openGraph: { url: '/our-history', title: 'Our history · AVVVS since 1921', description: 'One family, four generations, since 1921.' },
 };
@@ -24,25 +24,25 @@ export const metadata: Metadata = {
 const TIMELINE = [
   {
     when: '1921', title: 'A pharmacy in Kozhikode', who: 'Kaloor Neelakandan Vaidyar', dates: '1895–1967',
-    text: 'Personally blessed and advised by Sree Narayana Guru to set up a place of care, he founded Arya Vaidya Vilasini Vaidya Sala as a pharmacy that prepared and dispensed Ayurveda medicines. Its founding idea was social service.',
+    text: 'Personally blessed and guided by Sree Narayana Guru, he was inspired to study Ayurveda and dedicate his knowledge to social service. After joining the first batch of what is now Kottakkal Ayurveda College, he founded Arya Vaidya Vilasini Vaidya Sala in 1921 as an Ayurvedic pharmacy and hospital. Remembered for his compassionate patient care, he also expanded its reach to Madurai and Madras (Chennai).',
   },
   {
     when: 'Second generation', title: 'Carried forward', who: 'K. N. Ramadas Vaidyar', dates: '1934–1998',
-    text: "His son carried the work on, and was known across Kozhikode's socio-literary circles for his satire.",
+    text: "His son, a gold medallist graduate of Kannur Ayurveda College, carried forward his father's work while earning recognition as a satirist in Kerala's socio-literary circles.",
   },
   { when: '2011', title: 'Navathi', text: 'AVVVS marked ninety years.' },
   { when: '2021', title: 'A hundred years', text: 'The centenary of Arya Vaidya Vilasini Vaidya Sala.' },
   {
-    when: 'Today', title: 'The third generation', who: 'Dr Manoj Kaloor', dates: 'Managing Director',
-    text: 'The son of K. N. Ramadas Vaidyar, he leads AVVVS today with Dr Reeja Manoj.',
+    when: 'Today', title: 'The third generation', who: 'Dr. Manoj Kaloor', dates: 'Managing Director',
+    text: "Son of K. N. Ramadas Vaidyar, he leads AVVVS today alongside Dr. Reeja Manoj, continuing the family's longstanding commitment to Ayurveda.",
   },
-  { when: 'And now', title: 'The fourth generation', text: 'A fourth generation of the family carries the work on with them.' },
+  { when: 'Looking ahead', title: 'The fourth generation', text: 'The fourth generation is now carrying this legacy forward, building on a tradition spanning more than a century.' },
 ] as const;
 
 const GREW = [
-  ['300+', 'classical and proprietary formulations, among them Mezhu Thailam, Rujanth, Slepan, Red Irons and Lakshol.'],
+  ['300+', 'classical and proprietary Ayurvedic formulations, along with skincare and haircare products.'],
   ['GMP', 'certified factory in Kozhikode, with traditional mechanised units alongside capsule, blister, ointment and cosmetic lines.'],
-  ['Clinics', 'The clinical arm grew into the AVVVS Ayur Speciality Clinics.'],
+  ['Clinics', 'The clinical division has grown to include AVVVS Ayur Specialty Clinics, offering specialised Ayurvedic care, and Gloveda Revive and Gloveda Experience, two Ayur-Medi cosmetic clinic franchises focused on skin and hair care.'],
   ['Abroad', 'Sold throughout India, and exported to the United States, Russia, Austria, Slovenia, Colombia and beyond.'],
 ] as const;
 
