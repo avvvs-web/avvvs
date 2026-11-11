@@ -17,6 +17,11 @@ export default function config(phase: string): NextConfig {
     reactStrictMode: true,
     // the CSR page was first published as Social service
     async redirects() { return [{ source: '/social-service', destination: '/community', permanent: true }]; },
+    // The film's frames never change under the same address (the folder is versioned: see
+    // film/encode_frames.sh), so browsers may keep them for a year without asking again.
+    async headers() {
+      return [{ source: '/media/film/v2/:path*', headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }] }];
+    },
     images: {
       // AVIF first (about half the weight of JPEG), WebP as the fallback
       formats: ['image/avif', 'image/webp'],

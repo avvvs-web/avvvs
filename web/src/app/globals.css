@@ -103,7 +103,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .bar.is-open .bar-menu-icon i:last-child { transform: translateY(-3.25px) rotate(-45deg); }
 
 .sheet {
-  position: absolute; left: 0; right: 0; top: 100%; height: calc(100dvh - 100% - env(safe-area-inset-top, 0px));
+  position: absolute; left: 0; right: 0; top: 100%; height: calc(100vh - 100% - env(safe-area-inset-top, 0px)); height: calc(100dvh - 100% - env(safe-area-inset-top, 0px));
   display: flex; flex-direction: column; justify-content: space-between; gap: 36px; overflow-y: auto; overscroll-behavior: contain;
   padding: clamp(24px, 6vh, 48px) var(--gutter-r) max(28px, env(safe-area-inset-bottom, 0px)) var(--gutter);
   background: var(--bg);
@@ -154,13 +154,23 @@ html.menu-open { overflow: hidden; }
 
 /* ---------- the film: one pinned stage, clips stacked as layers ---------- */
 .film { position: relative; background: var(--lamp); color: var(--parch); }
-.film-stage { position: relative; height: 100svh; overflow: hidden; background: var(--lamp); }
-.film-layer { position: absolute; inset: 0; }
-.film-media { position: absolute; inset: 0; }
-/* no will-change here: it kept every layer of the film on the GPU at once, too much for phones */
-.film-media video, .film-media img { width: 100%; height: 100%; object-fit: cover; }
+.film-stage { position: relative; height: 100vh; height: 100svh; overflow: hidden; background: var(--lamp); }
+/* the picture: the first frame as an image, then one canvas the whole film is drawn on (FilmStage).
+   Positioned with top/left rather than inset, which iPhones before iOS 14.5 don't know. */
+.film-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #14100c; }
+.film-poster, .film-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: block; object-fit: cover; }
+.film-canvas { visibility: hidden; pointer-events: none; }
+/* a low scrim so cards read over any frame: dark under dark frames, pale under the bright ones */
+.film-scrim {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;
+  background: linear-gradient(to top, rgba(13, 11, 9, 0.78) 0%, rgba(13, 11, 9, 0.25) 38%, rgba(13, 11, 9, 0) 60%);
+}
+.film-scrim-light { opacity: 0; background: linear-gradient(to top, rgba(244, 239, 229, 0.95) 0%, rgba(244, 239, 229, 0.82) 30%, rgba(244, 239, 229, 0.3) 50%, rgba(244, 239, 229, 0) 62%); }
+.film-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+/* each clip's own still is only for the column layout (reduced motion, below) */
+.film-media { display: none; position: relative; }
+.film-media img { width: 100%; height: 100%; object-fit: cover; }
 .film-media::after {
-  /* a low scrim so cards read over any frame; bright frames don't need it */
   content: ""; position: absolute; inset: 0; pointer-events: none;
   background: linear-gradient(to top, rgba(13, 11, 9, 0.78) 0%, rgba(13, 11, 9, 0.25) 38%, rgba(13, 11, 9, 0) 60%);
 }
@@ -212,7 +222,7 @@ html.menu-open { overflow: hidden; }
 
 /* ---------- ecosystem: the mark, one gold line beneath it, five destinations hanging from it ---------- */
 .ecosystem {
-  position: relative; min-height: 100svh; isolation: isolate; background: var(--bg);
+  position: relative; min-height: 100vh; min-height: 100svh; isolation: isolate; background: var(--bg);
   display: grid; align-content: center; gap: clamp(28px, 5vh, 56px);
   padding: clamp(110px, 16vh, 150px) calc(var(--gutter-r) + 120px) clamp(80px, 12vh, 120px) var(--gutter);
 }
@@ -274,7 +284,7 @@ html.is-locked { overflow: hidden; }
 .ef-btn-quiet:hover { background: var(--field); color: var(--ink); }
 
 .ef {
-  margin: 0 0 0 auto; padding: 0; border: 0; height: 100dvh; max-height: 100dvh; width: min(600px, 100vw); max-width: 100vw;
+  margin: 0 0 0 auto; padding: 0; border: 0; height: 100vh; height: 100dvh; max-height: 100vh; max-height: 100dvh; width: min(600px, 100vw); max-width: 100vw;
   background: var(--bg); color: var(--ink-2); box-shadow: -30px 0 80px -40px rgba(30, 20, 14, 0.5);
   overscroll-behavior: contain;
 }
@@ -420,7 +430,7 @@ html.is-locked { overflow: hidden; }
 .btn:hover { background: var(--blue-deep); }
 
 .m-hero {
-  min-height: 100svh; display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); align-items: center;
+  min-height: 100vh; min-height: 100svh; display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); align-items: center;
   gap: clamp(32px, 5vw, 80px); padding: 110px var(--gutter-r) 64px var(--gutter); max-width: 92rem; margin-inline: auto;
 }
 .m-hero-copy { display: grid; gap: 24px; align-content: center; }
@@ -429,7 +439,7 @@ html.is-locked { overflow: hidden; }
 .m-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px; padding-top: 8px; }
 .m-more { color: var(--ink); }
 .m-hero-media { margin: 0; display: grid; gap: 10px; }
-.m-hero-media img { width: 100%; height: min(78svh, 46rem); object-fit: cover; border-radius: 14px; }
+.m-hero-media img { width: 100%; height: min(78vh, 46rem); height: min(78svh, 46rem); object-fit: cover; border-radius: 14px; }
 .m-hero-media figcaption, .station p { font-size: 0.92rem; color: var(--muted); }
 
 .m-intro {
@@ -449,7 +459,7 @@ html.is-locked { overflow: hidden; }
 .station::before { /* the knot where the thread passes each station */
   content: ""; position: absolute; top: -32px; left: 0; width: 7px; height: 7px; border-radius: 50%; background: var(--thread);
 }
-.station img { height: min(54svh, 34rem); width: auto; max-width: none; border-radius: 12px; }
+.station img { height: min(54vh, 34rem); height: min(54svh, 34rem); width: auto; max-width: none; border-radius: 12px; }
 .station h3 { font-size: clamp(1.35rem, 1.1rem + 0.8vw, 1.9rem); line-height: 1.1; padding-top: 6px; }
 .station p { min-width: 16rem; max-width: 24rem; color: var(--ink-2); font-size: 0.98rem; }
 
@@ -486,22 +496,23 @@ html.is-locked { overflow: hidden; }
   .m-track { flex-direction: column; width: auto; padding-left: 0; gap: 48px; }
   .station { width: auto; }
   .station::before { top: 4px; left: -22px; }
-  .station img { width: 100%; height: auto; max-height: 70svh; object-fit: cover; }
+  .station img { width: 100%; height: auto; max-height: 70vh; max-height: 70svh; object-fit: cover; }
   .station p { min-width: 0; }
   .m-ways > div { grid-template-columns: minmax(0, 1fr); }
 }
 @media (min-width: 900px) {
   /* pinned: everything has to fit one screen, under the bar */
-  .m-line { min-height: 100svh; padding: clamp(84px, 13svh, 120px) 0 32px; }
-  .m-line-head { margin-bottom: clamp(20px, 4svh, 44px); }
-  .station img { height: min(42svh, 34rem); }
+  .m-line { min-height: 100vh; min-height: 100svh; padding: clamp(84px, 13vh, 120px) 0 32px; padding: clamp(84px, 13svh, 120px) 0 32px; }
+  .m-line-head { margin-bottom: clamp(20px, 4vh, 44px); margin-bottom: clamp(20px, 4svh, 44px); }
+  .station img { height: min(42vh, 34rem); height: min(42svh, 34rem); }
 }
 .no-scrub .m-track { flex-wrap: wrap; width: auto; }
 
 /* ---------- reduced motion: no pinning or scrubbing; the film becomes a column of stills with their cards ---------- */
 .no-scrub .film-stage { height: auto; overflow: visible; }
-.no-scrub .film-layer { position: relative; inset: auto; }
-.no-scrub .film-media { position: relative; aspect-ratio: 16 / 9; }
+.no-scrub .film-screen { display: none; }
+.no-scrub .film-layer { position: relative; height: auto; pointer-events: auto; }
+.no-scrub .film-media { display: block; aspect-ratio: 16 / 9; }
 .no-scrub .film-cards { position: static; display: grid; gap: 40px; padding: 40px var(--gutter-r) 64px var(--gutter); }
 .no-scrub .card, .no-scrub .card-center { position: static; transform: none; width: auto; text-align: left; justify-items: start; }
 .no-scrub .film-layer-light .card h2 { color: var(--ivory); }
@@ -511,7 +522,7 @@ html.is-locked { overflow: hidden; }
 
 /* ---------- since 1921 ---------- */
 .hp-hero {
-  min-height: 92svh; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center;
+  min-height: 92vh; min-height: 92svh; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center;
   gap: clamp(32px, 5vw, 80px); padding: 120px var(--gutter-r) 64px var(--gutter); max-width: 110rem; margin-inline: auto;
 }
 .hp-hero-copy { display: grid; gap: 22px; }
@@ -610,7 +621,7 @@ html.is-locked { overflow: hidden; }
 .m-hero-media img, .station img, .hp-hero-media img { animation-iteration-count: 6; }
 .film-media { background: #14100c; }
 
-.skel { min-height: 100svh; background: var(--bg); }
+.skel { min-height: 100vh; min-height: 100svh; background: var(--bg); }
 .skel-bar { display: flex; align-items: center; justify-content: space-between; padding: 14px var(--gutter-r) 14px var(--gutter); border-bottom: 1px solid var(--line); }
 .skel-nav { display: flex; gap: 28px; }
 .sk { display: block; border-radius: 6px; }
@@ -623,7 +634,7 @@ html.is-locked { overflow: hidden; }
 .sk-line { width: 80%; height: 14px; border-radius: 99px; }
 .sk-short { width: 55%; }
 .sk-btn { width: 200px; height: 48px; border-radius: 99px; margin-top: 12px; }
-.sk-media { width: 100%; aspect-ratio: 4 / 5; max-height: 70svh; border-radius: 14px; }
+.sk-media { width: 100%; aspect-ratio: 4 / 5; max-height: 70vh; max-height: 70svh; border-radius: 14px; }
 .skel-thread { position: fixed; top: 0; left: 0; right: 0; height: 2px; overflow: hidden; }
 .skel-thread span { position: absolute; top: 0; bottom: 0; width: 30%; background: linear-gradient(90deg, transparent, var(--gold), transparent); animation: sk-run 1.2s ease-in-out infinite; }
 @keyframes sk-run { from { left: -30%; } to { left: 100%; } }
@@ -637,7 +648,7 @@ html.is-locked { overflow: hidden; }
 }
 
 /* ---------- 404: the thread ends here ---------- */
-.nf { position: relative; min-height: 100svh; padding: clamp(120px, 18vh, 200px) var(--gutter-r) clamp(64px, 10vw, 120px) var(--gutter); max-width: 110rem; margin-inline: auto; display: grid; gap: clamp(36px, 5vw, 64px); align-content: start; }
+.nf { position: relative; min-height: 100vh; min-height: 100svh; padding: clamp(120px, 18vh, 200px) var(--gutter-r) clamp(64px, 10vw, 120px) var(--gutter); max-width: 110rem; margin-inline: auto; display: grid; gap: clamp(36px, 5vw, 64px); align-content: start; }
 .nf-thread { width: 100%; height: clamp(110px, 16vw, 220px); overflow: visible; }
 .nf-thread path { fill: none; stroke-linecap: round; }
 .nf-main { stroke: var(--gold); stroke-width: 2; stroke-dasharray: 1400; stroke-dashoffset: 1400; animation: nf-draw 2.2s var(--ease-out) 0.2s forwards; }
@@ -848,7 +859,7 @@ html.is-locked { overflow: hidden; }
 }
 
 /* ---------- first-load loader ---------- */
-.loader { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; background: var(--bg); transition: opacity 0.8s var(--ease-out), visibility 0s linear 0.8s; }
+.loader { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; background: var(--bg); transition: opacity 0.55s var(--ease-out), visibility 0s linear 0.55s; }
 .loader.is-leaving { opacity: 0; visibility: hidden; pointer-events: none; }
 .loader-inner { display: grid; justify-items: center; gap: 6px; transition: transform 0.8s var(--ease-out); }
 .loader.is-leaving .loader-inner { transform: translateY(-10px) scale(0.98); }
@@ -861,15 +872,11 @@ html.is-locked { overflow: hidden; }
 
 /* ---------- site structure: bar groups, menu, breadcrumbs, where next, journal strip ---------- */
 .bar-sep { width: 1px; height: 18px; background: var(--line); margin-inline: calc(clamp(18px, 2.6vw, 40px) * -0.35); }
-.bar-nav a.bar-ext { color: var(--muted); font-size: 0.88rem; }
-.bar-nav a.bar-ext:hover { color: var(--ink); }
+/* the three other AVVVS sites, in the AVVVS blue */
+.bar-nav a.bar-ext { color: var(--blue); font-size: 0.88rem; }
+.bar-nav a.bar-ext:hover { color: var(--blue-deep); }
+.sheet-title-ext { color: var(--blue); }
 
-.sheet-else { display: grid; gap: 10px; padding: 22px 0 0 30px; animation: sheet-in 0.7s var(--ease-out) both; animation-delay: calc(80ms + var(--i) * 60ms); }
-.sheet-else-h { font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); }
-.sheet-else ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 22px; }
-.sheet-else a { color: var(--ink-2); text-decoration: none; font-size: 1.05rem; padding: 4px 0; display: inline-block; }
-.sheet-else a:hover { color: var(--ink); }
-@media (prefers-reduced-motion: reduce) { .sheet-else { animation: none; } }
 
 .crumbs ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 0; font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
 .crumbs li + li::before { content: "/"; margin: 0 10px; color: var(--thread-ink); }
@@ -916,8 +923,6 @@ html.is-locked { overflow: hidden; }
   .bar { background: rgba(244, 239, 229, 0.97); backdrop-filter: none; -webkit-backdrop-filter: none; }
 }
 
-/* phones: the film's frames drawn on a canvas over the poster (see FilmStage) */
-.film-seq { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; pointer-events: none; }
 
 /* ---------- community (the CSR page) ---------- */
 .ss-why { padding: clamp(72px, 10vw, 140px) var(--gutter-r) clamp(56px, 8vw, 110px) var(--gutter); max-width: 110rem; margin-inline: auto; border-top: 1px solid var(--line); }
@@ -942,12 +947,17 @@ html.is-locked { overflow: hidden; }
 .jr-figure-wide img { aspect-ratio: auto; }
 
 /* menu: the clinic and store are headline items that leave the site */
-.sheet-ext { font-size: 0.6em; color: var(--thread-ink); vertical-align: 0.35em; margin-left: 2px; }
+.sheet-ext { font-size: 0.6em; color: var(--blue); vertical-align: 0.35em; margin-left: 2px; }
 
 /* narrow desktops (just above where the bar folds into the menu): tighter links, so the capitalised
    names and the longer Manufacturing button still clear each other */
-@media (min-width: 1061px) and (max-width: 1240px) {
+@media (min-width: 1061px) and (max-width: 1320px) {
   .bar-nav { gap: 16px; }
   .bar-nav a { font-size: 0.9rem; }
   .bar-sep { margin-inline: -4px; }
+}
+@media (min-width: 1061px) and (max-width: 1160px) {
+  .bar-nav { gap: 12px; }
+  .bar-nav a { font-size: 0.86rem; }
+  .bar-nav a.bar-ext { font-size: 0.84rem; }
 }

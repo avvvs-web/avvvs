@@ -2,7 +2,7 @@
 # S14, "Where the thread goes next": opens on S11's exact last frame (the ivory world map), the
 # ink settles, gold routes run from Kozhikode to Vienna, Ljubljana, Moscow and Bogota (routes.py),
 # then the frame fades through white into the gold thread on ivory paper (tail of the S13 v2 take).
-# Writes film/clips/S14.mp4, then the standard and HD site encodes.
+# Writes film/clips/S14.mp4, then the site frame sets (encode_frames.sh).
 # usage: sh film/build_s14.sh
 set -e
 cd "$(dirname "$0")/.."
@@ -15,5 +15,4 @@ ffmpeg -v error -y -framerate 24 -i "$TMP/rt/r_%04d.png" -ss 2.6 -i film/clips/v
   "[0]$N[a];[1]$N[b];[a][b]xfade=transition=fadewhite:duration=0.8:offset=2.4,format=yuv420p" \
   -an -c:v libx264 -preset slow -crf 12 film/clips/S14.mp4
 rm -rf "$TMP"
-sh film/encode.sh S14
-sh film/encode_hd.sh S14
+sh film/encode_frames.sh S14

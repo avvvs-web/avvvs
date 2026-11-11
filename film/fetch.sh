@@ -7,4 +7,4 @@ cd "$(dirname "$0")/.."
 mkdir -p film/audit
 curl -s -o "film/clips/$1.mp4" "$2"
 ffmpeg -v error -y -i "film/clips/$1.mp4" -vf "fps=2,scale=256:-2,tile=10x2:padding=2:color=0x333333" -frames:v 1 -q:v 4 "film/audit/$1.jpg"
-sh film/encode.sh "$1"
+sh film/encode_frames.sh "$1"

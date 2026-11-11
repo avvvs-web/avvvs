@@ -23,9 +23,9 @@ export function trackLead(topic: string) {
   if (win?.__avvvsPixel && win.fbq) win.fbq('track', 'Lead', { content_category: topic });
 }
 
-/** Someone left for the shop or the clinic site: useful for both platforms. */
-export function trackOutbound(dest: 'shop' | 'clinic') {
+/** Someone left for the pharmacy, the clinic or the Gloveda site: useful for both platforms. */
+export function trackOutbound(dest: 'shop' | 'clinic' | 'gloveda') {
   const win = w();
   if (win?.__avvvsGa && win.gtag) win.gtag('event', 'select_promotion', { promotion_name: dest, creative_slot: 'navbar' });
-  if (win?.__avvvsPixel && win.fbq) win.fbq('trackCustom', dest === 'shop' ? 'ShopClick' : 'ClinicClick');
+  if (win?.__avvvsPixel && win.fbq) win.fbq('trackCustom', dest === 'shop' ? 'ShopClick' : dest === 'clinic' ? 'ClinicClick' : 'GlovedaClick');
 }

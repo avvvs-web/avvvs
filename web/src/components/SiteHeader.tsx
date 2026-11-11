@@ -13,20 +13,16 @@ type Page = 'home' | 'manufacturing' | 'heritage' | 'social' | 'journal' | 'othe
 export const SHOP_URL = CONTACT.shop;
 export const CLINIC_URL = CONTACT.clinic;
 
-const MENU: { label: string; note: string; href: string; chapter?: string; page?: Page; external?: 'clinic' | 'shop' }[] = [
+const MENU: { label: string; note: string; href: string; chapter?: string; page?: Page; external?: 'clinic' | 'shop' | 'gloveda' }[] = [
   { label: 'The Film', note: 'The Golden Thread, from forest to medicine', href: '#forest', chapter: 'forest' },
   { label: 'Our History', note: 'Four generations in Kozhikode, since 1921', href: '/our-history', page: 'heritage' },
   { label: 'Community', note: 'The founding idea of AVVVS, since 1921', href: '/community', page: 'social' },
   { label: 'Manufacturing', note: 'GMP-certified, and made for your brand', href: '/manufacturing', page: 'manufacturing' },
   { label: 'Work With Us', note: 'Five ways to partner with AVVVS', href: '#destinations' },
   { label: 'Journal', note: 'Notes from a century of Ayurveda', href: '/journal', page: 'journal' },
-  { label: 'Ayur Clinic', note: 'The AVVVS Ayur Speciality Clinic', href: CLINIC_URL, external: 'clinic' },
-  { label: 'Ayur Store', note: 'AVVVS medicines and products, online', href: SHOP_URL, external: 'shop' },
-];
-
-// Other AVVVS sites that are not headline destinations, in a quiet row under the menu.
-const ELSEWHERE: { label: string; href: string; track?: 'clinic' | 'shop' }[] = [
-  { label: 'Gloveda Herbals', href: CONTACT.gloveda },
+  { label: 'Consultation', note: 'The AVVVS Ayur Speciality Clinic', href: CLINIC_URL, external: 'clinic' },
+  { label: 'Pharmacy', note: 'AVVVS medicines and products, online', href: SHOP_URL, external: 'shop' },
+  { label: 'Gloveda', note: 'Our botanical skin care and hair care', href: CONTACT.gloveda, external: 'gloveda' },
 ];
 
 /**
@@ -97,8 +93,9 @@ export function SiteHeader({ page }: { page: Page }) {
       <Link href={home ? '#destinations' : '/#destinations'} onClick={close}>Work With Us</Link>
       <Link href="/journal" onClick={close} aria-current={page === 'journal' ? 'page' : undefined}>Journal</Link>
       <span className="bar-sep" aria-hidden="true" />
-      <a href={CLINIC_URL} className="bar-ext" rel="noopener" onClick={() => { trackOutbound('clinic'); close(); }}>Ayur Clinic<span aria-hidden="true"> ↗</span></a>
-      <a href={SHOP_URL} className="bar-ext" rel="noopener" onClick={() => { trackOutbound('shop'); close(); }}>Ayur Store<span aria-hidden="true"> ↗</span></a>
+      <a href={CLINIC_URL} className="bar-ext" rel="noopener" onClick={() => { trackOutbound('clinic'); close(); }}>Consultation<span aria-hidden="true"> ↗</span></a>
+      <a href={SHOP_URL} className="bar-ext" rel="noopener" onClick={() => { trackOutbound('shop'); close(); }}>Pharmacy<span aria-hidden="true"> ↗</span></a>
+      <a href={CONTACT.gloveda} className="bar-ext" rel="noopener" onClick={() => { trackOutbound('gloveda'); close(); }}>Gloveda<span aria-hidden="true"> ↗</span></a>
     </>
   );
 
@@ -132,7 +129,7 @@ export function SiteHeader({ page }: { page: Page }) {
                 {m.external ? (
                   <a href={m.href} rel="noopener" onClick={() => { trackOutbound(m.external!); close(); }}>
                   <span className="sheet-no" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-                  <span className="sheet-title">{m.label}<span className="sheet-ext" aria-hidden="true"> ↗</span></span>
+                  <span className="sheet-title sheet-title-ext">{m.label}<span className="sheet-ext" aria-hidden="true"> ↗</span></span>
                   <span className="sheet-note">{m.note}</span>
                 </a>
                 ) : (
@@ -147,15 +144,7 @@ export function SiteHeader({ page }: { page: Page }) {
             ))}
           </ol>
         </nav>
-        <div className="sheet-else" style={{ '--i': MENU.length } as React.CSSProperties}>
-          <p className="sheet-else-h">Also from AVVVS</p>
-          <ul>
-            {ELSEWHERE.map((e) => (
-              <li key={e.label}><a href={e.href} rel="noopener" onClick={() => { if (e.track) trackOutbound(e.track); close(); }}>{e.label}<span aria-hidden="true"> ↗</span></a></li>
-            ))}
-          </ul>
-        </div>
-        <div className="sheet-foot" style={{ '--i': MENU.length + 1 } as React.CSSProperties}>
+        <div className="sheet-foot" style={{ '--i': MENU.length } as React.CSSProperties}>
           <a className="cta sheet-cta" href="#enquire" data-topic={page === 'manufacturing' ? 'manufacturing' : undefined} onClick={close}>{page === 'manufacturing' ? 'Discuss manufacturing' : 'Partner with AVVVS'}</a>
           <div className="sheet-contact">
             <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
