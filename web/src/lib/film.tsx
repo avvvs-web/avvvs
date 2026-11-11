@@ -24,7 +24,7 @@ export interface Clip {
   chapter?: string; // the rail label that starts here
   weight: number;
   playShare?: number;
-  frames: string; // its folder of frames in public/media/film/v2/<set>/ (see film/encode_frames.sh)
+  frames: string; // its folder of frames in public/media/film/v3/<set>/ (see film/encode_frames.sh)
   alt: string; // what the clip shows, for screen readers and image search
   light?: boolean;
   heritage?: boolean; // the 1921 type plays over this clip

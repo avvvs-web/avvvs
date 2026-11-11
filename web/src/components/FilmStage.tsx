@@ -17,11 +17,11 @@ for (const c of CLIPS) { offsets.push(total); total += c.weight; }
 const CHAPTERS = CLIPS.map((c, i) => ({ label: c.chapter, at: offsets[i] })).filter((c) => c.label) as { label: string; at: number }[];
 
 // The film's frames (film/encode_frames.sh). The folder is versioned because it is cached for a year.
-const FRAMES_BASE = '/media/film/v2';
+const FRAMES_BASE = '/media/film/v3';
 const SETS = {
-  p: { w: 608, h: 1080, ahead: 5, behind: 2, keep: 7 },    // phones held upright: the centre of the frame
-  d: { w: 1280, h: 720, ahead: 6, behind: 3, keep: 9 },    // laptops, tablets, slower connections
-  hd: { w: 1920, h: 1080, ahead: 5, behind: 2, keep: 7 },  // large, sharp screens on a good connection
+  p: { w: 608, h: 1080, ahead: 7, behind: 3, keep: 10 },   // phones held upright: the centre of the frame
+  d: { w: 1280, h: 720, ahead: 8, behind: 3, keep: 11 },   // laptops, tablets, slower connections
+  hd: { w: 1920, h: 1080, ahead: 6, behind: 2, keep: 8 },  // large, sharp screens on a good connection
 } as const;
 type SetName = keyof typeof SETS;
 const frameUrl = (set: SetName, folder: string, f: number) => `${FRAMES_BASE}/${set}/${folder}/f_${String(f + 1).padStart(3, '0')}.webp`;
@@ -36,7 +36,7 @@ COUNT.forEach((n, k) => CLIP_OF.fill(k, START[k], START[k] + n));
 
 const MAX_FETCH = 8;     // frames downloading at once
 const MAX_DECODE = 3;    // frames decoding at once
-const FIRST_FRAMES = 24; // all that loads before the visitor first scrolls
+const FIRST_FRAMES = 48; // before the visitor first scrolls, only every second frame of these loads
 
 /**
  * The whole film in one pinned stage, drawn on one canvas. Scrolling moves a playhead along the
@@ -135,8 +135,13 @@ export function FilmStage() {
       const { ahead, behind, keep } = SETS[set];
       const have = (g: number) => state[g] === 2 || cache.has(g);
       const pick: number[] = [];
+      // a fast playhead passes frames quicker than they decode: then only every second or fourth is decoded
+      const moving = performance.now() - movedAt > 250 ? 0 : speed;
+      const skip = moving > 70 ? 4 : moving > 35 ? 2 : 1;
       const scan = (from: number, step: number, n: number) => {
-        for (let g = from, d = 0; n > 0 && d < 160 && g >= 0 && g < FRAMES; g += step, d++) if (have(g)) { pick.push(g); n--; }
+        for (let g = from, d = 0; n > 0 && d < 240 && g >= 0 && g < FRAMES; g += step, d++) {
+          if (have(g) && (skip === 1 || (g - START[CLIP_OF[g]]) % skip === 0 || cache.has(g))) { pick.push(g); n--; }
+        }
       };
       const base = Math.floor(head);
       if (dir >= 0) { scan(base + 1, 1, ahead); scan(base, -1, behind); }
@@ -183,7 +188,7 @@ export function FilmStage() {
     };
 
     // Download frames for the clip on screen, the one behind and the two ahead. Nearest the playhead
-    // first, and every eighth frame before every fourth before the rest, so a jump or a fast scroll
+    // first, and every sixteenth frame before every eighth, and so on down, so a jump or a fast scroll
     // gets an even spread across the clip at once and the gaps fill in after.
     const pump = () => {
       if (!ctx) return;
@@ -202,24 +207,24 @@ export function FilmStage() {
       // a slow connection does better with fewer downloads at once: each one finishes sooner
       const most = requestTime > 0.8 ? 3 : MAX_FETCH;
       let stride = 1;
-      while (stride < 8 && v > rate * stride) stride *= 2;
+      while (stride < 16 && v > rate * stride) stride *= 2;
       // full HD that keeps arriving too slowly while the visitor scrolls: drop to the lighter set
       if (set === 'hd' && v > 0 && inFlight >= most && arrivals.length < 14) {
         if (!slowSince) slowSince = now;
         else if (now - slowSince > 1500) { capped = true; useSet('d'); return; }
       } else slowSince = 0;
-      const at = Math.round(head + dir * Math.min(120, v * requestTime * 1.3));
+      const at = Math.round(head + dir * Math.min(240, v * requestTime * 1.3));
       while (inFlight < most) {
         let best = -1, bestScore = Infinity;
         for (let g = a; g <= b; g++) {
-          if (state[g] !== 0) continue;
+          if (state[g] !== 0 || (!started && g % 2 === 1)) continue;
           const d = (g - at) * dir;
           const f = g - START[CLIP_OF[g]];
           const end = f === COUNT[CLIP_OF[g]] - 1;
           let s: number;
           if (d < 0) s = -d * 2 + (v > 3 ? 300 : 0);
           else if (stride === 1 && d <= 6) s = d / 16;
-          else if (f % 8 === 0 || end) s = d / 8; else if (f % 4 === 0) s = d / 4; else if (f % 2 === 0) s = d / 2; else s = d;
+          else if (f % 16 === 0 || end) s = d / 16; else if (f % 8 === 0) s = d / 8; else if (f % 4 === 0) s = d / 4; else if (f % 2 === 0) s = d / 2; else s = d;
           if (stride > 1 && f % stride !== 0 && !end) s += 500;
           if (s < bestScore) { bestScore = s; best = g; }
         }
@@ -270,12 +275,12 @@ export function FilmStage() {
       }
       let alpha = 0;
       if (a >= 0 && b >= 0) {
-        // each frame is shown clean for most of its stretch and dissolves into the next across the
-        // middle; once the playhead rests, the picture settles on the nearer frame alone, so a
-        // still picture is never a mix of two
+        // while the playhead moves, the picture is the two frames either side of it, mixed by how
+        // far between them it is (at 24 frames a second the two are nearly alike, so this reads
+        // as motion, not as a double image); once it rests, the picture settles on the nearer
+        // frame alone, so a still picture is never a mix of two
         const x = (head - a) / (b - a);
-        const moving = Math.min(1, Math.max(0, (x - 0.3) / 0.4));
-        alpha = Math.round((moving + ((x < 0.5 ? 0 : 1) - moving) * snap) * 24) / 24;
+        alpha = Math.round((x + ((x < 0.5 ? 0 : 1) - x) * snap) * 32) / 32;
       } else if (a < 0) { a = b >= 0 ? b : other; b = -1; }
       if (a < 0) return;
       if (alpha === 0) b = -1;
@@ -305,7 +310,7 @@ export function FilmStage() {
     };
     const tick = () => {
       const rest = performance.now() - movedAt;
-      if (rest > 120 && snap < 1) { snap = Math.min(1, snap + 0.15); dirty = true; }
+      if (rest > 160 && snap < 1) { snap = Math.min(1, snap + 0.1); dirty = true; }
       if (rest > 300 && !idle) { idle = true; decodeNear(); pump(); } // stopped: fill in the frames that were skipped
       if (dirty) { dirty = false; draw(); }
     };
@@ -323,7 +328,7 @@ export function FilmStage() {
       if (to !== head) {
         const now = performance.now();
         dir = to > head ? 1 : -1;
-        speed = Math.min(120, speed * 0.7 + (Math.abs(to - head) / Math.max(8, now - movedAt)) * 1000 * 0.3);
+        speed = Math.min(240, speed * 0.7 + (Math.abs(to - head) / Math.max(8, now - movedAt)) * 1000 * 0.3);
         movedAt = now; snap = 0; idle = false;
       }
       head = to;
@@ -348,7 +353,9 @@ export function FilmStage() {
       defaults: { ease: 'none' },
       scrollTrigger: {
         id: 'film', trigger: el, start: 'top top', end: () => `+=${window.innerHeight * total}`,
-        pin: el.querySelector('.film-stage'), scrub: 0.5, anticipatePin: 1,
+        // the film eases after the scroll: a little on touch screens, which already glide, and
+        // more with a mouse, whose wheel moves the page in steps
+        pin: el.querySelector('.film-stage'), scrub: window.matchMedia('(pointer: coarse)').matches ? 0.5 : 0.9, anticipatePin: 1,
         // past the film, its decoded frames are let go; the canvas keeps the last picture
         onLeave: sleep, onEnterBack: wake,
       },

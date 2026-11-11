@@ -20,7 +20,7 @@ export default function config(phase: string): NextConfig {
     // The film's frames never change under the same address (the folder is versioned: see
     // film/encode_frames.sh), so browsers may keep them for a year without asking again.
     async headers() {
-      return [{ source: '/media/film/v2/:path*', headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }] }];
+      return [{ source: '/media/film/v3/:path*', headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }] }];
     },
     images: {
       // AVIF first (about half the weight of JPEG), WebP as the fallback
