@@ -1,6 +1,6 @@
 // Renders film/factory/draw.html to the film's three frame sets (see film/encode_frames.sh).
 // Needs playwright-core and Chrome, and ffmpeg on the path:
-//   PW=<folder with node_modules/playwright-core> node film/factory/render.mjs [outDir] [frame numbers to test...]
+//   PW=<folder with node_modules/playwright-core> node film/factory/render.mjs [outDir] [frame numbers to test...] [set names...]
 // With frame numbers it writes PNGs of just those frames to outDir (hd and p) to look at.
 // Without, it writes web/public/media/film/<V>/<set>/factory/f_001.webp ... for all three sets.
 import { createRequire } from 'node:module';
@@ -19,13 +19,18 @@ const SETS = [
   { set: 'hd', w: 1920, h: 1080, ku: 0.795, q: 72 },
   { set: 'd', w: 1280, h: 720, ku: 0.795, q: 70 },
   { set: 'p', w: 608, h: 1080, ku: (0.795 * 1920 - 656) / 608, q: 72 },
+  // the sharp sets (film/encode_sharp.sh): the joining frames are those sets' own
+  { set: 'uhd', w: 2560, h: 1440, ku: 0.795, q: 80 },
+  { set: 'p2', w: 1080, h: 1920, ku: (0.795 * 1920 - 656) / 608, q: 80 },
 ];
 const tmp = process.argv[2] || path.join(root, 'film', 'factory', '_out');
-const tests = process.argv.slice(3).map(Number);
+const tests = process.argv.slice(3).filter((a) => /^\d+$/.test(a)).map(Number);
+const only = process.argv.slice(3).filter((a) => !/^\d+$/.test(a)); // set names, to render just those
 
 const browser = await chromium.launch({ channel: 'chrome' });
 for (const s of SETS) {
   if (tests.length && s.set === 'd') continue;
+  if (only.length && !only.includes(s.set)) continue;
   const page = await (await browser.newContext({ viewport: { width: s.w, height: s.h }, deviceScaleFactor: 1 })).newPage();
   const u = new URL(pathToFileURL(path.join(here, 'draw.html')));
   u.search = new URLSearchParams({ w: s.w, h: s.h, n: N, ku: s.ku,

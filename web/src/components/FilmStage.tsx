@@ -22,7 +22,10 @@ const FRAMES_BASE = '/media/film/v3';
 const SETS = {
   p: { w: 608, h: 1080, ahead: 7, behind: 3, keep: 10 },   // phones held upright: the centre of the frame
   d: { w: 1280, h: 720, ahead: 8, behind: 3, keep: 11 },   // laptops, tablets, slower connections
-  hd: { w: 1920, h: 1080, ahead: 6, behind: 2, keep: 8 },  // large, sharp screens on a good connection
+  hd: { w: 1920, h: 1080, ahead: 6, behind: 2, keep: 8 },  // large screens on a good connection
+  // the two sharp sets (film/encode_sharp.sh), for screens with more pixels than the others carry
+  p2: { w: 1080, h: 1920, ahead: 5, behind: 2, keep: 7 },  // phones with dense screens
+  uhd: { w: 2560, h: 1440, ahead: 5, behind: 2, keep: 7 }, // Retina laptops, 4K monitors
 } as const;
 type SetName = keyof typeof SETS;
 const frameUrl = (set: SetName, folder: string, f: number) => `${FRAMES_BASE}/${set}/${folder}/f_${String(f + 1).padStart(3, '0')}.webp`;
@@ -73,14 +76,15 @@ export function FilmStage() {
     // no canvas: the opening still stays, and the cards still play over it
 
     const net = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
-    let capped = false; // full HD turned out to be more than this connection can carry
+    let capped = 0; // how many steps down the connection has forced: 1 no sharp set, 2 not full HD either
+    const LIGHTER: Partial<Record<SetName, SetName>> = { uhd: 'hd', hd: 'd', p2: 'p' };
     const pickSet = (): SetName => {
-      const w = window.innerWidth;
-      if (w < 820 && window.innerHeight > w) return 'p';
-      if (capped) return 'd';
+      const w = window.innerWidth, px = w * window.devicePixelRatio;
       const slow = net?.saveData || ['slow-2g', '2g', '3g'].includes(net?.effectiveType ?? '');
       const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory ?? 8;
-      return w >= 1100 && w * window.devicePixelRatio >= 1700 && !slow && memory >= 4 ? 'hd' : 'd';
+      if (w < 820 && window.innerHeight > w) return !capped && px >= 900 && !slow && memory >= 4 ? 'p2' : 'p';
+      if (capped >= 2 || w < 1100 || px < 1700 || slow || memory < 4) return 'd';
+      return !capped && px >= 2400 && memory >= 8 ? 'uhd' : 'hd';
     };
 
     type Frame = { img: CanvasImageSource; close: () => void };
@@ -209,10 +213,10 @@ export function FilmStage() {
       const most = requestTime > 0.8 ? 3 : MAX_FETCH;
       let stride = 1;
       while (stride < 16 && v > rate * stride) stride *= 2;
-      // full HD that keeps arriving too slowly while the visitor scrolls: drop to the lighter set
-      if (set === 'hd' && v > 0 && inFlight >= most && arrivals.length < 14) {
+      // a heavy set that keeps arriving too slowly while the visitor scrolls: drop to the next lighter one
+      if (LIGHTER[set] && v > 0 && inFlight >= most && arrivals.length < 14) {
         if (!slowSince) slowSince = now;
-        else if (now - slowSince > 1500) { capped = true; useSet('d'); return; }
+        else if (now - slowSince > 1500) { capped += set === 'hd' ? 2 : 1; useSet(LIGHTER[set]!); return; }
       } else slowSince = 0;
       const at = Math.round(head + dir * Math.min(240, v * requestTime * 1.3));
       while (inFlight < most) {
