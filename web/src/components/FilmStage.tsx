@@ -28,7 +28,9 @@ const SETS = {
   uhd: { w: 2560, h: 1440, ahead: 5, behind: 2, keep: 7 }, // Retina laptops, 4K monitors
 } as const;
 type SetName = keyof typeof SETS;
-const frameUrl = (set: SetName, folder: string, f: number) => `${FRAMES_BASE}/${set}/${folder}/f_${String(f + 1).padStart(3, '0')}.webp`;
+// the sharp sets' folders carry their own version: they were re-encoded from the upscaled clips
+const SET_DIR: Record<SetName, string> = { p: 'p', d: 'd', hd: 'hd', p2: 'p2-v2', uhd: 'uhd-v2' };
+const frameUrl = (set: SetName, folder: string, f: number) => `${FRAMES_BASE}/${SET_DIR[set]}/${folder}/f_${String(f + 1).padStart(3, '0')}.webp`;
 
 // every frame of the film on one line: clip k owns START[k] .. START[k] + COUNT[k] - 1
 const COUNT = CLIPS.map((c) => (FRAME_COUNTS as Record<string, number>)[c.frames] ?? 1);

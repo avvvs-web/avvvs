@@ -20,8 +20,8 @@ const SETS = [
   { set: 'd', w: 1280, h: 720, ku: 0.795, q: 70 },
   { set: 'p', w: 608, h: 1080, ku: (0.795 * 1920 - 656) / 608, q: 72 },
   // the sharp sets (film/encode_sharp.sh): the joining frames are those sets' own
-  { set: 'uhd', w: 2560, h: 1440, ku: 0.795, q: 80 },
-  { set: 'p2', w: 1080, h: 1920, ku: (0.795 * 1920 - 656) / 608, q: 80 },
+  { set: 'uhd', dir: 'uhd-v2', w: 2560, h: 1440, ku: 0.795, q: 80 },
+  { set: 'p2', dir: 'p2-v2', w: 1080, h: 1920, ku: (0.795 * 1920 - 656) / 608, q: 80 },
 ];
 const tmp = process.argv[2] || path.join(root, 'film', 'factory', '_out');
 const tests = process.argv.slice(3).filter((a) => /^\d+$/.test(a)).map(Number);
@@ -34,8 +34,8 @@ for (const s of SETS) {
   const page = await (await browser.newContext({ viewport: { width: s.w, height: s.h }, deviceScaleFactor: 1 })).newPage();
   const u = new URL(pathToFileURL(path.join(here, 'draw.html')));
   u.search = new URLSearchParams({ w: s.w, h: s.h, n: N, ku: s.ku,
-    start: pathToFileURL(path.join(film, s.set, 's10', 'f_121.webp')).href,
-    end: pathToFileURL(path.join(film, s.set, 's14', 'f_001.webp')).href }).toString();
+    start: pathToFileURL(path.join(film, s.dir || s.set, 's10', 'f_121.webp')).href,
+    end: pathToFileURL(path.join(film, s.dir || s.set, 's14', 'f_001.webp')).href }).toString();
   await page.goto(u.href);
   console.log(s.set, JSON.stringify(await page.evaluate(() => window.ready)));
   const dir = path.join(tmp, s.set); rmSync(dir, { recursive: true, force: true }); mkdirSync(dir, { recursive: true });
@@ -45,7 +45,7 @@ for (const s of SETS) {
   }
   await page.context().close();
   if (tests.length) continue;
-  const out = path.join(film, s.set, ID); rmSync(out, { recursive: true, force: true }); mkdirSync(out, { recursive: true });
+  const out = path.join(film, s.dir || s.set, ID); rmSync(out, { recursive: true, force: true }); mkdirSync(out, { recursive: true });
   execFileSync('ffmpeg', ['-v', 'error', '-y', '-start_number', '1', '-i', path.join(dir, 'f_%03d.png'), '-c:v', 'libwebp', '-compression_level', '6', '-quality', String(s.q), '-fps_mode', 'passthrough', path.join(out, 'f_%03d.webp')]);
   console.log(s.set, readdirSync(out).length, 'frames');
   rmSync(dir, { recursive: true, force: true });
