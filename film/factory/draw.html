@@ -2,8 +2,8 @@
 <!--
   "Tradition meets modern standards": the film's gold thread draws the factory.
   The pour of oil in the last frame of S10 becomes the thread; it runs along a bench and draws,
-  in one line, a jacketed vessel, capsules, a blister strip, an ointment tube, then a flask under a
-  burette (a drop falls and the flask fills: the lab test). The ground lightens into the first frame
+  in one line, a jacketed vessel, the capsule filler, the blister packer and the tube filler (each
+  with what it makes beside it), then a flask under a burette (a drop falls and the flask fills: the lab test). The ground lightens into the first frame
   of S14 and the thread is drawn through into the dot at Kozhikode, where the map's routes start.
   render.mjs steps this page frame by frame; open it with ?play to watch it.
   query: w, h (frame size), n (frames), start, end (the two joining frames), ku (where Kozhikode is
@@ -14,7 +14,7 @@
 <canvas id="c"></canvas>
 <script>
 const q = new URLSearchParams(location.search);
-const W = +q.get('w') || 1920, H = +q.get('h') || 1080, N = +q.get('n') || 216;
+const W = +q.get('w') || 1920, H = +q.get('h') || 1080, N = +q.get('n') || 288;
 const KU = +q.get('ku') || 0.795, KV = 0.62;
 const tall = H > W;
 const cv = document.getElementById('c'); cv.width = W; cv.height = H;
@@ -114,7 +114,18 @@ let x = X0 + 640 + 110;
     fill: [[[o + 46, y(-262)], [o + 414, y(-262)], [o + 414, y(-176)], [o + 404, y(-128)], [o + 356, y(-106)], [o + 230, y(-93)], [o + 104, y(-106)], [o + 56, y(-128)], [o + 46, y(-176)]]], fillA: 0.15 });
   x = o + 460 + 190;
 }
-// 2. capsules
+// a machine stands on the bench and the thread goes once round it
+const machine = (verts, left) => { to(left - 50, B); return loop(outline(verts), 0, left); };
+const box = (place, x0, y0, x1, y1) => [[x0, y0], [x1, y0], [x1, y1], [x0, y1], [x0, y0]].map(place);
+// 2. the capsule filler: a bed of capsules under a pressing plate, with its lever; then capsules
+{
+  const { place, right } = machine([[-150, 0, 6], [-150, -150, 6], [-178, -150, 4], [-178, -186, 6], [178, -186, 6], [178, -150, 4], [150, -150, 6], [150, 0, 6]], x);
+  const tops = []; for (let i = 0; i < 9; i++) { const a = []; for (let k = 0; k <= 12; k++) a.push(place([-140 + 35 * i + Math.cos(Math.PI * k / 12) * -11, -186 - Math.sin(Math.PI * k / 12) * 20])); tops.push(a); }
+  extras.push({ at: here(), lines: [...tops, box(place, -112, -122, 112, -26), [place([178, -168]), place([212, -168]), place([252, -296])], [place([-160, -186]), place([-160, -262])], [place([160, -186]), place([160, -262])]],
+    circles: [[...place([252, -308]), 12], [...place([90, -74]), 7]], fill: tops, fillA: 0.3,
+    draw: (m) => { const y = -236 + Math.sin(m) * 15; path(box(place, -172, y - 9, 172, y + 9)); g.stroke(); } });
+  x = right + 70;
+}
 for (const [h, deg, gap] of [[176, -16, 0], [208, 7, 34], [176, -9, 30]]) {
   x += gap;
   const s = stadium(62, h), { place, right } = loop(s, deg, x);
@@ -122,7 +133,19 @@ for (const [h, deg, gap] of [[176, -16, 0], [208, 7, 34], [176, -9, 30]]) {
   x = right;
 }
 x += 210;
-// 3. a blister strip
+// 3. the blister packer: foil off a reel, through the forming press, pockets out along the bed; then a strip
+{
+  const { place, right } = machine([[-250, 0, 6], [-250, -130, 8], [-100, -130, 6], [-100, -270, 10], [50, -270, 10], [50, -130, 6], [250, -130, 8], [250, 0, 6]], x);
+  const [rx, ry] = place([-178, -226]);
+  extras.push({ at: here(), lines: [[place([-178, -162]), place([-178, -130])], [place([-150, -284]), place([-100, -258])], box(place, -76, -246, 26, -172), [place([-250, -22]), place([250, -22])], [place([50, -143]), place([250, -143])], box(place, 150, -104, 222, -52)],
+    circles: [[rx, ry, 64], [rx, ry, 13], [...place([172, -78]), 6], [...place([200, -78]), 6]],
+    draw: (m) => {
+      for (let k = 0; k < 3; k++) { const a = m * 0.5 + k * Math.PI * 2 / 3; path([[rx + Math.cos(a) * 13, ry + Math.sin(a) * 13], [rx + Math.cos(a) * 64, ry + Math.sin(a) * 64]]); g.stroke(); }
+      const y = -214 + Math.sin(m) * 16; path([place([-76, y]), place([26, y])]); g.stroke(); path([place([-25, -246]), place([-25, y])]); g.stroke();
+      for (let k = 0; k < 4; k++) { const px = 62 + ((k * 47 + m * 7.5) % 188); path(stadium(26, 12).map(([a, b]) => place([a + px, b - 150]))); g.stroke(); }
+    } });
+  x = right + 70;
+}
 {
   to(x - 60, B);
   const { place, right } = loop(outline([[-160, -92, 22], [160, -92, 22], [160, 92, 22], [-160, 92, 22]]), -8, x);
@@ -131,7 +154,16 @@ x += 210;
   extras.push({ at: here(), polys: pockets, fill: pockets, fillA: 0.16 });
   x = right + 210;
 }
-// 4. an ointment tube
+// 4. the tube filler: a hopper over a nozzle, tubes standing on the turntable; then a tube
+{
+  const { place, right } = machine([[-150, 0, 6], [-150, -150, 8], [36, -150, 5], [36, -292, 6], [-34, -392, 8], [150, -392, 8], [84, -292, 6], [84, -150, 5], [150, -150, 8], [150, 0, 6]], x);
+  const tube = (tx) => [[tx - 11, -161], [tx + 11, -161], [tx + 11, -177], [tx + 15, -181], [tx + 18, -246], [tx - 18, -246], [tx - 15, -181], [tx - 11, -177], [tx - 11, -161]].map(place);
+  const [ex, ey] = place([-62, -152]);
+  extras.push({ at: here(), lines: [tube(-118), tube(-62), tube(-6), [place([36, -272]), place([-62, -272]), place([-62, -250])], box(place, -112, -112, -30, -40), [place([-6, -340]), place([122, -340])]],
+    circles: [[...place([90, -76]), 9]], fill: [[[-6, -340], [122, -340], [84, -294], [36, -294]].map(place)], fillA: 0.22,
+    draw: (m) => { g.beginPath(); g.ellipse(ex, ey, 84, 9, 0, 0, Math.PI * 2); g.stroke(); const d = (m * 0.35) % 1; g.beginPath(); g.arc(ex, ey - 98 + d * 14, 2.6, 0, Math.PI * 2); g.stroke(); } });
+  x = right + 70;
+}
 {
   to(x - 60, B);
   const { place, right } = loop(outline([[-19, -196, 6], [19, -196, 6], [19, -152, 4], [46, -122, 18], [76, 160, 7], [-76, 160, 7], [-46, -122, 18], [-19, -152, 4]]), 24, x);
@@ -244,6 +276,7 @@ function draw(f) {
     for (const l of e.lines || []) { path(l); g.stroke(); }
     for (const p of e.polys || []) { path(p); g.closePath(); g.stroke(); }
     for (const [cx, cy, r] of e.circles || []) { g.beginPath(); g.arc(cx, cy, r, 0, Math.PI * 2); g.stroke(); }
+    if (e.draw) e.draw(head / 130); // the machine's moving parts, turned by the pen's own travel
   }
   // the lab test: a drop leaves the burette, and the flask fills
   {

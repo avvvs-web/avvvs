@@ -12,7 +12,7 @@ import path from 'node:path';
 const require = createRequire(path.join(process.env.PW || process.cwd(), 'x.js'));
 const { chromium } = require('playwright-core');
 const here = path.dirname(fileURLToPath(import.meta.url)), root = path.join(here, '..', '..');
-const V = 'v3', N = 216, ID = 'factory';
+const V = 'v3', N = 288, ID = 'standard';
 const film = path.join(root, 'web', 'public', 'media', 'film', V);
 // Kozhikode is 0.795 across the full frame; the phone set is its middle 608 of 1920
 const SETS = [
