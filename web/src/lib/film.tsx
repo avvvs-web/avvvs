@@ -25,6 +25,7 @@ export interface Clip {
   weight: number;
   playShare?: number;
   frames: string; // its folder of frames in public/media/film/v3/<set>/ (see film/encode_frames.sh)
+  still?: number; // the frame shown when the film is laid out as a column (reduced motion); the first if not given
   alt: string; // what the clip shows, for screen readers and image search
   light?: boolean;
   heritage?: boolean; // the 1921 type plays over this clip
@@ -100,10 +101,12 @@ export const CLIPS: Clip[] = [
     cards: [{ in: 0.15, out: 0.95, content: (<><h2>Made with precision</h2><p>Prepared slowly, step by step, in tune with the original formula.</p></>) }],
   },
   {
-    // the pour blooms into light and comes out on the capsule grid
-    id: 's11', alt: 'The camera rises from the bottle into warm light, and a faint world map appears on ivory paper.', chapter: 'The standard', weight: 2.2, frames: 's11', light: true,
+    // the pour becomes the gold thread, which draws the factory in one line and is drawn through
+    // into the dot at Kozhikode on the map (film/factory/draw.html)
+    id: 'factory', alt: 'The stream of oil becomes a gold thread that draws, in one line, a stirred steel vessel, capsules, a blister strip, an ointment tube and a laboratory flask under a burette; a drop falls and the flask fills. The thread then runs out across a world map to Kozhikode.',
+    chapter: 'The standard', weight: 3.6, frames: 'factory', still: 150,
     cards: [
-      { in: 0.4, out: 0.95, content: (<><h2>Tradition meets modern standards</h2><p>At our GMP-certified manufacturing facility in Kozhikode, capsule, blister-packaging, ointment and cosmetic production lines operate alongside traditional manufacturing units, supported by stringent quality-control measures.</p></>) },
+      { in: 0.22, out: 0.8, content: (<><h2>Tradition meets modern standards</h2><p>At our GMP-certified manufacturing facility in Kozhikode, capsule, blister-packaging, ointment and cosmetic production lines operate alongside traditional manufacturing units, supported by stringent quality-control measures.</p></>) },
     ],
   },
   // gold routes run out from Kozhikode across the map, then the frame fades through white to the

@@ -10,6 +10,8 @@
 # Writes web/public/media/film/v3/<set>/<id>/f_001.webp ... and web/src/lib/film-frames.json.
 # The folder is versioned (v3) because it is served with a one-year immutable cache: after
 # re-encoding anything, bump V here, in FilmStage (FRAMES_BASE) and in next.config.ts.
+# The factory beat between S10 and S14 is not a clip: it is drawn and rendered by film/factory
+# (render.mjs writes its frames into the same sets; this script only counts them).
 # usage: sh film/encode_frames.sh            (all clips)   or   sh film/encode_frames.sh S05
 set -e
 cd "$(dirname "$0")/.."
@@ -54,7 +56,7 @@ if [ -n "$1" ]; then
   if [ "$1" = "b4-thread" ]; then thread; else one "$1"; fi
 else
   # four clips at a time
-  for group in "S01 S02 S03 S04" "S05 S06 S07 S09" "S10 S11 S14 b4-thread"; do
+  for group in "S01 S02 S03 S04" "S05 S06 S07 S09" "S10 S14 b4-thread"; do
     for id in $group; do if [ "$id" = "b4-thread" ]; then thread & else one "$id" & fi; done
     wait
   done

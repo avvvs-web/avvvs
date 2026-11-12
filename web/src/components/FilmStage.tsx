@@ -484,7 +484,7 @@ function Layer({ clip }: { clip: Clip }) {
       {/* the clip's still: only shown (and only loaded) when the film is laid out as a column, for reduced motion */}
       <div className="film-media">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img data-src={frameUrl('d', clip.frames, 0)} width={1280} height={720} alt={clip.alt} loading="lazy" decoding="async" />
+        <img data-src={frameUrl('d', clip.frames, clip.still ?? 0)} width={1280} height={720} alt={clip.alt} loading="lazy" decoding="async" />
       </div>
       <div className="film-cards">
         {clip.cards?.map((c, k) => (
@@ -499,7 +499,7 @@ function Layer({ clip }: { clip: Clip }) {
   );
 }
 
-const chapterId = (clip: Clip) => ({ forest: 'forest', s03: 'leaf', s05: 'knowledge', s06: 'heritage', thread: 'thread', s09: 'medicine', s11: 'precision' } as Record<string, string>)[clip.id];
+const chapterId = (clip: Clip) => ({ forest: 'forest', s03: 'leaf', s05: 'knowledge', s06: 'heritage', thread: 'thread', s09: 'medicine', factory: 'precision' } as Record<string, string>)[clip.id];
 
 // The film keeps only the moment: the year, the family, the years since. The full story is on /our-history.
 function HeritageType() {

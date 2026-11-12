@@ -1,0 +1,280 @@
+<!doctype html>
+<!--
+  "Tradition meets modern standards": the film's gold thread draws the factory.
+  The pour of oil in the last frame of S10 becomes the thread; it runs along a bench and draws,
+  in one line, a jacketed vessel, capsules, a blister strip, an ointment tube, then a flask under a
+  burette (a drop falls and the flask fills: the lab test). The ground lightens into the first frame
+  of S14 and the thread is drawn through into the dot at Kozhikode, where the map's routes start.
+  render.mjs steps this page frame by frame; open it with ?play to watch it.
+  query: w, h (frame size), n (frames), start, end (the two joining frames), ku (where Kozhikode is
+  across the frame; beyond 1 on the phone crop, so the thread leaves on the right)
+-->
+<meta charset="utf-8">
+<style>html, body { margin: 0; background: #000; overflow: hidden } canvas { display: block }</style>
+<canvas id="c"></canvas>
+<script>
+const q = new URLSearchParams(location.search);
+const W = +q.get('w') || 1920, H = +q.get('h') || 1080, N = +q.get('n') || 216;
+const KU = +q.get('ku') || 0.795, KV = 0.62;
+const tall = H > W;
+const cv = document.getElementById('c'); cv.width = W; cv.height = H;
+const g = cv.getContext('2d');
+
+// the world: the frame shows VW x VH units of it; the bench the thread runs along is at y = B
+const S = tall ? W / 770 : H / 1240;
+const VW = W / S, VH = H / S;
+const B = VH * (tall ? 0.52 : 0.56); // the film's card sits below it
+const FOCUS = tall ? 0.74 : 0.62; // where across the frame the pen is kept
+
+// ---- the line, as closely spaced points ----
+const P = [];
+const to = (x, y) => {
+  const a = P[P.length - 1];
+  if (!a) { P.push([x, y]); return; }
+  const d = Math.hypot(x - a[0], y - a[1]), k = Math.max(1, Math.ceil(d / 3));
+  for (let i = 1; i <= k; i++) P.push([a[0] + (x - a[0]) * i / k, a[1] + (y - a[1]) * i / k]);
+};
+const cubic = (x1, y1, x2, y2, x3, y3) => {
+  const [x0, y0] = P[P.length - 1];
+  for (let i = 1; i <= 60; i++) { const t = i / 60, u = 1 - t; to(u*u*u*x0 + 3*u*u*t*x1 + 3*u*t*t*x2 + t*t*t*x3, u*u*u*y0 + 3*u*u*t*y1 + 3*u*t*t*y2 + t*t*t*y3); }
+};
+const quad = (x1, y1, x2, y2) => { const [x0, y0] = P[P.length - 1]; cubic(x0 + (x1 - x0) * 2 / 3, y0 + (y1 - y0) * 2 / 3, x2 + (x1 - x2) * 2 / 3, y2 + (y1 - y2) * 2 / 3, x2, y2); };
+const here = () => P.length - 1; // index of the pen, to hang details on
+
+// a closed outline with rounded corners: [[x, y, radius], ...] -> points
+function outline(v) {
+  const out = [], n = v.length;
+  const push = (x, y) => { const a = out[out.length - 1]; if (!a) { out.push([x, y]); return; } const d = Math.hypot(x - a[0], y - a[1]), k = Math.max(1, Math.ceil(d / 3)); for (let i = 1; i <= k; i++) out.push([a[0] + (x - a[0]) * i / k, a[1] + (y - a[1]) * i / k]); };
+  for (let i = 0; i < n; i++) {
+    const [px, py] = v[(i + n - 1) % n], [x, y, r] = v[i], [nx, ny] = v[(i + 1) % n];
+    let ax = px - x, ay = py - y, bx = nx - x, by = ny - y;
+    const la = Math.hypot(ax, ay), lb = Math.hypot(bx, by); ax /= la; ay /= la; bx /= lb; by /= lb;
+    const phi = Math.acos(Math.max(-1, Math.min(1, ax * bx + ay * by)));
+    const d = Math.min(r / Math.tan(phi / 2), la / 2, lb / 2), rr = d * Math.tan(phi / 2);
+    const mx = ax + bx, my = ay + by, lm = Math.hypot(mx, my) || 1;
+    const cx = x + mx / lm * rr / Math.sin(phi / 2), cy = y + my / lm * rr / Math.sin(phi / 2);
+    let a0 = Math.atan2(y + ay * d - cy, x + ax * d - cx), a1 = Math.atan2(y + by * d - cy, x + bx * d - cx);
+    let da = a1 - a0; while (da > Math.PI) da -= 2 * Math.PI; while (da < -Math.PI) da += 2 * Math.PI;
+    const k = Math.max(4, Math.ceil(Math.abs(da) * rr / 2.5));
+    for (let j = 0; j <= k; j++) push(cx + Math.cos(a0 + da * j / k) * rr, cy + Math.sin(a0 + da * j / k) * rr);
+  }
+  push(out[0][0], out[0][1]);
+  return out;
+}
+
+// details that are not part of the one line: they come up once the pen has passed `at`
+const extras = [];
+// the thread loops once round a shape that stands on the bench at its lowest point.
+// returns the map from the shape's own coordinates to the world, for its details
+function loop(shape, deg, left) {
+  const a = deg * Math.PI / 180, c = Math.cos(a), s = Math.sin(a);
+  let pts = shape.map(([x, y]) => [x * c - y * s, x * s + y * c]);
+  let minX = Infinity, maxY = -Infinity;
+  for (const p of pts) { minX = Math.min(minX, p[0]); maxY = Math.max(maxY, p[1]); }
+  const low = pts.map((p, i) => [p[0], i]).filter(([, i]) => pts[i][1] > maxY - 0.05).sort((m, n) => m[0] - n[0]);
+  const i0 = low[low.length >> 1][1];
+  const dx = left - minX, dy = B - maxY;
+  const place = ([x, y]) => [x * c - y * s + dx, x * s + y * c + dy];
+  pts = pts.slice(0, -1); // the closing point repeats the first
+  const n = pts.length, fwd = pts[(i0 + 4) % n][0] > pts[i0][0] ? 1 : -1;
+  to(pts[i0][0] + dx, B);
+  for (let k = 1; k <= n; k++) { const p = pts[(i0 + fwd * k + n * 2) % n]; P.push([p[0] + dx, p[1] + dy]); }
+  let maxX = -Infinity; for (const p of pts) maxX = Math.max(maxX, p[0] + dx);
+  return { place, right: maxX };
+}
+const stadium = (w, h) => outline([[-w / 2, -h / 2, w / 2], [w / 2, -h / 2, w / 2], [w / 2, h / 2, w / 2], [-w / 2, h / 2, w / 2]]);
+
+// ---- the journey ----
+const X0 = -0.005 * VW;             // the pour, in the last frame of S10
+to(X0, VH * 0.93); to(X0, VH * 0.17);
+cubic(X0, VH * 0.0, X0 + 330, B, X0 + 640, B); // it leaves the bowl's lip as the thread and comes down to the bench
+let x = X0 + 640 + 110;
+
+// 1. the jacketed vessel: in by one leg, round the tank and its stirrer motor, the jacket, out by the other
+{
+  const o = x, y = (v) => B + v; to(o, B); to(o + 62, B);
+  to(o + 104, y(-104));
+  quad(o + 230, y(-80), o + 356, y(-104));
+  quad(o + 408, y(-118), o + 416, y(-176)); to(o + 416, y(-350));
+  quad(o + 412, y(-410), o + 246, y(-424));
+  to(o + 246, y(-462)); to(o + 268, y(-462)); to(o + 268, y(-528)); to(o + 192, y(-528)); to(o + 192, y(-462)); to(o + 214, y(-462)); to(o + 214, y(-424));
+  quad(o + 48, y(-410), o + 44, y(-350)); to(o + 44, y(-176));
+  quad(o + 52, y(-118), o + 104, y(-104));
+  const at = here();
+  quad(o + 230, y(-30), o + 356, y(-104));
+  to(o + 398, B); to(o + 460, B);
+  extras.push({ at, lines: [
+    [[o + 44, y(-350)], [o + 416, y(-350)]],                       // the lid's flange
+    [[o + 230, y(-424)], [o + 230, y(-170)]],                      // the stirrer's shaft
+    [[o + 176, y(-300)], [o + 284, y(-300)]], [[o + 164, y(-200)], [o + 296, y(-200)]], // and its blades
+    [[o + 340, y(-416)], [o + 340, y(-452)]],                      // a gauge on the lid
+    [[o + 192, y(-495)], [o + 268, y(-495)]],
+  ], circles: [[o + 340, y(-470), 18]],
+    // what is in it
+    fill: [[[o + 46, y(-262)], [o + 414, y(-262)], [o + 414, y(-176)], [o + 404, y(-128)], [o + 356, y(-106)], [o + 230, y(-93)], [o + 104, y(-106)], [o + 56, y(-128)], [o + 46, y(-176)]]], fillA: 0.15 });
+  x = o + 460 + 190;
+}
+// 2. capsules
+for (const [h, deg, gap] of [[176, -16, 0], [208, 7, 34], [176, -9, 30]]) {
+  x += gap;
+  const s = stadium(62, h), { place, right } = loop(s, deg, x);
+  extras.push({ at: here(), lines: [[place([-31, 0]), place([31, 0])]], fill: [s.filter((p) => p[1] >= 0).map(place)], fillA: 0.2 });
+  x = right;
+}
+x += 210;
+// 3. a blister strip
+{
+  to(x - 60, B);
+  const { place, right } = loop(outline([[-160, -92, 22], [160, -92, 22], [160, 92, 22], [-160, 92, 22]]), -8, x);
+  const pockets = [];
+  for (const py of [-40, 40]) for (const px of [-105, -35, 35, 105]) pockets.push(stadium(26, 56).map(([a, b]) => place([a + px, b + py])));
+  extras.push({ at: here(), polys: pockets, fill: pockets, fillA: 0.16 });
+  x = right + 210;
+}
+// 4. an ointment tube
+{
+  to(x - 60, B);
+  const { place, right } = loop(outline([[-19, -196, 6], [19, -196, 6], [19, -152, 4], [46, -122, 18], [76, 160, 7], [-76, 160, 7], [-46, -122, 18], [-19, -152, 4]]), 24, x);
+  extras.push({ at: here(), lines: [[place([-73, 132]), place([73, 132])], [place([-74, 144]), place([74, 144])], [place([-19, -152]), place([19, -152])], [place([-19, -167]), place([19, -167])], [place([-19, -181]), place([19, -181])]] });
+  x = right + 230;
+}
+// 5. the lab: a flask, then the stand and the burette over it
+let LAB;
+{
+  to(x - 60, B);
+  const { place, right } = loop(outline([[-22, -236, 5], [22, -236, 5], [22, -150, 22], [112, 0, 26], [-112, 0, 26], [-22, -150, 22]]), 0, x);
+  const [fx] = place([0, 0]);
+  const level = B - 74;
+  const liquid = [[-66, -74], [66, -74], [100, -17], [96, -5], [86, -1.5], [-86, -1.5], [-96, -5], [-100, -17]].map(place);
+  const rod = right + 86, arm = B - 468, top = B - 606, tip = B - 296;
+  to(rod, B); to(rod, arm + 26); quad(rod, arm, rod - 26, arm); to(fx + 9, arm);
+  to(fx + 9, top); to(fx - 9, top); to(fx - 9, tip + 44); to(fx, tip); to(fx + 9, tip + 44);
+  const drop = here();
+  to(fx + 9, arm);
+  const ticks = []; for (let ty = top + 30; ty < tip + 30; ty += 26) ticks.push([[fx - 9, ty], [fx - 1, ty]]);
+  extras.push({ at: drop, lines: ticks });
+  cubic(fx + 170, B - 720, rod + 190, B, rod + 420, B);
+  LAB = { fx, tip, level, liquid, drop, cx: fx + 40 };
+  x = rod + 420;
+}
+// on to Kozhikode on the map
+const END = { x: x + (tall ? 520 : 760), y: VH * KV };
+{ const [x0, y0] = P[P.length - 1]; to(x0 + 60, y0); cubic(x0 + 60 + (END.x - x0 - 60) * 0.45, y0, END.x - (END.x - x0 - 60) * 0.4, END.y, END.x, END.y); }
+
+// lengths along the line
+const L = [0]; for (let i = 1; i < P.length; i++) L.push(L[i - 1] + Math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1]));
+const TOTAL = L[L.length - 1];
+const idx = (s) => { let a = 0, b = L.length - 1; while (a < b) { const m = (a + b) >> 1; if (L[m] < s) a = m + 1; else b = m; } return a; };
+
+// ---- time ----
+const clamp = (v) => Math.max(0, Math.min(1, v));
+const smooth = (a, b, v) => { const t = clamp((v - a) / (b - a)); return t * t * (3 - 2 * t); };
+// the pen: it eases off at the lab, where the drop falls, and comes to rest at Kozhikode
+const HEAD = [], TAIL = [], CAM = [];
+{
+  const sDrop = L[LAB.drop];
+  const pace = (s) => 0.32 + 0.68 * (1 - smooth(sDrop - 500, sDrop - 80, s) * (1 - smooth(sDrop + 260, sDrop + 900, s)));
+  const T0 = 0.015, T1 = 0.88, steps = 4000; // integrate 1/pace so the pen arrives exactly at T1
+  const tAt = [0]; for (let i = 1; i <= steps; i++) tAt.push(tAt[i - 1] + 1 / pace((i - 0.5) / steps * TOTAL));
+  for (let f = 0; f < N; f++) {
+    const t = f / (N - 1);
+    let u = clamp((t - T0) / (T1 - T0)); u = u * u * (3 - 2 * u) * 0.35 + u * 0.65; // a soft start and finish
+    const want = u * tAt[steps]; let i = 0; while (i < steps && tAt[i] < want) i++;
+    HEAD.push(i / steps * TOTAL);
+    const v = clamp((t - 0.7) / (0.975 - 0.7)); TAIL.push(TOTAL * v * v * (3 - 2 * v) * v);
+  }
+  // the camera follows the furthest the pen has been, and settles so the map sits square in the frame
+  const cEnd = END.x - (KU - 0.5) * VW, runFrom = L[L.length - 1] - (TOTAL - L[idx(TOTAL) - 1]) - Math.hypot(END.x - x, 1) * 1.1;
+  let far = X0, cam = 0;
+  for (let f = 0; f < N; f++) {
+    far = Math.max(far, P[idx(HEAD[f])][0]);
+    const k = smooth(runFrom, TOTAL, HEAD[f]);
+    const target = Math.max(0, far - ((FOCUS + (KU - FOCUS) * k) - 0.5) * VW);
+    cam += (Math.min(target, cEnd) - cam) * 0.11;
+    const lock = smooth(0.78, 0.93, f / (N - 1));
+    CAM.push(cam + (cEnd - cam) * lock);
+  }
+  CAM.cEnd = cEnd;
+}
+
+// ---- drawing ----
+const img = (src) => new Promise((ok) => { if (!src) return ok(null); const i = new Image(); i.onload = () => ok(i); i.onerror = () => ok(null); i.src = src; });
+let START, FINISH;
+const mix = (a, b, t) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
+const rgba = (c, a) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
+const path = (pts, a = 0, b = pts.length - 1) => { g.beginPath(); g.moveTo(pts[a][0], pts[a][1]); for (let i = a + 1; i <= b; i++) g.lineTo(pts[i][0], pts[i][1]); };
+
+function draw(f) {
+  const t = f / (N - 1), head = HEAD[f], tail = TAIL[f], cam = CAM[f];
+  const paper = smooth(0.855, 0.975, t);           // the ground lightens into the map
+  const photo = 1 - smooth(0.05, 0.25, t);        // the bottle goes down into the dark
+  g.setTransform(1, 0, 0, 1, 0, 0);
+  g.fillStyle = '#070504'; g.fillRect(0, 0, W, H);
+  // a little warmth round the pen, as in the thread shot
+  const hi = idx(head), [hx, hy] = P[hi];
+  g.setTransform(S, 0, 0, S, (VW / 2 - cam) * S, 0);
+  if (photo < 1 && paper < 1) {
+    const r = g.createRadialGradient(hx, hy, 0, hx, hy, 520);
+    r.addColorStop(0, 'rgba(120,84,36,0.16)'); r.addColorStop(1, 'rgba(120,84,36,0)');
+    g.fillStyle = r; g.fillRect(cam - VW / 2, 0, VW, VH);
+  }
+  if (START && photo > 0) {
+    g.globalAlpha = photo; g.drawImage(START, -VW / 2, 0, VW, VH); g.globalAlpha = 1;
+    // its right edge goes off into the dark as the frame moves on
+    const e = g.createLinearGradient(VW / 2 - VW * 0.4, 0, VW / 2, 0);
+    e.addColorStop(0, 'rgba(7,5,4,0)'); e.addColorStop(1, `rgba(7,5,4,${smooth(0, VW * 0.08, cam)})`);
+    g.fillStyle = e; g.fillRect(VW / 2 - VW * 0.4, 0, VW * 0.4 + 2, VH);
+  }
+  if (FINISH && paper > 0) {
+    g.globalAlpha = paper; g.fillStyle = '#ede4cd'; g.fillRect(cam - VW / 2 - 1, 0, CAM.cEnd - cam + 2, VH); // paper, where the map has not reached yet
+    g.drawImage(FINISH, CAM.cEnd - VW / 2, 0, VW, VH); g.globalAlpha = 1;
+  }
+  if (f === 0 || f === N - 1) return;             // the joins are the neighbours' own frames
+
+  const core = mix([236, 207, 146], [158, 122, 48], paper), halo = mix([214, 170, 90], [168, 133, 63], paper);
+  const up = smooth(0, 0.06, t);                  // the thread comes up out of the oil
+  g.lineJoin = 'round'; g.lineCap = 'round';
+  const ti = idx(tail);
+  // details
+  for (const e of extras) {
+    const a = smooth(L[e.at], L[e.at] + 520, head) * (1 - smooth(L[e.at] - 700, L[e.at] - 100, tail));
+    if (a <= 0) continue;
+    if (e.fill) { g.fillStyle = rgba(halo, (e.fillA || 0.2) * a); for (const p of e.fill) { path(p); g.closePath(); g.fill(); } }
+    g.strokeStyle = rgba(core, 0.66 * a); g.lineWidth = tall ? 1.7 : 2;
+    for (const l of e.lines || []) { path(l); g.stroke(); }
+    for (const p of e.polys || []) { path(p); g.closePath(); g.stroke(); }
+    for (const [cx, cy, r] of e.circles || []) { g.beginPath(); g.arc(cx, cy, r, 0, Math.PI * 2); g.stroke(); }
+  }
+  // the lab test: a drop leaves the burette, and the flask fills
+  {
+    const s0 = L[LAB.drop], gone = 1 - smooth(s0 - 900, s0 - 200, tail);
+    const fall = clamp((head - s0 - 20) / 330), filled = smooth(s0 + 300, s0 + 1100, head);
+    if (gone > 0) {
+      if (head > s0 - 200) { g.strokeStyle = rgba(core, 0.5 * gone * smooth(s0 - 200, s0 + 100, head)); g.lineWidth = 1.4; path([LAB.liquid[0], LAB.liquid[1]]); g.stroke(); }
+      if (filled > 0) { g.fillStyle = rgba(halo, 0.34 * filled * gone); path(LAB.liquid); g.closePath(); g.fill(); }
+      if (fall > 0 && fall < 1) {
+        const y = LAB.tip + 10 + (LAB.level - LAB.tip - 10) * fall * fall;
+        g.fillStyle = rgba(core, gone); g.beginPath(); g.arc(LAB.fx, y, 5.5, 0, Math.PI * 2); g.fill();
+        g.fillStyle = rgba(halo, 0.25 * gone); g.beginPath(); g.arc(LAB.fx, y, 13, 0, Math.PI * 2); g.fill();
+      }
+      const ring = clamp((head - s0 - 350) / 520);
+      if (ring > 0 && ring < 1) { g.strokeStyle = rgba(core, 0.7 * (1 - ring) * gone); g.lineWidth = 1.3; g.beginPath(); g.ellipse(LAB.fx, LAB.level, 10 + 52 * ring, 2 + 5 * ring, 0, 0, Math.PI * 2); g.stroke(); }
+    }
+  }
+  // the thread
+  if (hi > ti) {
+    path(P, ti, hi);
+    g.strokeStyle = rgba(halo, 0.13 * up * (1 - paper)); g.lineWidth = 11; g.stroke();
+    g.strokeStyle = rgba(halo, 0.2 * up * (1 - paper * 0.7)); g.lineWidth = 5.5; g.stroke();
+    g.strokeStyle = rgba(core, up); g.lineWidth = tall ? 2.8 : 3.2; g.stroke();
+    // the pen's bright end
+    const tipA = up * (1 - smooth(0.955, 0.985, t));
+    g.fillStyle = rgba(halo, 0.22 * tipA); g.beginPath(); g.arc(hx, hy, 15, 0, Math.PI * 2); g.fill();
+    g.fillStyle = rgba(mix([255, 236, 190], [150, 112, 40], paper), tipA); g.beginPath(); g.arc(hx, hy, 4.2, 0, Math.PI * 2); g.fill();
+  }
+}
+
+window.ready = Promise.all([img(q.get('start')), img(q.get('end'))]).then(([a, b]) => { START = a; FINISH = b; draw(0); return { frames: N, length: Math.round(TOTAL), width: Math.round(END.x) }; });
+window.draw = draw;
+if (q.has('play')) window.ready.then(() => { let f = 0; setInterval(() => { draw(f); f = (f + 1) % N; }, 1000 / 24); });
+</script>
