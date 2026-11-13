@@ -71,35 +71,35 @@ export function Ecosystem() {
       </div>
       <ul className="eco-list">
         <li className="dest" data-dest="0">
-          <AvvvsMark height={56} className="dest-logo" alt="" />
+          <Link href="/manufacturing" className="dest-logo-link" tabIndex={-1} aria-hidden="true"><AvvvsMark height={56} className="dest-logo" alt="" /></Link>
           <h3>Manufacturing Division</h3>
           <p>Classical and proprietary medicines manufactured at our GMP-certified facility, alongside third-party and white-label manufacturing services for your brand.</p>
           <Link href="/manufacturing">See the factory floor</Link>
         </li>
         <li className="dest" data-dest="1">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/brand/ayur-specialty-clinics.webp" width={175} height={56} className="dest-logo" alt="" loading="lazy" decoding="async" />
+          <a href="https://clinic.avvvs.com/" rel="noopener" className="dest-logo-link" tabIndex={-1} aria-hidden="true"><img src="/brand/ayur-specialty-clinics.webp" width={175} height={56} className="dest-logo" alt="" loading="lazy" decoding="async" /></a>
           <h3>AVVVS Ayur Specialty Clinic</h3>
           <p>The first clinical venture under AVVVS, offering specialised care for headaches, chronic pain, obesity, lifestyle disorders, fertility, skin and hair concerns, and maternal health.</p>
           <a href="https://clinic.avvvs.com/" rel="noopener">Visit the clinic</a>
         </li>
         <li className="dest" data-dest="2">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/brand/gloveda.webp" width={224} height={56} className="dest-logo" alt="" loading="lazy" decoding="async" />
+          <a href="https://glovedaherbals.com/" rel="noopener" className="dest-logo-link" tabIndex={-1} aria-hidden="true"><img src="/brand/gloveda.webp" width={224} height={56} className="dest-logo" alt="" loading="lazy" decoding="async" /></a>
           <h3>Gloveda Herbals</h3>
           <p>Our Ayurvedic skincare and haircare range, rooted in nature and generations of wisdom.</p>
           <a href="https://glovedaherbals.com/" rel="noopener">See the Gloveda range</a>
         </li>
         <li className="dest" data-dest="3">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/brand/gloveda-experience.webp" width={167} height={76} className="dest-logo dest-logo-tall" alt="" loading="lazy" decoding="async" />
+          <a href="#enquire" data-topic="experience" className="dest-logo-link" tabIndex={-1} aria-hidden="true"><img src="/brand/gloveda-experience.webp" width={167} height={76} className="dest-logo dest-logo-tall" alt="" loading="lazy" decoding="async" /></a>
           <h3>Gloveda Experience</h3>
           <p>A chain of luxury Ayur-Medi cosmetic clinics bringing over a century of Ayurvedic medical expertise to standalone destinations, five-star properties and high-end Ayurvedic resorts.</p>
           <a href="#enquire" data-topic="experience">Bring Gloveda Experience to your property</a>
         </li>
         <li className="dest" data-dest="4">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/brand/gloveda-revive.webp" width={118} height={76} className="dest-logo dest-logo-tall" alt="" loading="lazy" decoding="async" />
+          <a href="#enquire" data-topic="revive" className="dest-logo-link" tabIndex={-1} aria-hidden="true"><img src="/brand/gloveda-revive.webp" width={118} height={76} className="dest-logo dest-logo-tall" alt="" loading="lazy" decoding="async" /></a>
           <h3>Gloveda Revive</h3>
           <p>A chain of Ayur-Medi cosmetic clinics combining traditional Ayurvedic care with modern skin and hair treatments, operating as standalone clinics or within established premium Ayurvedic hospitals and treatment centres.</p>
           <a href="#enquire" data-topic="revive">Partner with Gloveda Revive</a>
