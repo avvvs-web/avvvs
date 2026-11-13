@@ -19,7 +19,7 @@ export const STATIONS: Station[] = [
     text: 'Ointments are manufactured and filled in-house.' },
   { img: 'capsule-filler', w: 1024, h: 1536, alt: 'A capsule filling machine: a steel dosing head with glass panels over a ring plate drilled with rows of capsule holes.', title: 'Capsules',
     text: 'Formulations are filled into capsules on our own capsulation machinery.' },
-  { img: 'blister', w: 1300, h: 1010, alt: 'A worker at a blister packing machine as filled strips run down the chute into a crate.', title: 'Blister packing',
+  { img: 'blister-packing', w: 1423, h: 1105, alt: 'A worker in a mask at a blister packing machine as strips of pink capsules run down the conveyor into a crate.', title: 'Blister packing',
     text: 'Capsules are sealed into blister strips on the line.' },
   { img: 'capseal', w: 1300, h: 867, alt: 'White bottles moving under a cap sealing machine on a conveyor.', title: 'Sealing',
     text: 'Bottles are capped and sealed before packing.' },
