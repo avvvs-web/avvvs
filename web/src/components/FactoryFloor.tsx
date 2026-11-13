@@ -13,7 +13,7 @@ export const STATIONS: Station[] = [
     text: 'Herbs are sourced and stored before they reach the floor. AVVVS also keeps herbal gardens around its manufacturing units, for raw material and to conserve biodiversity.' },
   { img: 'vessels-hall', w: 1446, h: 1087, alt: 'A row of large round steel vessels with lids, on steel legs, in a bright traditional preparation hall.', title: 'Traditional preparation',
     text: 'Classical preparations are made in traditional mechanised units, run by trained and experienced staff.' },
-  { img: 'tanks', w: 1300, h: 867, alt: 'Two jacketed steel process tanks with a service stair and control panels.', title: 'Modern processing',
+  { img: 'process-tanks', w: 1536, h: 1024, alt: 'Two jacketed stainless steel process tanks with stirrer motors, a service stair and control panels.', title: 'Modern processing',
     text: 'Modern machinery stands alongside the traditional units.' },
   { img: 'ointment', w: 1300, h: 1024, alt: 'A worker operates an ointment filling machine fed from a steel hopper.', title: 'Ointments',
     text: 'Ointments are manufactured and filled in-house.' },
