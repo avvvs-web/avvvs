@@ -9,7 +9,7 @@ export interface Station { img: string; w: number; h: number; alt: string; title
 // AVVVS's own factory photographs from avvvs.com, warm-graded (approved 2026-11-07).
 // Each line restates what avvvs.com says about the factory.
 export const STATIONS: Station[] = [
-  { img: 'raw', w: 1300, h: 867, alt: 'Sacks of raw material and stacked cartons under the factory\'s store shed.', title: 'Raw materials',
+  { img: 'raw-store', w: 1536, h: 1024, alt: 'Sacks of raw material on pallets and tied stacks of cartons in the factory\'s store shed.', title: 'Raw materials',
     text: 'Herbs are sourced and stored before they reach the floor. AVVVS also keeps herbal gardens around its manufacturing units, for raw material and to conserve biodiversity.' },
   { img: 'vessels', w: 1300, h: 978, alt: 'A row of large open steel vessels in a traditional preparation hall.', title: 'Traditional preparation',
     text: 'Classical preparations are made in traditional mechanised units, run by trained and experienced staff.' },
