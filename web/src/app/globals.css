@@ -250,8 +250,11 @@ html.menu-open { overflow: hidden; }
   list-style: none; margin: 0; padding: 64px 0 0; position: relative; z-index: 3;
   display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(20px, 2.4vw, 44px);
 }
-.dest { display: grid; gap: 10px; align-content: start; }
-.dest-logo { display: block; height: 56px; width: auto; max-width: 100%; justify-self: start; margin-bottom: 6px; }
+.dest { display: grid; gap: 10px; align-content: start; grid-template-rows: 80px; } /* the logos sit on one line, so the titles line up */
+/* sized by height, never squeezed: in narrow columns the logo shrinks whole */
+.dest-logo { display: block; width: auto; height: auto; max-height: 56px; max-width: 100%; object-fit: contain; justify-self: start; align-self: end; margin-bottom: 6px; }
+/* the two Gloveda clinic logos are stacked (mark over name), so they stand a little taller */
+.dest-logo-tall { max-height: 74px; }
 .dest h3 { font-size: clamp(1.25rem, 0.95rem + 0.75vw, 1.75rem); line-height: 1.1; }
 .dest p { font-size: 0.95rem; }
 .dest a { justify-self: start; }

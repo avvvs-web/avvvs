@@ -91,11 +91,15 @@ export function Ecosystem() {
           <a href="https://glovedaherbals.com/" rel="noopener">See the Gloveda range</a>
         </li>
         <li className="dest" data-dest="3">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/brand/gloveda-experience.webp" width={167} height={76} className="dest-logo dest-logo-tall" alt="" loading="lazy" decoding="async" />
           <h3>Gloveda Experience</h3>
           <p>A chain of luxury Ayur-Medi cosmetic clinics bringing over a century of Ayurvedic medical expertise to standalone destinations, five-star properties and high-end Ayurvedic resorts.</p>
           <a href="#enquire" data-topic="experience">Bring Gloveda Experience to your property</a>
         </li>
         <li className="dest" data-dest="4">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/brand/gloveda-revive.webp" width={118} height={76} className="dest-logo dest-logo-tall" alt="" loading="lazy" decoding="async" />
           <h3>Gloveda Revive</h3>
           <p>A chain of Ayur-Medi cosmetic clinics combining traditional Ayurvedic care with modern skin and hair treatments, operating as standalone clinics or within established premium Ayurvedic hospitals and treatment centres.</p>
           <a href="#enquire" data-topic="revive">Partner with Gloveda Revive</a>
