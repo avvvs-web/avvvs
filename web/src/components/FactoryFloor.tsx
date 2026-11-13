@@ -17,7 +17,7 @@ export const STATIONS: Station[] = [
     text: 'Modern machinery stands alongside the traditional units.' },
   { img: 'ointment-filling', w: 1415, h: 1112, alt: 'A worker in a cap, mask and gloves at an ointment filling machine fed from a steel hopper, beside a large steel mixing tank.', title: 'Ointments',
     text: 'Ointments are manufactured and filled in-house.' },
-  { img: 'capsule-plate', w: 1300, h: 1950, alt: 'Close-up of a capsule filling machine\'s ring plate.', title: 'Capsules',
+  { img: 'capsule-filler', w: 1024, h: 1536, alt: 'A capsule filling machine: a steel dosing head with glass panels over a ring plate drilled with rows of capsule holes.', title: 'Capsules',
     text: 'Formulations are filled into capsules on our own capsulation machinery.' },
   { img: 'blister', w: 1300, h: 1010, alt: 'A worker at a blister packing machine as filled strips run down the chute into a crate.', title: 'Blister packing',
     text: 'Capsules are sealed into blister strips on the line.' },
