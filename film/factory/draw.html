@@ -2,7 +2,7 @@
 <!--
   "Tradition meets modern standards": the film's gold thread draws the factory.
   The pour of oil in the last frame of S10 becomes the thread; it runs along a bench and draws,
-  in one line, a jacketed vessel, the capsule filler, the blister packer and the tube filler (each
+  in one line, then fills in as shaded metal, glass and gelatin: a jacketed vessel, the capsule filler, the blister packer and the tube filler (each
   with what it makes beside it), then a flask under a burette (a drop falls and the flask fills: the lab test). The ground lightens into the first frame
   of S14 and the thread is drawn through into the dot at Kozhikode, where the map's routes start.
   render.mjs steps this page frame by frame; open it with ?play to watch it.
@@ -64,6 +64,16 @@ function outline(v) {
 
 // details that are not part of the one line: they come up once the pen has passed `at`
 const extras = [];
+// the solid body inside each outline the thread closes: shaded metal, glass, foil or gelatin,
+// lit from the upper left, with a soft reflection on the bench. It fills in once the outline is done.
+const bodies = [];
+const body = (at, pts, kind, more = {}) => {
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  for (const [x, y] of pts) { x0 = Math.min(x0, x); y0 = Math.min(y0, y); x1 = Math.max(x1, x); y1 = Math.max(y1, y); }
+  let seed = bodies.length * 7919 + 17; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  const grain = []; for (let i = 0; i < 70; i++) grain.push([rnd(), rnd(), rnd()]);
+  bodies.push({ at, pts, kind, box: [x0, y0, x1, y1], grain, ...more });
+};
 // the thread loops once round a shape that stands on the bench at its lowest point.
 // returns the map from the shape's own coordinates to the world, for its details
 function loop(shape, deg, left) {
@@ -80,7 +90,7 @@ function loop(shape, deg, left) {
   to(pts[i0][0] + dx, B);
   for (let k = 1; k <= n; k++) { const p = pts[(i0 + fwd * k + n * 2) % n]; P.push([p[0] + dx, p[1] + dy]); }
   let maxX = -Infinity; for (const p of pts) maxX = Math.max(maxX, p[0] + dx);
-  return { place, right: maxX };
+  return { place, right: maxX, world: pts.map((p) => [p[0] + dx, p[1] + dy]) };
 }
 const stadium = (w, h) => outline([[-w / 2, -h / 2, w / 2], [w / 2, -h / 2, w / 2], [w / 2, h / 2, w / 2], [-w / 2, h / 2, w / 2]]);
 
@@ -94,6 +104,7 @@ let x = X0 + 640 + 110;
 {
   const o = x, y = (v) => B + v; to(o, B); to(o + 62, B);
   to(o + 104, y(-104));
+  const tank = here();
   quad(o + 230, y(-80), o + 356, y(-104));
   quad(o + 408, y(-118), o + 416, y(-176)); to(o + 416, y(-350));
   quad(o + 412, y(-410), o + 246, y(-424));
@@ -101,6 +112,7 @@ let x = X0 + 640 + 110;
   quad(o + 48, y(-410), o + 44, y(-350)); to(o + 44, y(-176));
   quad(o + 52, y(-118), o + 104, y(-104));
   const at = here();
+  body(at, P.slice(tank, at + 1), 'steel');
   quad(o + 230, y(-30), o + 356, y(-104));
   to(o + 398, B); to(o + 460, B);
   extras.push({ at, lines: [
@@ -115,7 +127,7 @@ let x = X0 + 640 + 110;
   x = o + 460 + 190;
 }
 // a machine stands on the bench and the thread goes once round it
-const machine = (verts, left) => { to(left - 50, B); return loop(outline(verts), 0, left); };
+const machine = (verts, left) => { to(left - 50, B); const m = loop(outline(verts), 0, left); body(here(), m.world, 'machine'); return m; };
 const box = (place, x0, y0, x1, y1) => [[x0, y0], [x1, y0], [x1, y1], [x0, y1], [x0, y0]].map(place);
 // 2. the capsule filler: a bed of capsules under a pressing plate, with its lever; then capsules
 {
@@ -128,7 +140,8 @@ const box = (place, x0, y0, x1, y1) => [[x0, y0], [x1, y0], [x1, y1], [x0, y1], 
 }
 for (const [h, deg, gap] of [[176, -16, 0], [208, 7, 34], [176, -9, 30]]) {
   x += gap;
-  const s = stadium(62, h), { place, right } = loop(s, deg, x);
+  const s = stadium(62, h), { place, right, world } = loop(s, deg, x);
+  body(here(), world, 'capsule', { cap: s.filter((p) => p[1] <= 0).map(place) });
   extras.push({ at: here(), lines: [[place([-31, 0]), place([31, 0])]], fill: [s.filter((p) => p[1] >= 0).map(place)], fillA: 0.2 });
   x = right;
 }
@@ -148,9 +161,10 @@ x += 210;
 }
 {
   to(x - 60, B);
-  const { place, right } = loop(outline([[-160, -92, 22], [160, -92, 22], [160, 92, 22], [-160, 92, 22]]), -8, x);
+  const { place, right, world } = loop(outline([[-160, -92, 22], [160, -92, 22], [160, 92, 22], [-160, 92, 22]]), -8, x);
   const pockets = [];
   for (const py of [-40, 40]) for (const px of [-105, -35, 35, 105]) pockets.push(stadium(26, 56).map(([a, b]) => place([a + px, b + py])));
+  body(here(), world, 'foil', { pockets });
   extras.push({ at: here(), polys: pockets, fill: pockets, fillA: 0.16 });
   x = right + 210;
 }
@@ -166,7 +180,8 @@ x += 210;
 }
 {
   to(x - 60, B);
-  const { place, right } = loop(outline([[-19, -196, 6], [19, -196, 6], [19, -152, 4], [46, -122, 18], [76, 160, 7], [-76, 160, 7], [-46, -122, 18], [-19, -152, 4]]), 24, x);
+  const { place, right, world } = loop(outline([[-19, -196, 6], [19, -196, 6], [19, -152, 4], [46, -122, 18], [76, 160, 7], [-76, 160, 7], [-46, -122, 18], [-19, -152, 4]]), 24, x);
+  body(here(), world, 'tube', { label: [[-58, -40], [62, -40], [66, 70], [-62, 70]].map(place) });
   extras.push({ at: here(), lines: [[place([-73, 132]), place([73, 132])], [place([-74, 144]), place([74, 144])], [place([-19, -152]), place([19, -152])], [place([-19, -167]), place([19, -167])], [place([-19, -181]), place([19, -181])]] });
   x = right + 230;
 }
@@ -174,7 +189,8 @@ x += 210;
 let LAB;
 {
   to(x - 60, B);
-  const { place, right } = loop(outline([[-22, -236, 5], [22, -236, 5], [22, -150, 22], [112, 0, 26], [-112, 0, 26], [-22, -150, 22]]), 0, x);
+  const { place, right, world } = loop(outline([[-22, -236, 5], [22, -236, 5], [22, -150, 22], [112, 0, 26], [-112, 0, 26], [-22, -150, 22]]), 0, x);
+  body(here(), world, 'glass');
   const [fx] = place([0, 0]);
   const level = B - 74;
   const liquid = [[-66, -74], [66, -74], [100, -17], [96, -5], [86, -1.5], [-86, -1.5], [-96, -5], [-100, -17]].map(place);
@@ -182,6 +198,7 @@ let LAB;
   to(rod, B); to(rod, arm + 26); quad(rod, arm, rod - 26, arm); to(fx + 9, arm);
   to(fx + 9, top); to(fx - 9, top); to(fx - 9, tip + 44); to(fx, tip); to(fx + 9, tip + 44);
   const drop = here();
+  body(drop, [[fx - 9, top], [fx + 9, top], [fx + 9, tip + 44], [fx, tip], [fx - 9, tip + 44]], 'glass', { thin: true });
   to(fx + 9, arm);
   const ticks = []; for (let ty = top + 30; ty < tip + 30; ty += 26) ticks.push([[fx - 9, ty], [fx - 1, ty]]);
   extras.push({ at: drop, lines: ticks });
@@ -236,6 +253,65 @@ const mix = (a, b, t) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
 const rgba = (c, a) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
 const path = (pts, a = 0, b = pts.length - 1) => { g.beginPath(); g.moveTo(pts[a][0], pts[a][1]); for (let i = a + 1; i <= b; i++) g.lineTo(pts[i][0], pts[i][1]); };
 
+// the materials, lit from the upper left. Warm, because the whole film is lit by lamp and sun.
+const STEEL = [[0, '#100b07'], [0.1, '#3d3020'], [0.26, '#a89470'], [0.34, '#f4e8cc'], [0.4, '#cdb88f'], [0.55, '#6e5a3e'], [0.78, '#3a2e1f'], [0.93, '#1c150d'], [1, '#0b0805']];
+function grad(x0, y0, x1, y1, stops) { const gr = g.createLinearGradient(x0, y0, x1, y1); for (const [o, c] of stops) gr.addColorStop(o, c); return gr; }
+function shade(b, a, paper) {
+  const [x0, y0, x1, y1] = b.box, w = x1 - x0, h = y1 - y0;
+  // its reflection in the polished bench, fading away from the edge
+  g.save();
+  g.translate(0, 2 * B); g.scale(1, -1);
+  path(b.pts); g.closePath();
+  g.fillStyle = grad(0, B, 0, B - Math.min(h, 260), [[0, `rgba(196,160,104,${(b.kind === 'glass' ? 0.05 : 0.16) * a})`], [1, 'rgba(196,160,104,0)']]);
+  g.fill();
+  g.restore();
+
+  g.save();
+  path(b.pts); g.closePath(); g.clip();
+  g.globalAlpha = a * (1 - paper * 0.5);
+  if (b.kind === 'steel' || b.kind === 'tube') {
+    // a cylinder: dark at the edges, a bright band where the light catches it
+    g.fillStyle = grad(x0, 0, x1, 0, STEEL); g.fillRect(x0, y0, w, h);
+    g.fillStyle = grad(0, y0, 0, y1, [[0, 'rgba(255,238,205,0.22)'], [0.35, 'rgba(255,238,205,0)'], [0.75, 'rgba(0,0,0,0.15)'], [1, 'rgba(0,0,0,0.55)']]); g.fillRect(x0, y0, w, h);
+    g.lineWidth = 1;
+    for (const [u, v, k] of b.grain) { g.strokeStyle = `rgba(255,236,200,${0.035 + k * 0.05})`; const gx = x0 + u * w; path([[gx, y0 + v * h * 0.3], [gx + (k - 0.5) * 2, y0 + h * (0.5 + v * 0.5)]]); g.stroke(); }
+    if (b.label) { // the tube's printed band
+      path(b.label); g.closePath(); g.fillStyle = 'rgba(232,217,185,0.62)'; g.fill();
+      g.fillStyle = grad(x0, 0, x1, 0, [[0, 'rgba(0,0,0,0.45)'], [0.35, 'rgba(255,255,255,0.18)'], [0.6, 'rgba(0,0,0,0)'], [1, 'rgba(0,0,0,0.5)']]); g.fill();
+    }
+  } else if (b.kind === 'machine') {
+    // brushed steel cabinet: light on the top edge and the left, shade underneath
+    g.fillStyle = grad(0, y0, 0, y1, [[0, '#efe0bf'], [0.025, '#cbb58c'], [0.06, '#8d7756'], [0.4, '#5c4a33'], [1, '#231a10']]); g.fillRect(x0, y0, w, h);
+    g.fillStyle = grad(x0, 0, x1, 0, [[0, 'rgba(255,236,200,0.16)'], [0.45, 'rgba(255,236,200,0)'], [1, 'rgba(0,0,0,0.38)']]); g.fillRect(x0, y0, w, h);
+    g.lineWidth = 1;
+    for (const [u, v, k] of b.grain) { g.strokeStyle = `rgba(255,236,200,${0.03 + k * 0.045})`; const gy = y0 + u * h; path([[x0 + v * w * 0.4, gy], [x0 + w * (0.55 + v * 0.45), gy + (k - 0.5)]]); g.stroke(); }
+  } else if (b.kind === 'capsule') {
+    // gelatin: a cream body and a deep red cap, both glossy
+    g.fillStyle = grad(x0, 0, x1, 0, [[0, '#8f7b58'], [0.3, '#f1e6cc'], [0.5, '#e2d2ad'], [1, '#6d5a3c']]); g.fillRect(x0, y0, w, h);
+    path(b.cap); g.closePath();
+    g.fillStyle = grad(x0, 0, x1, 0, [[0, '#3a0f08'], [0.3, '#a8442a'], [0.5, '#8a3020'], [1, '#2a0b06']]); g.fill();
+    g.fillStyle = grad(x0, 0, x1, 0, [[0, 'rgba(255,255,255,0)'], [0.24, 'rgba(255,250,235,0)'], [0.3, 'rgba(255,250,235,0.55)'], [0.37, 'rgba(255,250,235,0)'], [1, 'rgba(255,255,255,0)']]); g.fillRect(x0, y0, w, h);
+  } else if (b.kind === 'foil') {
+    // the blister card: warm foil with a sheen across it, clear domes over red capsules
+    g.fillStyle = grad(x0, y0, x1, y1, [[0, '#6c5a40'], [0.3, '#cbb995'], [0.42, '#f3e9d2'], [0.55, '#a8946e'], [1, '#3e3224']]); g.fillRect(x0, y0, w, h);
+    for (const pk of b.pockets) {
+      path(pk); g.closePath();
+      let px0 = Infinity, px1 = -Infinity; for (const [x] of pk) { px0 = Math.min(px0, x); px1 = Math.max(px1, x); }
+      g.fillStyle = grad(px0, 0, px1, 0, [[0, '#4a1409'], [0.35, '#b24d2e'], [0.6, '#8a3020'], [1, '#33100a']]); g.fill();
+      g.strokeStyle = 'rgba(255,248,230,0.5)'; g.lineWidth = 1.4; g.stroke();
+    }
+  } else if (b.kind === 'glass') {
+    // glass: nearly clear, darker at its edges, two streaks of light
+    g.fillStyle = 'rgba(214,190,140,0.07)'; g.fillRect(x0, y0, w, h);
+    g.fillStyle = grad(x0, 0, x1, 0, [[0, 'rgba(0,0,0,0.35)'], [0.15, 'rgba(0,0,0,0)'], [0.85, 'rgba(0,0,0,0)'], [1, 'rgba(0,0,0,0.35)']]); g.fillRect(x0, y0, w, h);
+    g.strokeStyle = 'rgba(255,248,228,0.55)'; g.lineWidth = b.thin ? 1.6 : 3;
+    path([[x0 + w * 0.26, y0 + h * (b.thin ? 0.05 : 0.45)], [x0 + w * 0.2, y1 - h * 0.12]]); g.stroke();
+    g.lineWidth = b.thin ? 1 : 1.5; g.strokeStyle = 'rgba(255,248,228,0.28)';
+    path([[x0 + w * 0.34, y0 + h * (b.thin ? 0.05 : 0.5)], [x0 + w * 0.3, y1 - h * 0.15]]); g.stroke();
+  }
+  g.restore();
+}
+
 function draw(f) {
   const t = f / (N - 1), head = HEAD[f], tail = TAIL[f], cam = CAM[f];
   const paper = smooth(0.855, 0.975, t);           // the ground lightens into the map
@@ -267,6 +343,19 @@ function draw(f) {
   const up = smooth(0, 0.06, t);                  // the thread comes up out of the oil
   g.lineJoin = 'round'; g.lineCap = 'round';
   const ti = idx(tail);
+  // the bench: a faint warm sheen along its top, falling off into the dark
+  {
+    const k = (1 - photo) * (1 - paper);
+    if (k > 0) {
+      g.fillStyle = grad(0, B, 0, B + 340, [[0, `rgba(92,66,34,${0.42 * k})`], [0.08, `rgba(60,42,22,${0.22 * k})`], [1, 'rgba(30,20,10,0)']]);
+      g.fillRect(cam - VW / 2, B, VW, 340);
+    }
+  }
+  for (const b of bodies) {
+    const a = smooth(L[b.at] - 40, L[b.at] + 760, head) * (1 - smooth(L[b.at] - 700, L[b.at] - 100, tail));
+    if (a <= 0 || b.box[2] < cam - VW / 2 - 50 || b.box[0] > cam + VW / 2 + 50) continue;
+    shade(b, a, paper);
+  }
   // details
   for (const e of extras) {
     const a = smooth(L[e.at], L[e.at] + 520, head) * (1 - smooth(L[e.at] - 700, L[e.at] - 100, tail));

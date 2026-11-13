@@ -94,17 +94,17 @@ export const CLIPS: Clip[] = [
   },
   {
     id: 's09', alt: 'The rings open out into a wide bronze uruli of golden-brown medicated oil, gently simmering.', chapter: 'The medicine', weight: 2, frames: 's09',
-    cards: [{ in: 0.2, out: 0.95, content: (<><h2>300+ formulations</h2><p>AVVVS makes more than 300 formulations, including classical medicines prepared according to traditional texts and proprietary formulations developed in-house.</p></>) }],
+    cards: [{ in: 0.2, out: 0.95, content: (<><h2>Made with precision</h2><p>Prepared slowly, step by step, in tune with the original formula.</p></>) }],
   },
   {
     id: 's10', alt: 'The finished oil is poured through white cotton cloth into an amber glass bottle on dark wood.', weight: 1.6, frames: 's10',
-    cards: [{ in: 0.15, out: 0.95, content: (<><h2>Made with precision</h2><p>Prepared slowly, step by step, in tune with the original formula.</p></>) }],
+    cards: [{ in: 0.15, out: 0.95, content: (<><h2>300+ formulations</h2><p>AVVVS makes more than 300 formulations, including classical medicines prepared according to traditional texts and proprietary formulations developed in-house.</p></>) }],
   },
   {
     // the pour becomes the gold thread, which draws the factory in one line and is drawn through
     // into the dot at Kozhikode on the map (film/factory/draw.html)
     id: 'factory', alt: 'The stream of oil becomes a gold thread that draws, in one line, a stirred steel vessel, a capsule-filling machine, a blister-packing machine and a tube-filling machine, each with what it makes beside it, then a laboratory flask under a burette; a drop falls and the flask fills. The thread then runs out across a world map to Kozhikode.',
-    chapter: 'The standard', weight: 4.6, frames: 'standard', still: 205,
+    chapter: 'The standard', weight: 4.6, frames: 'standard-v2', still: 205,
     cards: [
       { in: 0.22, out: 0.8, content: (<><h2>Tradition meets modern standards</h2><p>At our GMP-certified manufacturing facility in Kozhikode, capsule, blister-packaging, ointment and cosmetic production lines operate alongside traditional manufacturing units, supported by stringent quality-control measures.</p></>) },
     ],

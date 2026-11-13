@@ -44,7 +44,7 @@ export function SiteFooter() {
           <ul>
             <li><Link href="/manufacturing">AVVVS Manufacturing</Link></li>
             <li><Link href="/#destinations">Five ways to partner</Link></li>
-            <li><a href="#enquire" data-topic="experience">Gloveda spa partnerships</a></li>
+            <li><a href="#enquire" data-topic="experience">Gloveda Ayur-Medi Cosmetic Clinic Partnerships</a></li>
             <li><a href="#enquire">Partner enquiry</a></li>
           </ul>
         </nav>
@@ -78,7 +78,7 @@ export function SiteFooter() {
         <ul className="foot-social" aria-label="AVVVS elsewhere">
           {CONTACT.social.map((s) => <li key={s.label}><a href={s.href} rel="noopener">{s.label}</a></li>)}
         </ul>
-        <a className="foot-top" href="#top" onClick={(e) => { e.preventDefault(); scrollPageTo(0); }}>
+        <a className="foot-top" href="#top" aria-label="Back to the start of the page" onClick={(e) => { e.preventDefault(); scrollPageTo(0); }}>
           Back to the start <span aria-hidden="true">↑</span>
         </a>
       </div>

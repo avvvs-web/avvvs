@@ -74,7 +74,7 @@ export default async function Journal() {
         </ol>
 
         <WhereNext items={[
-          { href: '/our-history', kicker: 'Our history', title: 'One family, four generations', note: 'The timeline of AVVVS, from the 1921 pharmacy to today.' },
+          { href: '/our-history', kicker: 'Our history', title: 'One family, four generations', note: 'The timeline of AVVVS, from the 1921 vaidyasala to today.' },
           { href: '/manufacturing', kicker: 'Manufacturing', title: 'Where the medicines are made', note: 'The GMP-certified factory in Kozhikode.' },
           { href: '/#destinations', kicker: 'Work with us', title: 'Five ways to partner', note: 'Manufacturing, the clinic, and the Gloveda range and spas.' },
         ]} />

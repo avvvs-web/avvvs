@@ -43,19 +43,19 @@ function Ingredients({ items }: { items: [string, string][] }) {
 export const POSTS: Post[] = [
   {
     slug: 'a-pharmacy-in-kozhikode',
-    title: 'A pharmacy, a blessing, and a hundred years',
-    dek: 'How a small pharmacy in Kozhikode, begun with the encouragement of Sree Narayana Guru in 1921, became Arya Vaidya Vilasini Vaidya Sala.',
+    title: 'A vaidyasala, a blessing, and a hundred years',
+    dek: 'How a small vaidyasala in Kozhikode, begun with the encouragement of Sree Narayana Guru in 1921, became Arya Vaidya Vilasini Vaidya Sala.',
     kind: 'Heritage', published: '2023-10-03', revised: REVISED, minutes: 3,
     cover: { src: '/media/film/stills/k06.jpg', width: 1920, height: 1080, alt: 'A bundle of palm-leaf manuscripts beside a lit brass oil lamp.' },
     body: (
       <>
-        <p>In 1921, Kaloor Neelakandan Vaidyar opened a pharmacy in Kozhikode. He did so at the urging of Sree Narayana Guru, who personally encouraged him to use his knowledge to build a place of care for people who had little access to it.</p>
-        <p>The pharmacy prepared Ayurveda medicines and dispensed them. Its purpose was plain, and it has not changed: make medicines of good quality, and care for the community they are made for. AVVVS still describes its founding idea in two words. Social service.</p>
+        <p>In 1921, Kaloor Neelakandan Vaidyar opened a vaidyasala in Kozhikode. He did so at the urging of Sree Narayana Guru, who personally encouraged him to use his knowledge to build a place of care for people who had little access to it.</p>
+        <p>The vaidyasala prepared Ayurveda medicines and dispensed them. Its purpose was plain, and it has not changed: make medicines of good quality, and care for the community they are made for. AVVVS still describes its founding idea in two words. Social service.</p>
         <h2>Four generations</h2>
         <p>The founder&rsquo;s son, K. N. Ramadas Vaidyar (1934&ndash;1998), carried the work into its second generation. He was known well beyond it too, in Kozhikode&rsquo;s literary circles, for his satire.</p>
         <p>The third generation is Managing Director Dr Manoj Kaloor, Ramadas Vaidyar&rsquo;s son, who leads AVVVS today with Dr Reeja Manoj, and a fourth generation of the family now carries the work on with them.</p>
         <h2>What changed, and what did not</h2>
-        <p>The pharmacy became a manufacturer. AVVVS now makes classical and proprietary Ayurveda medicines in a GMP-certified factory in Kozhikode, where capsule, blister, ointment and cosmetic lines run beside traditional mechanised units. Its medicines are sold across India and exported to the United States, Russia, Austria, Slovenia, Colombia and beyond, and its clinical work grew into the AVVVS Ayur Speciality Clinic.</p>
+        <p>The vaidyasala became a manufacturer. AVVVS now makes classical and proprietary Ayurveda medicines in a GMP-certified factory in Kozhikode, where capsule, blister, ointment and cosmetic lines run beside traditional mechanised units. Its medicines are sold across India and exported to the United States, Russia, Austria, Slovenia, Colombia and beyond, and its clinical work grew into the AVVVS Ayur Speciality Clinic.</p>
         <p>Through all of it, the Vaidya Sala has tried to do one difficult thing well: keep pace with new technology without giving up the traditions it was built on.</p>
         <blockquote>
           <p>To become a premier, multifaceted, ethical business organisation, dedicated to quality and governed by tradition, in the field of Ayurveda.</p>
@@ -241,7 +241,7 @@ export const POSTS: Post[] = [
     cover: { src: '/media/film/stills/k02.jpg', width: 1920, height: 1080, alt: 'A shaft of sunlight falls on a flowering herb on the forest floor.' },
     body: (
       <>
-        <p>The clinic began with the pharmacy. When Kaloor Neelakandan Vaidyar founded AVVVS in 1921, he set out to build a place of care. Today that work is the AVVVS Ayur Speciality Clinic, where specialised doctors see patients in focused departments.</p>
+        <p>The clinic began with the vaidyasala. When Kaloor Neelakandan Vaidyar founded AVVVS in 1921, he set out to build a place of care. Today that work is the AVVVS Ayur Speciality Clinic, where specialised doctors see patients in focused departments.</p>
         <h2>The departments</h2>
         <dl className="jr-depts">
           <div><dt>Women&rsquo;s Health</dt><dd>Ayurvedic care, and guidance on ways of living, for the health concerns women face.</dd></div>

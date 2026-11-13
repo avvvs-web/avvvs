@@ -478,10 +478,21 @@ export function FilmStage() {
           <div className="film-scrim" />
           <div className="film-scrim film-scrim-light" />
         </div>
+        {/* first in the film's tab order: a way past all 27 screens of it, to the five ways to work with AVVVS */}
+        <button type="button" className="film-skip" onClick={skipFilm}>Skip the film <span aria-hidden="true">↓</span></button>
         {CLIPS.map((clip) => <Layer key={clip.id} clip={clip} />)}
       </div>
     </section>
   );
+}
+
+// straight past the film to what follows it (a jump, not a glide: gliding would play the whole film)
+function skipFilm() {
+  const next = document.getElementById('destinations');
+  if (!next) return;
+  scrollPageTo(next.getBoundingClientRect().top + window.scrollY, false);
+  next.setAttribute('tabindex', '-1');
+  next.focus({ preventScroll: true });
 }
 
 function Layer({ clip }: { clip: Clip }) {
@@ -513,7 +524,7 @@ function HeritageType() {
     <div className="heritage" role="group" aria-labelledby="heritage-title">
       <h2 id="heritage-title" className="heritage-year"><span>1921</span> <span className="heritage-place">Kozhikode, Kerala</span></h2>
       <ol className="heritage-lines">
-        <li><p>Founded by Kaloor Neelakandan Vaidyar as a pharmacy for the people of Kozhikode, and carried by his family for four generations.</p></li>
+        <li><p>Founded by Kaloor Neelakandan Vaidyar as a vaidyasala for the people of Kozhikode, and carried by his family for four generations.</p></li>
         <li className="milestones">
           <span><b className="heritage-years" suppressHydrationWarning>{yearsSinceFounding()}</b> years of AVVVS</span>
           <Link className="heritage-more" href="/our-history">Our history</Link>

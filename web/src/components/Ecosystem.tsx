@@ -4,9 +4,9 @@ import { useRef } from 'react';
 import Link from 'next/link';
 import { ScrollTrigger, useGSAP, prefersReducedMotion } from '@/lib/gsap';
 import type { Network } from '@/lib/network';
-import { AvvvsMark } from './Logo';
+import { AvvvsLockup, AvvvsMark } from './Logo';
 
-// The reveal: the film's gold thread carries on under the AVVVS mark and drops to the five
+// The reveal: the film's gold thread carries on under the AVVVS logo and drops to the five
 // ways to work with us. The Three.js layer loads only as the section approaches.
 export function Ecosystem() {
   const root = useRef<HTMLElement>(null);
@@ -65,22 +65,27 @@ export function Ecosystem() {
       <canvas className="eco-canvas" aria-hidden="true" />
       <div className="eco-mark">
         <h2 id="eco-title">
-          <span className="eco-word"><AvvvsMark height={120} /></span>
+          <span className="eco-word"><AvvvsLockup height={120} /></span>
           <span className="eco-since">Where the thread goes next is up to you</span>
         </h2>
       </div>
       <ul className="eco-list">
         <li className="dest" data-dest="0">
+          <AvvvsMark height={56} className="dest-logo" alt="" />
           <h3>Manufacturing Division</h3>
           <p>Classical and proprietary medicines manufactured at our GMP-certified facility, alongside third-party and white-label manufacturing services for your brand.</p>
           <Link href="/manufacturing">See the factory floor</Link>
         </li>
         <li className="dest" data-dest="1">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/brand/ayur-specialty-clinics.webp" width={175} height={56} className="dest-logo" alt="" loading="lazy" decoding="async" />
           <h3>AVVVS Ayur Specialty Clinic</h3>
           <p>The first clinical venture under AVVVS, offering specialised care for headaches, chronic pain, obesity, lifestyle disorders, fertility, skin and hair concerns, and maternal health.</p>
           <a href="https://clinic.avvvs.com/" rel="noopener">Visit the clinic</a>
         </li>
         <li className="dest" data-dest="2">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/brand/gloveda.webp" width={224} height={56} className="dest-logo" alt="" loading="lazy" decoding="async" />
           <h3>Gloveda Herbals</h3>
           <p>Our Ayurvedic skincare and haircare range, rooted in nature and generations of wisdom.</p>
           <a href="https://glovedaherbals.com/" rel="noopener">See the Gloveda range</a>

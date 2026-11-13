@@ -41,7 +41,7 @@ export default function Community() {
         <section className="ss-why" aria-labelledby="ss-why-title">
           <h2 id="ss-why-title" className="hp-h" data-split>Where it all began</h2>
           <div className="ss-why-body">
-            <p className="ss-statement" data-reveal>In {FOUNDED}, inspired by the guidance of Sree Narayana Guru, Kaloor Neelakandan Vaidyar founded AVVVS in Kozhikode as an Ayurvedic pharmacy and hospital with a vision rooted in social service.</p>
+            <p className="ss-statement" data-reveal>In {FOUNDED}, inspired by the guidance of Sree Narayana Guru, Kaloor Neelakandan Vaidyar founded AVVVS in Kozhikode as an Ayurvedic vaidyasala and hospital with a vision rooted in social service.</p>
             <div className="ss-why-aside" data-reveal>
               <p>His son, K. N. Ramadas Vaidyar, a gold medallist from Kannur Ayurveda College, carried the legacy forward while gaining recognition as a satirist in Kerala&apos;s literary circles.</p>
               <p>Today, the third generation, led by Dr. Manoj Kaloor and Dr. Reeja Manoj, continues this journey, with the fourth generation preparing to carry the legacy forward.</p>
@@ -68,8 +68,8 @@ export default function Community() {
         </section>
 
         <WhereNext items={[
-          { href: '/our-history', kicker: 'Our history', title: 'One family, four generations', note: 'How the 1921 pharmacy became AVVVS.' },
-          { href: '/journal/a-pharmacy-in-kozhikode', kicker: 'Journal', title: 'A pharmacy, a blessing, and a hundred years', note: 'The founding story, told at length.' },
+          { href: '/our-history', kicker: 'Our history', title: 'One family, four generations', note: 'How the 1921 vaidyasala became AVVVS.' },
+          { href: '/journal/a-pharmacy-in-kozhikode', kicker: 'Journal', title: 'A vaidyasala, a blessing, and a hundred years', note: 'The founding story, told at length.' },
           { href: '/journal/the-clinic', kicker: 'Journal', title: 'Inside the Ayur Speciality Clinic', note: 'The place of care, as it is today.' },
         ]} />
 

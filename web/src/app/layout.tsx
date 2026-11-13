@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website', siteName: ORG.name, locale: 'en_IN', url: '/',
     title: 'Arya Vaidya Vilasini Vaidya Sala (AVVVS) · Ayurveda in Kozhikode since 1921',
-    description: 'A century of Ayurveda medicine from Kozhikode, Kerala, now made with partners: GMP manufacturing, clinics and Gloveda spa partnerships.',
+    description: 'A century of Ayurveda medicine from Kozhikode, Kerala, now made with partners: GMP manufacturing, clinics and Gloveda Ayur-Medi cosmetic clinic partnerships.',
   },
   twitter: { card: 'summary_large_image', site: '@avvvsglobal' },
   // Search Console and Meta domain verification: the tokens each service gives you, set in the environment

@@ -36,5 +36,5 @@ export const FAQ_HISTORY: QA[] = [
   { q: 'Who leads AVVVS today?',
     a: 'Dr Manoj Kaloor, Managing Director, leads AVVVS with Dr Reeja Manoj. He is the son of K. N. Ramadas Vaidyar and the grandson of the founder, making him the third generation of the family in the work.' },
   { q: 'How did AVVVS begin?',
-    a: 'AVVVS began as a pharmacy and hospital that prepared and dispensed Ayurveda medicines for the people of Kozhikode. Its founding idea was social service.' },
+    a: 'AVVVS began as a pharmacy and a hospital that prepared and dispensed Ayurveda medicines for the people of Kozhikode. Its founding idea was social service.' },
 ];

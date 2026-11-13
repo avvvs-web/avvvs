@@ -158,6 +158,19 @@ html.menu-open { overflow: hidden; }
 /* the picture: the first frame as an image, then one canvas the whole film is drawn on (FilmStage).
    Positioned with top/left rather than inset, which iPhones before iOS 14.5 don't know. */
 .film-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #14100c; }
+/* skip the film: top right, under the bar, readable over dark frames and the light map alike */
+.film-skip {
+  position: absolute; z-index: 5; top: calc(env(safe-area-inset-top, 0px) + clamp(76px, 10vh, 96px)); right: var(--gutter-r);
+  display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 10px 20px; border-radius: 999px;
+  font: inherit; font-size: 0.95rem; letter-spacing: 0.02em; color: #F4EFE5; cursor: pointer;
+  background: rgba(13, 11, 9, 0.55); border: 1px solid rgba(232, 217, 185, 0.5);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  transition: background-color 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+}
+.film-skip span { color: var(--gold-hi); }
+.film-skip:hover { background: rgba(13, 11, 9, 0.78); border-color: var(--gold-hi); }
+.film-skip:focus-visible { outline: 2px solid var(--gold-hi); outline-offset: 3px; }
+@media (max-width: 520px) { .film-skip { font-size: 0.88rem; padding: 9px 16px; } }
 .film-poster, .film-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: block; object-fit: cover; }
 .film-canvas { visibility: hidden; pointer-events: none; }
 /* a low scrim so cards read over any frame: dark under dark frames, pale under the bright ones */
@@ -230,7 +243,7 @@ html.menu-open { overflow: hidden; }
 .eco-mark { position: relative; z-index: 2; text-align: center; }
 .eco-mark h2 { display: grid; gap: 10px; }
 .eco-word { display: block; line-height: 0; justify-self: center; }
-.eco-word img { height: clamp(84px, 3rem + 6vw, 140px); width: auto; }
+.eco-word img { height: clamp(60px, 2rem + 5vw, 120px); width: auto; max-width: 100%; }
 .eco-since { font-family: var(--f-body); font-size: 1.05rem; color: var(--accent); }
 /* the gold line runs across the top of this list; each destination hangs on a short drop from it */
 .eco-list {
@@ -238,6 +251,7 @@ html.menu-open { overflow: hidden; }
   display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(20px, 2.4vw, 44px);
 }
 .dest { display: grid; gap: 10px; align-content: start; }
+.dest-logo { display: block; height: 56px; width: auto; max-width: 100%; justify-self: start; margin-bottom: 6px; }
 .dest h3 { font-size: clamp(1.25rem, 0.95rem + 0.75vw, 1.75rem); line-height: 1.1; }
 .dest p { font-size: 0.95rem; }
 .dest a { justify-self: start; }
@@ -420,6 +434,15 @@ html.is-locked { overflow: hidden; }
 }
 .foot-social { display: flex; gap: 22px; }
 .foot-base a { color: var(--muted); }
+/* back to the start: a real button, in AVVVS blue, big enough to hit */
+.foot .foot-top {
+  display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 10px 22px; border-radius: 999px;
+  font-size: 1rem; color: var(--blue); text-decoration: none; border: 1.5px solid var(--blue); background: transparent;
+  transition: background-color 0.3s var(--ease-out), color 0.3s var(--ease-out);
+}
+.foot .foot-top span { font-size: 1.15em; line-height: 1; }
+.foot .foot-top:hover { background: var(--blue); color: #FBF8F2; text-decoration: none; }
+.foot .foot-top:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
 @media (max-width: 900px) { .foot-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .foot-brand { grid-column: 1 / -1; } }
 @media (max-width: 520px) { .foot-grid { grid-template-columns: minmax(0, 1fr); } .foot-base { flex-direction: column; align-items: flex-start; } }
 .ml { color: var(--muted); }
@@ -562,7 +585,9 @@ html.is-locked { overflow: hidden; }
   background: var(--bg); border: 1px solid var(--thread); transition: background-color 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out), transform 0.4s var(--ease-out);
 }
 .hp-entry.is-lit::before, .no-js .hp-entry::before { background: var(--gold); border-color: var(--gold); box-shadow: 0 0 0 5px rgba(195, 164, 106, 0.18); transform: scale(1.15); }
-.hp-when { font-family: var(--f-display); color: var(--thread-ink); font-size: clamp(1.3rem, 1rem + 1.4vw, 2.4rem); line-height: 1; text-align: right; padding-right: 8px; font-variant-numeric: tabular-nums; }
+.hp-when { font-family: var(--f-display); color: var(--thread-ink); font-size: clamp(1.3rem, 1rem + 1.4vw, 2.4rem); line-height: 1; text-align: right; padding-right: 26px; font-variant-numeric: tabular-nums; }
+/* labels in words (Second generation, Looking ahead) run to two lines: a size smaller, so they keep clear of the thread */
+.hp-when-word { font-size: clamp(1.1rem, 0.85rem + 0.95vw, 1.85rem); line-height: 1.08; }
 .hp-body { display: grid; gap: 8px; max-width: 40rem; }
 .hp-body h3 { font-size: clamp(1.6rem, 1.1rem + 1.6vw, 2.6rem); line-height: 1.05; }
 .hp-who { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; color: var(--ink); }
@@ -587,7 +612,7 @@ html.is-locked { overflow: hidden; }
   .hp-thread { left: 4px; }
   .hp-entry { grid-template-columns: minmax(0, 1fr); padding-left: 30px; row-gap: 8px; }
   .hp-entry::before { left: 0; top: 4px; }
-  .hp-when { text-align: left; font-size: 1.15rem; }
+  .hp-when { text-align: left; font-size: 1.15rem; padding-right: 0; }
   .hp-grew-list { grid-template-columns: minmax(0, 1fr); }
 }
 

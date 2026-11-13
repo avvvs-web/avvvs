@@ -15,7 +15,7 @@ import { Crumbs } from '@/components/Crumbs';
 export const metadata: Metadata = {
   title: 'Our history: Ayurveda in Kozhikode since 1921',
   description:
-    'Arya Vaidya Vilasini Vaidya Sala was founded in Kozhikode in 1921 by Kaloor Neelakandan Vaidyar as a pharmacy and hospital, with the blessings of Sree Narayana Guru, and has been carried by his family for four generations.',
+    'Arya Vaidya Vilasini Vaidya Sala was founded in Kozhikode in 1921 by Kaloor Neelakandan Vaidyar as a vaidyasala and hospital, with the blessings of Sree Narayana Guru, and has been carried by his family for four generations.',
   alternates: alternatesFor('/our-history'),
   openGraph: { url: '/our-history', title: 'Our history · AVVVS since 1921', description: 'One family, four generations, since 1921.' },
 };
@@ -23,19 +23,19 @@ export const metadata: Metadata = {
 // Every line restates avvvs.com/about-us (research/01-about-us-notes.md) or what the user confirmed.
 const TIMELINE = [
   {
-    when: '1921', title: 'A pharmacy in Kozhikode', who: 'Kaloor Neelakandan Vaidyar', dates: '1895–1967',
-    text: 'Personally blessed and guided by Sree Narayana Guru, he was inspired to study Ayurveda and dedicate his knowledge to social service. After joining the first batch of what is now Kottakkal Ayurveda College, he founded Arya Vaidya Vilasini Vaidya Sala in 1921 as an Ayurvedic pharmacy and hospital. Remembered for his compassionate patient care, he also expanded its reach to Madurai and Madras (Chennai).',
+    when: '1921', title: 'A vaidyasala in Kozhikode', who: 'Kaloor Neelakandan Vaidyar', dates: '1895–1967',
+    text: 'Personally blessed and guided by Sree Narayana Guru, he was inspired to study Ayurveda and dedicate his knowledge to social service. After joining the first batch of what is now Kottakkal Ayurveda College, he founded Arya Vaidya Vilasini Vaidya Sala in 1921 as an Ayurvedic vaidyasala and hospital. Remembered for his compassionate patient care, he also expanded its reach to Madurai and Madras (Chennai).',
   },
   {
     when: 'Second generation', title: 'Carried forward', who: 'K. N. Ramadas Vaidyar', dates: '1934–1998',
     text: "His son, a gold medallist graduate of Kannur Ayurveda College, carried forward his father's work while earning recognition as a satirist in Kerala's socio-literary circles.",
   },
-  { when: '2011', title: 'Navathi', text: 'AVVVS marked ninety years.' },
-  { when: '2021', title: 'A hundred years', text: 'The centenary of Arya Vaidya Vilasini Vaidya Sala.' },
   {
-    when: 'Today', title: 'The third generation', who: 'Dr. Manoj Kaloor', dates: 'Managing Director',
+    when: 'Third generation', title: 'The third generation', who: 'Dr. Manoj Kaloor', dates: 'Managing Director',
     text: "Son of K. N. Ramadas Vaidyar, he leads AVVVS today alongside Dr. Reeja Manoj, continuing the family's longstanding commitment to Ayurveda.",
   },
+  { when: '2011', title: 'Navathi', text: 'AVVVS marked ninety years.' },
+  { when: '2021', title: 'A hundred years', text: 'The centenary of Arya Vaidya Vilasini Vaidya Sala.' },
   { when: 'Looking ahead', title: 'The fourth generation', text: 'The fourth generation is now carrying this legacy forward, building on a tradition spanning more than a century.' },
 ] as const;
 
@@ -73,7 +73,7 @@ export default function OurHistory() {
             <ol className="hp-entries">
             {TIMELINE.map((t) => (
               <li key={t.title} className="hp-entry" data-reveal>
-                <p className="hp-when">{t.when}</p>
+                <p className={`hp-when${/^\d/.test(t.when) ? '' : ' hp-when-word'}`}>{t.when}</p>
                 <div className="hp-body">
                   <h3>{t.title}</h3>
                   {'who' in t && <p className="hp-who"><span>{t.who}</span> <span className="hp-dates">{t.dates}</span></p>}
@@ -90,7 +90,7 @@ export default function OurHistory() {
         </section>
 
         <section className="hp-grew" aria-labelledby="hp-grew-title">
-          <h2 id="hp-grew-title" className="hp-h" data-split>What the pharmacy became</h2>
+          <h2 id="hp-grew-title" className="hp-h" data-split>What the vaidyasala became</h2>
           <ul className="hp-grew-list">
             {GREW.map(([k, v]) => <li key={k} data-reveal><b>{k}</b><p>{v}</p></li>)}
           </ul>
@@ -99,7 +99,7 @@ export default function OurHistory() {
         <WhereNext items={[
           { href: '/manufacturing', kicker: 'Manufacturing', title: 'See the factory floor', note: 'The GMP-certified factory in Kozhikode, and what it can make for your brand.' },
           { href: '/community', kicker: 'Community', title: 'The founding idea, today', note: 'Why AVVVS began, and its talks with students in schools.' },
-          { href: '/journal/a-pharmacy-in-kozhikode', kicker: 'Journal', title: 'A pharmacy, a blessing, and a hundred years', note: 'The founding story, told at length.' },
+          { href: '/journal/a-pharmacy-in-kozhikode', kicker: 'Journal', title: 'A vaidyasala, a blessing, and a hundred years', note: 'The founding story, told at length.' },
         ]} />
 
         <Faq id="hfaq" title="About our history" items={FAQ_HISTORY} />

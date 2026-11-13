@@ -67,7 +67,7 @@ export default function Manufacturing() {
         <WhereNext items={[
           { href: '/our-history', kicker: 'Our history', title: 'A century in Kozhikode', note: 'The family behind the factory, four generations since 1921.' },
           { href: '/journal/mezhu-thailam', kicker: 'Journal', title: 'Inside a formulation', note: 'What goes into Mezhu Thailam, one of the oldest medicines AVVVS makes.' },
-          { href: '/#destinations', kicker: 'Work with us', title: 'Other ways to partner', note: 'The clinic, Gloveda Herbals, and the Gloveda spa partnerships.' },
+          { href: '/#destinations', kicker: 'Work with us', title: 'Other ways to partner', note: 'The clinic, Gloveda Herbals, and the Gloveda Ayur-Medi cosmetic clinic partnerships.' },
         ]} />
 
         <Faq id="mfaq" title="Manufacturing questions" items={FAQ_MANUFACTURING} />
