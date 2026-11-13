@@ -255,6 +255,8 @@ html.menu-open { overflow: hidden; }
 .dest-logo { display: block; width: auto; height: auto; max-height: 56px; max-width: 100%; object-fit: contain; }
 .dest-logo-link { display: block; justify-self: start; align-self: end; margin-bottom: 6px; max-width: 100%; line-height: 0; transition: opacity 0.3s var(--ease-out); }
 .dest-logo-link:hover { opacity: 0.78; }
+/* the AVVVS mark is an SVG with no size of its own: inside a link that shrinks to fit, it needs a set height or it collapses */
+.dest-logo[src$=".svg"] { height: 56px; }
 /* the two Gloveda clinic logos are stacked (mark over name), so they stand a little taller */
 .dest-logo-tall { max-height: 74px; }
 .dest h3 { font-size: clamp(1.25rem, 0.95rem + 0.75vw, 1.75rem); line-height: 1.1; }
