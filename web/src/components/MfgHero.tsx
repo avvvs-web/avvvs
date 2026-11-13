@@ -44,9 +44,9 @@ export function MfgHero() {
         </div>
       </div>
       <figure className="m-hero-media">
-        <Image src="/media/factory/vessel.jpg" width={1300} height={1662} priority sizes="(min-width: 900px) 45vw, 100vw"
-          alt="A worker stirs a wide steel preparation vessel in one of AVVVS's traditional mechanised units, with more vessels behind her." />
-        <figcaption>A preparation vessel in one of the traditional mechanised units.</figcaption>
+        <Image src="/media/factory/raw-herbs.jpg" width={941} height={1672} priority sizes="(min-width: 900px) 45vw, 100vw"
+          alt="A worker in a cap, mask and gloves tips dried raw herbs from a woven tray at the AVVVS factory." />
+        <figcaption>Raw herbs, prepared by hand.</figcaption>
       </figure>
     </section>
   );

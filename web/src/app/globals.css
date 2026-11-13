@@ -467,7 +467,7 @@ html.is-locked { overflow: hidden; }
 .m-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px; padding-top: 8px; }
 .m-more { color: var(--ink); }
 .m-hero-media { margin: 0; display: grid; gap: 10px; }
-.m-hero-media img { width: 100%; height: min(78vh, 46rem); height: min(78svh, 46rem); object-fit: cover; border-radius: 14px; }
+.m-hero-media img { width: 100%; height: min(78vh, 46rem); height: min(78svh, 46rem); object-fit: cover; object-position: 50% 38%; border-radius: 14px; } /* the tray and her hands, not the dark bench below */
 .m-hero-media figcaption, .station p { font-size: 0.92rem; color: var(--muted); }
 
 .m-intro {
@@ -516,7 +516,7 @@ html.is-locked { overflow: hidden; }
 @media (max-width: 899.98px) {
   .m-hero, .m-intro, .m-make-grid { grid-template-columns: minmax(0, 1fr); }
   .m-hero { min-height: 0; padding-top: 100px; }
-  .m-hero-media img { height: auto; aspect-ratio: 4 / 5; }
+  .m-hero-media img { height: auto; aspect-ratio: 4 / 5; object-position: 50% 30%; }
   /* the floor becomes a column, with the thread running down its left edge */
   .m-track-wrap { padding: 0 0 0 calc(var(--gutter) + 22px); }
   .m-thread { left: calc(var(--gutter) + 3px); right: auto; top: 0; bottom: 0; width: 1px; height: auto; }
