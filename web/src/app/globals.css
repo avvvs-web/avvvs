@@ -203,8 +203,8 @@ html.menu-open { overflow: hidden; }
 .card-right { left: auto; right: var(--gutter-r); text-align: right; justify-items: end; }
 @media (max-width: 700px) { .card-right { left: var(--gutter); right: var(--gutter-r); width: auto; text-align: left; justify-items: start; } }
 .card-hero h1 { font-size: clamp(2.6rem, 1rem + 6.4vw, 6.4rem); line-height: 0.96; }
-.card-hero .ml { font-size: clamp(1.05rem, 0.9rem + 0.6vw, 1.4rem); }
-.card-hero .meta { color: var(--sky); letter-spacing: 0.02em; }
+.card.card-hero .ml { font-size: clamp(1.05rem, 0.9rem + 0.6vw, 1.4rem); color: var(--sky); }
+.card.card-hero .meta { color: var(--parch); letter-spacing: 0.02em; }
 .cue { font-size: 0.85rem; color: var(--parch); opacity: 0.75; padding-top: 10px; }
 @media (max-width: 900px) { .card { width: calc(100% - var(--gutter) - var(--gutter-r)); } }
 
