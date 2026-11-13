@@ -11,7 +11,7 @@ export interface Station { img: string; w: number; h: number; alt: string; title
 export const STATIONS: Station[] = [
   { img: 'raw-store', w: 1536, h: 1024, alt: 'Sacks of raw material on pallets and tied stacks of cartons in the factory\'s store shed.', title: 'Raw materials',
     text: 'Herbs are sourced and stored before they reach the floor. AVVVS also keeps herbal gardens around its manufacturing units, for raw material and to conserve biodiversity.' },
-  { img: 'vessels', w: 1300, h: 978, alt: 'A row of large open steel vessels in a traditional preparation hall.', title: 'Traditional preparation',
+  { img: 'vessels-hall', w: 1446, h: 1087, alt: 'A row of large round steel vessels with lids, on steel legs, in a bright traditional preparation hall.', title: 'Traditional preparation',
     text: 'Classical preparations are made in traditional mechanised units, run by trained and experienced staff.' },
   { img: 'tanks', w: 1300, h: 867, alt: 'Two jacketed steel process tanks with a service stair and control panels.', title: 'Modern processing',
     text: 'Modern machinery stands alongside the traditional units.' },
