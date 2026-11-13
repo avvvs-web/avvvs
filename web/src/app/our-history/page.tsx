@@ -59,11 +59,19 @@ export default function OurHistory() {
             <h1 id="hp-title" data-split>Our history</h1>
             <p className="hp-lede" data-reveal>One family, four generations, and <YearsSince /> years of preparing Ayurveda medicine in Kozhikode.</p>
           </div>
-          <figure className="hp-hero-media is-banner">
-            <Image src="/media/history/100-years-of-legacy.jpg" width={1365} height={590} priority sizes="(min-width: 900px) 58vw, 100vw"
-              alt="Sepia portraits of the founder, Sri Neelakandan Vaidyar (1895–1967), and his son, Sri Ramdas Vaidyar (1934–1998), either side of the K. Neelakandan Vaidyar's Arya Vaidya Vilasini Vaidyasala emblem and the words 100 Years of Legacy." />
-            <figcaption>A hundred years of legacy: the founder, Sri Neelakandan Vaidyar (left), and his son, Sri Ramdas Vaidyar (right).</figcaption>
-          </figure>
+          {/* the first two generations, drawn in sepia: the founder, then his son */}
+          <div className="hp-portraits">
+            <figure className="hp-portrait">
+              <Image src="/media/history/neelakandan-vaidyar.webp" width={1133} height={1388} priority sizes="(min-width: 900px) 27vw, 50vw"
+                alt="Sepia drawing of the founder, Kaloor Neelakandan Vaidyar, with wavy hair, a collared shirt and a shawl over his shoulders." />
+              <figcaption><span className="hp-portrait-name">Kaloor Neelakandan Vaidyar</span><span className="hp-portrait-role">Founder · 1895–1967</span></figcaption>
+            </figure>
+            <figure className="hp-portrait">
+              <Image src="/media/history/ramadas-vaidyar.webp" width={1131} height={1391} priority sizes="(min-width: 900px) 27vw, 50vw"
+                alt="Sepia drawing of K. N. Ramadas Vaidyar, smiling broadly, in a collared shirt." />
+              <figcaption><span className="hp-portrait-name">K. N. Ramadas Vaidyar</span><span className="hp-portrait-role">Second generation · 1934–1998</span></figcaption>
+            </figure>
+          </div>
         </section>
 
         <section className="hp-line" aria-labelledby="hp-line-title">

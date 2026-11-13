@@ -565,6 +565,14 @@ html.is-locked { overflow: hidden; }
 .hp-hero-media.is-banner { display: grid; gap: 12px; overflow: visible; }
 .hp-hero-media.is-banner img { aspect-ratio: auto; object-fit: contain; border-radius: 2px; box-shadow: 0 1px 0 var(--line), 0 24px 60px -36px rgba(43, 29, 22, 0.45); }
 .hp-hero-media.is-banner figcaption { color: var(--ink-2); font-size: 0.92rem; }
+/* the founder and his son, side by side; the son's portrait sits a little lower, a generation on */
+.hp-portraits { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(16px, 3vw, 48px); align-items: start; }
+.hp-portrait { margin: 0; display: grid; gap: 14px; }
+.hp-portrait:nth-child(2) { margin-top: clamp(28px, 6vw, 96px); }
+.hp-portrait img { width: 100%; height: auto; filter: drop-shadow(0 22px 30px rgba(43, 29, 22, 0.16)); }
+.hp-portrait figcaption { display: grid; gap: 2px; padding-top: 12px; border-top: 1px solid var(--gold); }
+.hp-portrait-name { font-family: var(--f-display); font-size: clamp(1.05rem, 0.9rem + 0.6vw, 1.45rem); line-height: 1.1; color: var(--ink); }
+.hp-portrait-role { font-size: 0.86rem; color: var(--accent); font-variant-numeric: tabular-nums; }
 
 .hp-csr { padding: clamp(72px, 10vw, 140px) var(--gutter-r) clamp(72px, 10vw, 140px) var(--gutter); max-width: 110rem; margin-inline: auto;
   display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 5vw, 80px); align-items: center; border-top: 1px solid var(--line); }
