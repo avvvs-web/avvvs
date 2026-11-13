@@ -4,7 +4,7 @@ Run (absolute paths only; relative paths in -b resolve to the drive root):
   blender -b --factory-startup --python golden_thread.py -- <out_dir> <mode>
 mode: still   one 1280x536 frame at frame 104 (64 samples)
       preview 960x402, frames 1-120, 24 samples, PNG sequence
-      final   2560x1072, frames 1-120, 256 samples, EXR-free PNG 16-bit
+      final   2560x1440, 16-bit PNG sequence; optional <first> <last> <samples> (default all frames, 256)
 The .blend is saved next to the renders so it can be opened and tweaked by hand.
 """
 import bpy, math, random, sys, os
@@ -433,7 +433,9 @@ elif MODE == "preview":
     r.filepath = os.path.join(OUT, "preview", "f_####")
 else:
     r.resolution_x, r.resolution_y, r.resolution_percentage = 2560, 1440, 100
-    sc.cycles.samples = 256
+    # optional: first frame, last frame, samples (the film uses frames 25-216: film/clips/b4-thread.mp4)
+    if len(argv) > 3: sc.frame_start, sc.frame_end = int(argv[2]), int(argv[3])
+    sc.cycles.samples = int(argv[4]) if len(argv) > 4 else 256
     r.image_settings.file_format = "PNG"
     r.image_settings.color_depth = "16"
     r.filepath = os.path.join(OUT, "final", "f_####")

@@ -6,13 +6,13 @@
 # have to stretch a smaller frame (which is what looks soft).
 # FilmStage picks these when the screen and the connection can take them, and falls back to hd / p.
 # The factory beat (folder "standard") is drawn at these sizes by film/factory/render.mjs.
-# Writes web/public/media/film/v3/{uhd-v2,p2-v2}/<id>/f_001.webp ...
+# Writes web/public/media/film/v3/{uhd-v3,p2-v3}/<id>/f_001.webp ...
 # usage: sh film/encode_sharp.sh            (all clips)   or   sh film/encode_sharp.sh S05
 set -e
 cd "$(dirname "$0")/.."
 V=v3
 OUT=web/public/media/film/$V
-U=uhd-v2; Q=p2-v2   # the folders: bump the suffix (here and in FilmStage's SETS, render.mjs) after re-encoding
+U=uhd-v3; Q=p2-v3   # the folders: bump the suffix (here and in FilmStage's SETS, render.mjs) after re-encoding
 GRADE="huesaturation=saturation=-0.55:colors=g+c:strength=60,eq=saturation=0.94"
 WARM="hue=h=-10:s=1.15,colorbalance=rs=.06:gs=-.02:bs=-.10:rm=.06:bm=-.08,eq=gamma=0.95:contrast=1.06"
 WEBP="-c:v libwebp -compression_level 6 -fps_mode passthrough"
@@ -37,15 +37,17 @@ one() {
   echo "$lid $(ls "$OUT/$U/$lid" | wc -l | tr -d ' ') frames from $src"
 }
 
-# the thread shot is a 1280x720 render of fine gold lines on black: enlarged the same way
+# the thread shot is a Blender render: its 1440p frames (blender/golden_thread.py, mode final,
+# frames 25-216, which is the film's cut) are used as they are; without them the 720p clip is enlarged
 thread() {
-  src=film/clips/b4-thread.mp4; lid=b4-thread
-  sharp="unsharp=5:5:0.55:5:5:0,cas=0.6"
+  lid=b4-thread
   for s in $U $Q; do rm -rf "$OUT/$s/$lid"; mkdir -p "$OUT/$s/$lid"; done
-  ffmpeg -v error -y -i "$src" -an -filter_complex \
-    "[0]split=2[u][q];[u]scale=2560:1440:flags=lanczos,$sharp[u2];[q]crop=406:720,scale=1080:1920:flags=lanczos,$sharp[q2]" \
-    -map "[u2]" $WEBP -quality 80 "$OUT/$U/$lid/f_%03d.webp" \
-    -map "[q2]" $WEBP -quality 80 "$OUT/$Q/$lid/f_%03d.webp"
+  if [ -f blender/renders/final/f_0216.png ]; then
+    ffmpeg -v error -y -framerate 24 -start_number 25 -i blender/renders/final/f_%04d.png -an -filter_complex       "[0]format=yuv420p,split=2[u][q];[q]crop=810:1440,scale=1080:1920:flags=lanczos[q2]"       -map "[u]" $WEBP -quality 82 "$OUT/$U/$lid/f_%03d.webp"       -map "[q2]" $WEBP -quality 82 "$OUT/$Q/$lid/f_%03d.webp"
+  else
+    sharp="unsharp=5:5:0.55:5:5:0,cas=0.6"
+    ffmpeg -v error -y -i film/clips/b4-thread.mp4 -an -filter_complex       "[0]split=2[u][q];[u]scale=2560:1440:flags=lanczos,$sharp[u2];[q]crop=406:720,scale=1080:1920:flags=lanczos,$sharp[q2]"       -map "[u2]" $WEBP -quality 80 "$OUT/$U/$lid/f_%03d.webp"       -map "[q2]" $WEBP -quality 80 "$OUT/$Q/$lid/f_%03d.webp"
+  fi
   echo "$lid $(ls "$OUT/$U/$lid" | wc -l | tr -d ' ') frames"
 }
 

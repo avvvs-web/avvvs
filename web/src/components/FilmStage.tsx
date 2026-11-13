@@ -29,7 +29,7 @@ const SETS = {
 } as const;
 type SetName = keyof typeof SETS;
 // the sharp sets' folders carry their own version: they were re-encoded from the upscaled clips
-const SET_DIR: Record<SetName, string> = { p: 'p', d: 'd', hd: 'hd', p2: 'p2-v2', uhd: 'uhd-v2' };
+const SET_DIR: Record<SetName, string> = { p: 'p', d: 'd', hd: 'hd', p2: 'p2-v3', uhd: 'uhd-v3' };
 const frameUrl = (set: SetName, folder: string, f: number) => `${FRAMES_BASE}/${SET_DIR[set]}/${folder}/f_${String(f + 1).padStart(3, '0')}.webp`;
 
 // every frame of the film on one line: clip k owns START[k] .. START[k] + COUNT[k] - 1

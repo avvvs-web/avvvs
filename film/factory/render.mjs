@@ -20,8 +20,8 @@ const SETS = [
   { set: 'd', w: 1280, h: 720, ku: 0.795, q: 70 },
   { set: 'p', w: 608, h: 1080, ku: (0.795 * 1920 - 656) / 608, q: 72 },
   // the sharp sets (film/encode_sharp.sh): the joining frames are those sets' own
-  { set: 'uhd', dir: 'uhd-v2', w: 2560, h: 1440, ku: 0.795, q: 80 },
-  { set: 'p2', dir: 'p2-v2', w: 1080, h: 1920, ku: (0.795 * 1920 - 656) / 608, q: 80 },
+  { set: 'uhd', dir: 'uhd-v3', w: 2560, h: 1440, ku: 0.795, q: 80 },
+  { set: 'p2', dir: 'p2-v3', w: 1080, h: 1920, ku: (0.795 * 1920 - 656) / 608, q: 80 },
 ];
 const tmp = process.argv[2] || path.join(root, 'film', 'factory', '_out');
 const tests = process.argv.slice(3).filter((a) => /^\d+$/.test(a)).map(Number);
