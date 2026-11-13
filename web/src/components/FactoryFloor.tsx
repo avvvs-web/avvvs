@@ -15,7 +15,7 @@ export const STATIONS: Station[] = [
     text: 'Classical preparations are made in traditional mechanised units, run by trained and experienced staff.' },
   { img: 'process-tanks', w: 1536, h: 1024, alt: 'Two jacketed stainless steel process tanks with stirrer motors, a service stair and control panels.', title: 'Modern processing',
     text: 'Modern machinery stands alongside the traditional units.' },
-  { img: 'ointment', w: 1300, h: 1024, alt: 'A worker operates an ointment filling machine fed from a steel hopper.', title: 'Ointments',
+  { img: 'ointment-filling', w: 1415, h: 1112, alt: 'A worker in a cap, mask and gloves at an ointment filling machine fed from a steel hopper, beside a large steel mixing tank.', title: 'Ointments',
     text: 'Ointments are manufactured and filled in-house.' },
   { img: 'capsule-plate', w: 1300, h: 1950, alt: 'Close-up of a capsule filling machine\'s ring plate.', title: 'Capsules',
     text: 'Formulations are filled into capsules on our own capsulation machinery.' },
