@@ -5,6 +5,7 @@
   Portraits: web/public/media/history/*.webp (the client's sepia drawings, cut out).
 -->
 <meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manjari:wght@400;700&display=block">
 <style>
   @font-face { font-family: Castle; src: url('../../web/src/fonts/CastleT.woff2') format('woff2'); }
   html, body { margin: 0; }
@@ -21,22 +22,25 @@
   /* a soft vignette at the edges */
   .b::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 0 140px rgba(120, 84, 40, 0.28); pointer-events: none; }
 
-  .who { position: absolute; bottom: 104px; width: 360px; display: grid; justify-items: center; }
+  .who { position: absolute; bottom: 118px; width: 360px; display: grid; justify-items: center; }
   .who.left { left: 70px; }
   .who.right { right: 70px; }
   .who img { width: 290px; height: auto; display: block;
     -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent 100%); mask-image: linear-gradient(to bottom, #000 62%, transparent 100%); }
-  .cap { position: absolute; bottom: 44px; left: 0; right: 0; text-align: center; }
-  .name { font-size: 22px; line-height: 1.1; color: #2B1D16; }
-  .role { margin-top: 6px; font-family: Georgia, serif; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: #755A22; }
+  .cap { position: absolute; bottom: 38px; left: 0; right: 0; display: grid; justify-items: center; text-align: center; }
+  .cap::before { content: ""; width: 44px; height: 1px; margin-bottom: 14px; background: #B08A4A; }
+  .name { font-size: 29px; line-height: 1.05; letter-spacing: 0.005em; color: #2B1D16; }
+  .role { margin-top: 9px; font-family: Manjari, sans-serif; font-weight: 700; font-size: 13.5px; line-height: 1; letter-spacing: 0.2em; text-transform: uppercase; color: #7A5A22; }
+  .role b { font-weight: 400; letter-spacing: 0.06em; font-variant-numeric: lining-nums; }
 
   .mid { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 520px; display: grid; justify-items: center; text-align: center; }
-  .mid img.lock { width: 330px; height: auto; }
-  .rule { width: 260px; height: 1px; margin: 26px 0 18px; background: linear-gradient(90deg, transparent, #B08A4A 20%, #B08A4A 80%, transparent); position: relative; }
+  .mid img.lock { width: 300px; height: auto; }
+  .rule { width: 220px; height: 1px; margin: 28px 0 22px; background: linear-gradient(90deg, transparent, #B08A4A 20%, #B08A4A 80%, transparent); position: relative; }
   .rule::after { content: ""; position: absolute; left: 50%; top: -4px; width: 7px; height: 7px; margin-left: -4px; transform: rotate(45deg); background: #B08A4A; }
-  .year { font-size: 150px; line-height: 0.82; color: #6E4A1E; letter-spacing: 0.01em; }
-  .line { margin-top: 18px; font-size: 25px; color: #2B1D16; }
-  .sub { margin-top: 8px; font-family: Georgia, serif; font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; color: #755A22; }
+  .year { font-size: 176px; line-height: 0.78; letter-spacing: -0.01em; color: #6E4A1E;
+    background: linear-gradient(180deg, #8A6428 0%, #6E4A1E 55%, #4E3313 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .line { margin-top: 24px; font-size: 32px; line-height: 1.1; color: #2B1D16; }
+  .sub { margin-top: 12px; font-family: Manjari, sans-serif; font-weight: 700; font-size: 14px; line-height: 1; letter-spacing: 0.32em; text-transform: uppercase; color: #7A5A22; padding-left: 0.32em; }
 </style>
 <div class="b">
   <figure class="who left" style="margin:0">
@@ -46,16 +50,16 @@
     <img src="../../web/public/media/history/ramadas-vaidyar.webp" alt="">
   </figure>
   <div class="cap" style="left:70px; right:auto; width:360px">
-    <div class="name">Kaloor Neelakandan Vaidyar</div><div class="role">Founder · 1895–1967</div>
+    <div class="name">Kaloor Neelakandan Vaidyar</div><div class="role">Founder&ensp;<b>1895–1967</b></div>
   </div>
   <div class="cap" style="right:70px; left:auto; width:360px">
-    <div class="name">K. N. Ramadas Vaidyar</div><div class="role">Second generation · 1934–1998</div>
+    <div class="name">K. N. Ramadas Vaidyar</div><div class="role">Second generation&ensp;<b>1934–1998</b></div>
   </div>
   <div class="mid">
     <img class="lock" src="../../web/public/brand/avvvs-since-1921.svg" alt="">
     <div class="rule"></div>
     <div class="year">1921</div>
     <div class="line">Four generations of Ayurveda</div>
-    <div class="sub">Kozhikode, Kerala</div>
+    <div class="sub">Kozhikode&ensp;·&ensp;Kerala</div>
   </div>
 </div>
