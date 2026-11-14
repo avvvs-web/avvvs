@@ -11,7 +11,7 @@ export interface Station { img: string; w: number; h: number; alt: string; title
 export const STATIONS: Station[] = [
   { img: 'raw-store', w: 1536, h: 1024, alt: 'Sacks of raw material on pallets and tied stacks of cartons in the factory\'s store shed.', title: 'Raw materials',
     text: 'Herbs are sourced and stored before they reach the floor. AVVVS also keeps herbal gardens around its manufacturing units, for raw material and to conserve biodiversity.' },
-  { img: 'vessels-hall', w: 1446, h: 1087, alt: 'A row of large round steel vessels with lids, on steel legs, in a bright traditional preparation hall.', title: 'Traditional preparation',
+  { img: 'preparation-vessel', w: 1109, h: 1418, alt: 'Two workers in dark uniforms, masks and gloves at a large round steel vessel in the preparation hall; one stirs the amber liquid in it with a long rod.', title: 'Traditional preparation',
     text: 'Classical preparations are made in traditional mechanised units, run by trained and experienced staff.' },
   { img: 'process-tanks', w: 1536, h: 1024, alt: 'Two jacketed stainless steel process tanks with stirrer motors, a service stair and control panels.', title: 'Modern processing',
     text: 'Modern machinery stands alongside the traditional units.' },
@@ -23,7 +23,7 @@ export const STATIONS: Station[] = [
     text: 'Capsules are sealed into blister strips on the line.' },
   { img: 'cap-sealing', w: 1536, h: 1024, alt: 'White capped bottles on a conveyor, between guide rails, running into an induction cap sealing machine.', title: 'Sealing',
     text: 'Bottles are capped and sealed before packing.' },
-  { img: 'stores', w: 1300, h: 867, alt: 'Finished goods store with shelving and stacked, labelled cartons.', title: 'Stores and dispatch',
+  { img: 'stores-mezzanine', w: 1536, h: 1024, alt: 'A stores hall with steel shelving and a mezzanine, black stairs, and cardboard cartons stacked on the shelves and the floor.', title: 'Stores and dispatch',
     text: 'Packed stock waits in the stores, then ships across India and abroad.' },
 ];
 
