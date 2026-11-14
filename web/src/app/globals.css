@@ -479,7 +479,7 @@ html.is-locked { overflow: hidden; }
 .foot-base a { color: var(--muted); }
 /* back to the start: a real button, in AVVVS blue, big enough to hit */
 .foot .foot-top {
-  display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 10px 22px; border-radius: 999px;
+  display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 12px 22px 7px 24px; border-radius: 999px; /* by eye, as on Skip the film: Manjari sits high in its line */
   font-size: 1rem; color: var(--blue); text-decoration: none; border: 1.5px solid var(--blue); background: transparent;
   transition: background-color 0.3s var(--ease-out), color 0.3s var(--ease-out);
 }
