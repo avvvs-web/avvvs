@@ -73,6 +73,7 @@ export function SiteFooter() {
         <ul className="foot-legal" aria-label="Legal">
           <li><Link href="/privacy">Privacy</Link></li>
           <li><Link href="/terms">Terms</Link></li>
+          <li><Link href="/credits">Credits</Link></li>
           <li><CookieSettingsLink label="Cookie settings" /></li>
         </ul>
         <ul className="foot-social" aria-label="AVVVS elsewhere">

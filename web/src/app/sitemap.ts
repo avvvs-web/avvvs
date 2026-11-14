@@ -18,5 +18,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...POSTS.map((p) => ({ url: abs(`/journal/${p.slug}`), lastModified: new Date(p.revised), changeFrequency: 'yearly' as const, priority: 0.5 })),
     { url: abs('/privacy'), lastModified: now, changeFrequency: 'yearly', priority: 0.2 },
     { url: abs('/terms'), lastModified: now, changeFrequency: 'yearly', priority: 0.2 },
+    { url: abs('/credits'), lastModified: now, changeFrequency: 'yearly', priority: 0.1 },
   ] as MetadataRoute.Sitemap).map(withLang);
 }

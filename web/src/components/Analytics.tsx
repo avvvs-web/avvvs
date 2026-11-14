@@ -58,9 +58,21 @@ function loadPixel(win: Win) {
   win.__avvvsPixel = true;
 }
 
+// Removes the cookies a tag has already set, once its category is turned off. They may sit on this
+// host or on any parent domain, so each is expired on all of them.
+function dropCookies(prefixes: string[]) {
+  const names = document.cookie.split(';').map((c) => c.split('=')[0].trim()).filter((n) => prefixes.some((p) => n.startsWith(p)));
+  if (!names.length) return;
+  const parts = window.location.hostname.split('.');
+  const domains = ['', ...parts.map((_, i) => parts.slice(i).join('.')).filter((d) => d.includes('.')).flatMap((d) => [d, `.${d}`])];
+  for (const n of names) for (const d of domains) document.cookie = `${n}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/${d ? `; domain=${d}` : ''}`;
+}
+
 function apply(c: Consent | null, path: string) {
   const win = window as Win;
   const before = { ga: !!win.__avvvsGa, px: !!win.__avvvsPixel };
+  if (!c?.analytics) dropCookies(['_ga', '_gid', '_gat']);
+  if (!c?.marketing) dropCookies(['_fbp', '_fbc', '_gcl_']);
   if (c?.analytics) loadGa(win);
   else if (win.gtag) win.gtag('consent', 'update', { analytics_storage: 'denied' });
   if (win.gtag && win.__avvvsGa) {
