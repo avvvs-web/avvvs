@@ -101,10 +101,10 @@ export const CLIPS: Clip[] = [
     cards: [{ in: 0.15, out: 0.95, content: (<><h2>300+ formulations</h2><p>AVVVS makes more than 300 formulations, including classical medicines prepared according to traditional texts and proprietary formulations developed in-house.</p></>) }],
   },
   {
-    // the factory, as five oil paintings made from the client's photographs; each is brushed on over
-    // the one before, starting from the stream of oil and ending on the map (film/factory/paint.html)
-    id: 'factory', alt: 'Oil paintings of the AVVVS factory, each brushed on over the last: a quality checker with a folder at a steel vessel, a capsule-filling plate, a worker at the blister-packing machine, tubes on the tube-filling machine, and a lab technician holding up a flask. The last gives way to a world map.',
-    chapter: 'The standard', weight: 4.6, frames: 'painted', still: 60,
+    // the pour becomes the gold thread, which draws the factory in one line and is drawn through
+    // into the dot at Kozhikode on the map (film/factory/draw.html)
+    id: 'factory', alt: 'The stream of oil becomes a gold thread that draws, in one line, a stirred steel vessel, a capsule-filling machine, a blister-packing machine and a tube-filling machine, each with what it makes beside it, then a laboratory flask under a burette; a drop falls and the flask fills. The thread then runs out across a world map to Kozhikode.',
+    chapter: 'The standard', weight: 4.6, frames: 'standard-v2', still: 205,
     cards: [
       { in: 0.22, out: 0.8, content: (<><h2>Tradition meets modern standards</h2><p>At our GMP-certified manufacturing facility in Kozhikode, capsule, blister-packaging, ointment and cosmetic production lines operate alongside traditional manufacturing units, supported by stringent quality-control measures.</p></>) },
     ],
