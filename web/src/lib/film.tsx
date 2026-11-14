@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { AvvvsLockup } from '@/components/Logo';
 
 /**
  * The Golden Thread as one continuous film. Clips play in this order inside a single pinned stage.
@@ -16,6 +17,7 @@ export interface FilmCard {
   in: number;
   out?: number;
   variant?: 'hero' | 'center' | 'right';
+  hold?: boolean; // stays to the end of the clip instead of fading out (the film's closing card)
   content: ReactNode;
 }
 
@@ -115,6 +117,8 @@ export const CLIPS: Clip[] = [
     id: 's14', alt: 'Gold threads run from Kozhikode across a world map to Austria, Slovenia, Russia, Colombia and on towards the United States; then a single gold thread draws itself across ivory paper.', weight: 2.8, frames: 's14', light: true,
     cards: [
       { in: 0.04, out: 0.5, variant: 'right', content: (<><h2>Made in Kerala, carried across the world</h2><p>Our products are sold across India and exported to the United States, Russia, Austria, Slovenia, Colombia and beyond.</p></>) },
+      // the last beat: the thread has crossed the world and lands on the mark, and the page goes on to the five ways to work with us
+      { in: 0.66, variant: 'center', hold: true, content: (<h2 className="end-mark"><span className="eco-word"><AvvvsLockup height={120} /></span><span className="eco-since">Where the thread goes next is up to you</span></h2>) },
     ],
   },
 ];
