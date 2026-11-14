@@ -10,7 +10,8 @@
   across the frame; beyond 1 on the phone crop, so the thread leaves on the right)
 -->
 <meta charset="utf-8">
-<style>html, body { margin: 0; background: #000; overflow: hidden } canvas { display: block }</style>
+<style>@font-face { font-family: Castle; src: url('../../web/src/fonts/CastleT.woff2') format('woff2'); }
+html, body { margin: 0; background: #000; overflow: hidden } canvas { display: block }</style>
 <canvas id="c"></canvas>
 <script>
 const q = new URLSearchParams(location.search);
@@ -64,6 +65,8 @@ function outline(v) {
 
 // details that are not part of the one line: they come up once the pen has passed `at`
 const extras = [];
+// a small name under each station, set once the thread has drawn it
+const labels = [];
 // the solid body inside each outline the thread closes: shaded metal, glass, foil or gelatin,
 // lit from the upper left, with a soft reflection on the bench. It fills in once the outline is done.
 const bodies = [];
@@ -112,6 +115,7 @@ let x = X0 + 640 + 110;
   quad(o + 48, y(-410), o + 44, y(-350)); to(o + 44, y(-176));
   quad(o + 52, y(-118), o + 104, y(-104));
   const at = here();
+  labels.push({ at, x: o + 230, text: 'Preparation vessel' });
   body(at, P.slice(tank, at + 1), 'steel');
   quad(o + 230, y(-30), o + 356, y(-104));
   to(o + 398, B); to(o + 460, B);
@@ -132,6 +136,7 @@ const box = (place, x0, y0, x1, y1) => [[x0, y0], [x1, y0], [x1, y1], [x0, y1], 
 // 2. the capsule filler: a bed of capsules under a pressing plate, with its lever; then capsules
 {
   const { place, right } = machine([[-150, 0, 6], [-150, -150, 6], [-178, -150, 4], [-178, -186, 6], [178, -186, 6], [178, -150, 4], [150, -150, 6], [150, 0, 6]], x);
+  labels.push({ at: here(), x: place([0, 0])[0], text: 'Capsule filling' });
   const tops = []; for (let i = 0; i < 9; i++) { const a = []; for (let k = 0; k <= 12; k++) a.push(place([-140 + 35 * i + Math.cos(Math.PI * k / 12) * -11, -186 - Math.sin(Math.PI * k / 12) * 20])); tops.push(a); }
   extras.push({ at: here(), lines: [...tops, box(place, -112, -122, 112, -26), [place([178, -168]), place([212, -168]), place([252, -296])], [place([-160, -186]), place([-160, -262])], [place([160, -186]), place([160, -262])]],
     circles: [[...place([252, -308]), 12], [...place([90, -74]), 7]], fill: tops, fillA: 0.3,
@@ -149,6 +154,7 @@ x += 210;
 // 3. the blister packer: foil off a reel, through the forming press, pockets out along the bed; then a strip
 {
   const { place, right } = machine([[-250, 0, 6], [-250, -130, 8], [-100, -130, 6], [-100, -270, 10], [50, -270, 10], [50, -130, 6], [250, -130, 8], [250, 0, 6]], x);
+  labels.push({ at: here(), x: place([0, 0])[0], text: 'Blister packing' });
   const [rx, ry] = place([-178, -226]);
   extras.push({ at: here(), lines: [[place([-178, -162]), place([-178, -130])], [place([-150, -284]), place([-100, -258])], box(place, -76, -246, 26, -172), [place([-250, -22]), place([250, -22])], [place([50, -143]), place([250, -143])], box(place, 150, -104, 222, -52)],
     circles: [[rx, ry, 64], [rx, ry, 13], [...place([172, -78]), 6], [...place([200, -78]), 6]],
@@ -171,6 +177,7 @@ x += 210;
 // 4. the tube filler: a hopper over a nozzle, tubes standing on the turntable; then a tube
 {
   const { place, right } = machine([[-150, 0, 6], [-150, -150, 8], [36, -150, 5], [36, -292, 6], [-34, -392, 8], [150, -392, 8], [84, -292, 6], [84, -150, 5], [150, -150, 8], [150, 0, 6]], x);
+  labels.push({ at: here(), x: place([0, 0])[0], text: 'Tube filling' });
   const tube = (tx) => [[tx - 11, -161], [tx + 11, -161], [tx + 11, -177], [tx + 15, -181], [tx + 18, -246], [tx - 18, -246], [tx - 15, -181], [tx - 11, -177], [tx - 11, -161]].map(place);
   const [ex, ey] = place([-62, -152]);
   extras.push({ at: here(), lines: [tube(-118), tube(-62), tube(-6), [place([36, -272]), place([-62, -272]), place([-62, -250])], box(place, -112, -112, -30, -40), [place([-6, -340]), place([122, -340])]],
@@ -204,6 +211,7 @@ let LAB;
   extras.push({ at: drop, lines: ticks });
   cubic(fx + 170, B - 720, rod + 190, B, rod + 420, B);
   LAB = { fx, tip, level, liquid, drop, cx: fx + 40 };
+  labels.push({ at: drop, x: fx + 40, text: 'Quality-control lab' });
   x = rod + 420;
 }
 // on to Kozhikode on the map
@@ -356,6 +364,16 @@ function draw(f) {
     if (a <= 0 || b.box[2] < cam - VW / 2 - 50 || b.box[0] > cam + VW / 2 + 50) continue;
     shade(b, a, paper);
   }
+  // the names: a tick under the bench and small spaced capitals
+  g.textAlign = 'center'; g.textBaseline = 'top';
+  g.font = `${tall ? 19 : 23}px Castle, Georgia, serif`; g.letterSpacing = tall ? '3px' : '4px';
+  for (const l of labels) {
+    const a = smooth(L[l.at] + 200, L[l.at] + 900, head) * (1 - smooth(L[l.at] - 700, L[l.at] - 100, tail));
+    if (a <= 0) continue;
+    g.strokeStyle = rgba(halo, 0.7 * a); g.lineWidth = 1.5; path([[l.x, B + 14], [l.x, B + 34]]); g.stroke();
+    g.fillStyle = rgba(core, 0.92 * a); g.fillText(l.text.toUpperCase(), l.x + 2, B + 44);
+  }
+  g.letterSpacing = '0px';
   // details
   for (const e of extras) {
     const a = smooth(L[e.at], L[e.at] + 520, head) * (1 - smooth(L[e.at] - 700, L[e.at] - 100, tail));
@@ -396,7 +414,7 @@ function draw(f) {
   }
 }
 
-window.ready = Promise.all([img(q.get('start')), img(q.get('end'))]).then(([a, b]) => { START = a; FINISH = b; draw(0); return { frames: N, length: Math.round(TOTAL), width: Math.round(END.x) }; });
+window.ready = Promise.all([img(q.get('start')), img(q.get('end')), document.fonts.load('23px Castle')]).then(([a, b]) => { START = a; FINISH = b; draw(0); return { frames: N, length: Math.round(TOTAL), width: Math.round(END.x) }; });
 window.draw = draw;
 if (q.has('play')) window.ready.then(() => { let f = 0; setInterval(() => { draw(f); f = (f + 1) % N; }, 1000 / 24); });
 </script>

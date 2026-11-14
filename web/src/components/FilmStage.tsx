@@ -77,6 +77,11 @@ export function FilmStage() {
     const ctx = canvas.getContext('2d', { alpha: false });
     // no canvas: the opening still stays, and the cards still play over it
 
+    // Two versions of the factory beat are being shown to the client: the oil paintings (the default)
+    // and, with ?factory=line in the address, the gold line drawing with its stations named.
+    // Both are 288 frames, so only the folder changes.
+    const lineArt = new URLSearchParams(window.location.search).get('factory') === 'line';
+    const folderOf = (k: number) => (lineArt && CLIPS[k].id === 'factory' ? 'labelled' : CLIPS[k].frames);
     const net = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
     let capped = 0; // how many steps down the connection has forced: 1 no sharp set, 2 not full HD either
     const LIGHTER: Partial<Record<SetName, SetName>> = { uhd: 'hd', hd: 'd', p2: 'p' };
@@ -240,7 +245,7 @@ export function FilmStage() {
         const k = CLIP_OF[g];
         const sent = performance.now();
         state[g] = 1; inFlight++;
-        fetch(frameUrl(set, CLIPS[k].frames, g - START[k]))
+        fetch(frameUrl(set, folderOf(k), g - START[k]))
           .then((r) => (r.ok ? r.blob() : Promise.reject(new Error(String(r.status)))))
           .then((blob) => {
             if (mine !== gen) return;
