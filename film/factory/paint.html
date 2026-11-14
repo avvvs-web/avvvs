@@ -1,0 +1,152 @@
+<!doctype html>
+<!--
+  "Tradition meets modern standards", painted: five oil paintings of the AVVVS factory (made from the
+  client's photos with GPT Image on Higgsfield, in film/factory/paintings), each held with a slow
+  camera drift. Every join is painted on, not dissolved: the next picture arrives in brush strokes
+  with a wet gold edge (the film's oil and thread), spreading from where the eye already is.
+    in    the camera pushes in on the stream of oil in S10's last frame, and the first painting is
+          brushed on outward from the stream: the oil paints the picture
+    between  strokes sweep across in the direction the camera is drifting
+    out   the ivory map (S14's first frame) is brushed on from the lab flask outward
+  The first frame is S10's last and the last is S14's first, so the film's own joins don't show.
+  render-paint.mjs steps this page frame by frame. query: w, h, n, start, end
+-->
+<meta charset="utf-8">
+<style>html, body { margin: 0; background: #000; overflow: hidden } canvas { display: block }</style>
+<canvas id="c"></canvas>
+<script>
+const q = new URLSearchParams(location.search);
+const W = +q.get('w') || 1920, H = +q.get('h') || 1080, N = +q.get('n') || 288;
+const cv = document.getElementById('c'); cv.width = W; cv.height = H;
+const g = cv.getContext('2d');
+g.imageSmoothingQuality = 'high';
+const tall = H > W;
+
+// the paintings, in order, with where their subject sits across the picture (fx, fy: 0-1), so a
+// narrow phone crop keeps it, and which way the camera drifts (dx, dy: share of the frame) and zooms
+const SHOTS = [
+  { src: 'paintings/p10.png', fx: 0.74, fy: 0.3, dx: -0.03, dy: 0.0, z0: 1.12, z1: 1.02 },   // the vessel, QC
+  { src: 'paintings/p11.png', fx: 0.78, fy: 0.62, dx: 0.04, dy: -0.01, z0: 1.02, z1: 1.12 }, // capsule plate
+  { src: 'paintings/p12.png', fx: 0.72, fy: 0.5, dx: -0.03, dy: 0.0, z0: 1.1, z1: 1.02 },    // blister packing
+  { src: 'paintings/p14.png', fx: 0.55, fy: 0.62, dx: 0.03, dy: 0.0, z0: 1.02, z1: 1.1 },    // tube filling
+  { src: 'paintings/p13.png', fx: 0.3, fy: 0.32, dx: 0.02, dy: -0.01, z0: 1.1, z1: 1.0 },    // the lab test
+];
+// time, as shares of the beat: the join in, each painting overlapping the next by a join, the join out
+const IN = 0.1, OUT = 0.1, X = 0.075;
+const span = (1 - IN - OUT + X * (SHOTS.length - 1)) / SHOTS.length;
+SHOTS.forEach((s, i) => { s.t0 = IN - X + i * (span - X) + (i ? 0 : X - IN); s.t1 = IN + i * (span - X) + span; });
+SHOTS[0].t0 = 0; SHOTS[SHOTS.length - 1].t1 = 1;
+// where each painting's join begins and ends
+SHOTS.forEach((s, i) => { s.j0 = i === 0 ? 0.015 : s.t0; s.j1 = i === 0 ? IN : s.t0 + X; });
+
+const clamp = (v) => Math.max(0, Math.min(1, v));
+const smooth = (a, b, v) => { const t = clamp((v - a) / (b - a)); return t * t * (3 - 2 * t); };
+const ease = (t) => t * t * (3 - 2 * t) * 0.4 + t * 0.6;
+
+// ---- brush strokes: a map of when each part of the frame gets painted (0 first, 1 last) ----
+const MW = tall ? 240 : 420, MH = Math.round(MW * H / W);
+let seed = 1921; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+// broad overlapping strokes at a slant, as a grey texture
+const strokes = (() => {
+  const c = document.createElement('canvas'); c.width = MW; c.height = MH;
+  const x = c.getContext('2d'); x.fillStyle = '#808080'; x.fillRect(0, 0, MW, MH); x.lineCap = 'round';
+  for (let i = 0; i < 520; i++) {
+    const a = -0.42 + (rnd() - 0.5) * 0.5, l = MW * (0.12 + rnd() * 0.3), cx = rnd() * MW, cy = rnd() * MH;
+    const v = Math.round(rnd() * 255);
+    x.strokeStyle = `rgba(${v},${v},${v},0.5)`; x.lineWidth = MW * (0.012 + rnd() * 0.05);
+    x.beginPath(); x.moveTo(cx - Math.cos(a) * l / 2, cy - Math.sin(a) * l / 2); x.lineTo(cx + Math.cos(a) * l / 2, cy + Math.sin(a) * l / 2); x.stroke();
+  }
+  const d = x.getImageData(0, 0, MW, MH).data, out = new Float32Array(MW * MH);
+  for (let i = 0; i < out.length; i++) out[i] = d[i * 4] / 255;
+  return out;
+})();
+// order of painting: mostly a sweep (along a direction, or outward from a point), broken up by the strokes
+function order(kind, ax, ay) {
+  const T = new Float32Array(MW * MH); let lo = 1e9, hi = -1e9;
+  for (let y = 0; y < MH; y++) for (let x = 0; x < MW; x++) {
+    const u = x / (MW - 1), v = y / (MH - 1);
+    const base = kind === 'radial' ? Math.hypot((u - ax) * W / H, v - ay) : u * ax + v * ay;
+    const t = base; if (t < lo) lo = t; if (t > hi) hi = t; T[y * MW + x] = t;
+  }
+  for (let i = 0; i < T.length; i++) T[i] = ((T[i] - lo) / (hi - lo)) * 0.62 + strokes[i] * 0.38;
+  return T;
+}
+const maskC = document.createElement('canvas'); maskC.width = MW; maskC.height = MH;
+const maskX = maskC.getContext('2d'), maskD = maskX.createImageData(MW, MH);
+const layer = document.createElement('canvas'); layer.width = W; layer.height = H;
+const lx = layer.getContext('2d'); lx.imageSmoothingQuality = 'high';
+// paint `drawIt` onto the frame as far as progress p (0-1) through the order map T, behind a wet gold edge
+function brushOn(T, p, drawIt) {
+  if (p <= 0) return;
+  if (p >= 1) { drawIt(g); return; }
+  const soft = 0.1, pass = (lead, paint) => {
+    const cut = (p + lead) * (1 + soft);
+    for (let i = 0; i < T.length; i++) maskD.data[i * 4 + 3] = 255 * clamp((cut - T[i]) / soft);
+    maskX.putImageData(maskD, 0, 0);
+    lx.globalCompositeOperation = 'source-over'; lx.globalAlpha = 1; lx.clearRect(0, 0, W, H);
+    paint(lx);
+    lx.globalCompositeOperation = 'destination-in'; lx.drawImage(maskC, 0, 0, W, H);
+    g.drawImage(layer, 0, 0);
+  };
+  // the gold runs just ahead of the picture, and thins out as the join completes
+  pass(0.045, (c) => { c.fillStyle = `rgba(214,170,90,${0.85 * (1 - smooth(0.75, 1, p))})`; c.fillRect(0, 0, W, H); });
+  pass(0, drawIt);
+}
+
+function cover(c, img, fx, fy, zoom, ox, oy) {
+  // fill the frame, centred on the subject as far as the edges allow
+  const s = Math.max(W / img.width, H / img.height) * zoom;
+  const w = img.width * s, h = img.height * s;
+  let x = W / 2 - fx * w + ox * W, y = H / 2 - fy * h + oy * H;
+  x = Math.min(0, Math.max(W - w, x)); y = Math.min(0, Math.max(H - h, y));
+  c.drawImage(img, x, y, w, h);
+}
+const vignette = (c) => {
+  const r = c.createRadialGradient(W / 2, H * 0.45, Math.min(W, H) * 0.25, W / 2, H / 2, Math.hypot(W, H) * 0.62);
+  r.addColorStop(0, 'rgba(13,11,9,0)'); r.addColorStop(1, 'rgba(13,11,9,0.55)');
+  c.fillStyle = r; c.fillRect(0, 0, W, H);
+};
+
+// the stream of oil in S10's last frame, and the flask in the lab painting, as shares of the frame
+const STREAM = tall ? [0.5, 0.3] : [0.49, 0.3], FLASK = tall ? [0.62, 0.42] : [0.39, 0.3];
+let START, END, T_IN, T_OUT;
+function draw(f) {
+  const t = f / (N - 1);
+  g.globalAlpha = 1; g.globalCompositeOperation = 'source-over';
+  if (f === 0 && START) { g.drawImage(START, 0, 0, W, H); return; }
+  if (f === N - 1 && END) { g.drawImage(END, 0, 0, W, H); return; }
+  // the bottle, the camera pushing in on the stream as the first painting arrives
+  if (START && t < IN) {
+    const z = 1 + 0.22 * ease(clamp(t / IN));
+    const w = W * z, h = H * z;
+    g.drawImage(START, STREAM[0] * (W - w), STREAM[1] * (H - h), w, h);
+  } else { g.fillStyle = '#0d0b09'; g.fillRect(0, 0, W, H); }
+  // the paintings, each brushed on over the one before
+  for (let i = 0; i < SHOTS.length; i++) {
+    const s = SHOTS[i];
+    if (t < s.j0 || t > s.t1) continue;
+    const u = ease(clamp((t - s.t0) / (s.t1 - s.t0)));
+    brushOn(s.T, smooth(s.j0, s.j1, t), (c) => {
+      cover(c, s.img, s.fx, s.fy, s.z0 + (s.z1 - s.z0) * u, s.dx * (u - 0.5), s.dy * (u - 0.5));
+      vignette(c); // a soft lamp-lit vignette, as in the rest of the film
+    });
+  }
+  // out: the map is brushed on from the flask
+  if (END) brushOn(T_OUT, smooth(1 - OUT, 0.992, t), (c) => c.drawImage(END, 0, 0, W, H));
+}
+
+const load = (src) => new Promise((ok) => { if (!src) return ok(null); const i = new Image(); i.onload = () => ok(i); i.onerror = () => ok(null); i.src = src; });
+window.ready = Promise.all([load(q.get('start')), load(q.get('end')), ...SHOTS.map((s) => load(s.src))]).then(([a, b, ...imgs]) => {
+  START = a; END = b;
+  imgs.forEach((im, i) => {
+    const s = SHOTS[i]; s.img = im;
+    // the first is painted outward from the oil; the rest sweep in the way the camera has been drifting
+    const p = SHOTS[i - 1];
+    s.T = i === 0 ? order('radial', STREAM[0], STREAM[1]) : order('sweep', p.dx > 0 ? 1 : -1, 0.35);
+  });
+  T_OUT = order('radial', FLASK[0], FLASK[1]);
+  draw(0);
+  return { frames: N, loaded: imgs.filter(Boolean).length, joins: !!a && !!b };
+});
+window.draw = draw;
+</script>
