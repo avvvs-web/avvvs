@@ -555,14 +555,20 @@ html.is-locked { overflow: hidden; }
   .m-hero, .m-intro, .m-make-grid { grid-template-columns: minmax(0, 1fr); }
   .m-hero { min-height: 0; padding-top: 100px; }
   .m-hero-media img { height: auto; aspect-ratio: 4 / 5; object-position: 50% 30%; }
-  /* the floor becomes a column, with the thread running down its left edge */
-  .m-track-wrap { padding: 0 0 0 calc(var(--gutter) + 22px); }
-  .m-thread { left: calc(var(--gutter) + 3px); right: auto; top: 0; bottom: 0; width: 1px; height: auto; }
-  .m-thread-fill { transform-origin: center top; }
-  .m-track { flex-direction: column; width: auto; padding-left: 0; gap: 48px; }
-  .station { width: auto; }
-  .station::before { top: 4px; left: -22px; }
-  .station img { width: 100%; height: auto; max-height: 70vh; max-height: 70svh; object-fit: cover; }
+  /* the floor becomes a row to swipe, snapping from station to station, with the next one peeking
+     in from the edge; the thread above it fills as it is read (FactoryFloor.tsx) */
+  .m-track-wrap { padding: 28px 0 0; }
+  .m-thread { left: var(--gutter); right: var(--gutter-r); }
+  .m-track, .no-scrub .m-track {
+    flex-wrap: nowrap; width: auto; gap: 18px; overflow-x: auto; overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter);
+    padding: 20px var(--gutter-r) 6px var(--gutter); -webkit-overflow-scrolling: touch; scrollbar-width: none;
+  }
+  .m-track::-webkit-scrollbar { display: none; }
+  .m-track:focus-visible { outline-offset: -2px; }
+  .station { width: min(78vw, 26rem); flex: none; scroll-snap-align: start; }
+  .station::before { display: none; }
+  .station img { width: 100%; height: auto; max-height: 56vh; max-height: 56svh; object-fit: cover; }
   .station p { min-width: 0; }
   .m-ways > div { grid-template-columns: minmax(0, 1fr); }
 }
