@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import Link from 'next/link';
 import { ScrollTrigger, useGSAP, prefersReducedMotion } from '@/lib/gsap';
 import type { Network } from '@/lib/network';
-import { AvvvsLockup, AvvvsMark } from './Logo';
+import { AvvvsMark } from './Logo';
 
 // The reveal: the film's gold thread carries on under the AVVVS logo and drops to the five
 // ways to work with us. The Three.js layer loads only as the section approaches.
@@ -63,12 +63,8 @@ export function Ecosystem() {
   return (
     <section className="ecosystem" id="destinations" aria-labelledby="eco-title" ref={root}>
       <canvas className="eco-canvas" aria-hidden="true" />
-      <div className="eco-mark">
-        <h2 id="eco-title">
-          <span className="eco-word"><AvvvsLockup height={120} /></span>
-          <span className="eco-since">Where the thread goes next is up to you</span>
-        </h2>
-      </div>
+      {/* the mark and this line are the film's closing card now (lib/film.tsx); the heading stays for screen readers */}
+      <h2 id="eco-title" className="sr-only">Where the thread goes next is up to you</h2>
       <ul className="eco-list">
         <li className="dest" data-dest="0">
           <Link href="/manufacturing" className="dest-logo-link" tabIndex={-1} aria-hidden="true"><AvvvsMark height={56} className="dest-logo" alt="" /></Link>
@@ -92,9 +88,10 @@ export function Ecosystem() {
         </li>
         <li className="dest" data-dest="3">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <a href="#enquire" data-topic="experience" className="dest-logo-link" tabIndex={-1} aria-hidden="true"><img src="/brand/gloveda-experience.webp" width={167} height={76} className="dest-logo dest-logo-tall" alt="" loading="lazy" decoding="async" /></a>
+          <a href="https://glovedaexperience.com/" rel="noopener" className="dest-logo-link" tabIndex={-1} aria-hidden="true"><img src="/brand/gloveda-experience.webp" width={167} height={76} className="dest-logo dest-logo-tall" alt="" loading="lazy" decoding="async" /></a>
           <h3>Gloveda Experience</h3>
           <p>A chain of luxury Ayur-Medi cosmetic clinics bringing over a century of Ayurvedic medical expertise to standalone destinations, five-star properties and high-end Ayurvedic resorts.</p>
+          <a href="https://glovedaexperience.com/" rel="noopener">Visit Gloveda Experience</a>
           <a href="#enquire" data-topic="experience">Bring Gloveda Experience to your property</a>
         </li>
         <li className="dest" data-dest="4">
