@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
 
 /*
  * Cookie consent. Nothing beyond this choice is stored until the visitor allows it:
@@ -32,7 +32,10 @@ function save(c: Choice) {
 
 /** A link-styled button that reopens the cookie choices (footer, Privacy Policy). */
 export function CookieSettingsLink({ label = 'cookie settings' }: { label?: string }) {
-  return <button type="button" className="link-btn" onClick={() => window.dispatchEvent(new Event(OPEN_EVENT))}>{label}</button>;
+  return <button type="button" className="link-btn" onClick={(e) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    window.dispatchEvent(new CustomEvent(OPEN_EVENT, { detail: { x: r.left + r.width / 2, y: r.top + r.height / 2 } }));
+  }}>{label}</button>;
 }
 
 const ROWS: { k: keyof Choice; title: string; note: string }[] = [
@@ -44,6 +47,14 @@ export function CookieConsent() {
   const [open, setOpen] = useState(false);
   const [details, setDetails] = useState(false);
   const [choice, setChoice] = useState<Choice>({ analytics: false, marketing: false });
+  // where it was opened from (the footer or Privacy Policy link), so the box grows out of that point
+  const from = useRef<{ x: number; y: number } | null>(null);
+  const box = useRef<HTMLElement>(null);
+  const [origin, setOrigin] = useState<string | undefined>();
+  useLayoutEffect(() => {
+    const el = box.current, f = from.current;
+    setOrigin(open && el && f ? `${f.x - el.offsetLeft}px ${f.y - el.offsetTop}px` : undefined);
+  }, [open]);
 
   useEffect(() => {
     const c = readConsent();
@@ -51,7 +62,8 @@ export function CookieConsent() {
     setChoice({ analytics: c.analytics, marketing: c.marketing });
   }, []);
   useEffect(() => {
-    const reopen = () => {
+    const reopen = (e: Event) => {
+      from.current = (e as CustomEvent<{ x: number; y: number } | undefined>).detail ?? null;
       const c = readConsent();
       setChoice({ analytics: !!c?.analytics, marketing: !!c?.marketing });
       setDetails(true); setOpen(true);
@@ -64,7 +76,7 @@ export function CookieConsent() {
   if (!open) return null;
 
   return (
-    <section className="cc" role="dialog" aria-modal="false" aria-labelledby="cc-title" aria-describedby="cc-desc">
+    <section ref={box} className="cc" style={origin ? ({ '--cc-o': origin } as CSSProperties) : undefined} role="dialog" aria-modal="false" aria-labelledby="cc-title" aria-describedby="cc-desc">
       <span className="cc-thread" aria-hidden="true" />
       <h2 id="cc-title" className="cc-title">Your cookie choices</h2>
       <p id="cc-desc" className="cc-text">

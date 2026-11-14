@@ -42,7 +42,7 @@ export function FactoryFloor() {
       const distance = () => Math.max(0, track.scrollWidth - wrap.clientWidth);
       gsap.timeline({
         defaults: { ease: 'none' },
-        scrollTrigger: { trigger: el, start: 'top top', end: () => `+=${distance()}`, pin: true, scrub: 0.6, anticipatePin: 1, invalidateOnRefresh: true },
+        scrollTrigger: { trigger: el, start: 'top top', end: () => `+=${distance()}`, pin: true, scrub: 0.6, invalidateOnRefresh: true },
       })
         .to(track, { x: () => -distance() }, 0)
         .fromTo('.m-thread-fill', { scaleX: 0 }, { scaleX: 1 }, 0);

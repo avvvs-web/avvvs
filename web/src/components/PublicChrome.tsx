@@ -7,6 +7,7 @@ import { CookieConsent } from './CookieConsent';
 import { Analytics } from './Analytics';
 import { EnquiryPanel } from './EnquiryForm';
 import { SmoothScroll } from './SmoothScroll';
+import { SharedCover } from './SharedCover';
 import { markReady } from '@/lib/ready';
 
 /**
@@ -26,6 +27,7 @@ export function PublicChrome() {
     <>
       <PageLoader />
       <SmoothScroll />
+      <SharedCover />
       <EnquiryPanel />
       <CookieConsent />
       <Analytics />
