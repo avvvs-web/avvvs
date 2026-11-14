@@ -966,7 +966,7 @@ html.is-locked { overflow: hidden; }
 /* Split headings rise word by word inside a clipping box one line tall (anime.js splitText
    wrap: 'clip'). The display face's descenders (the J of Journal, g, y, p) hang below that line at
    these tight line-heights, so the box reaches further down without moving the layout. */
-[data-split] span[style*="overflow:clip"] { padding-bottom: 0.24em; margin-bottom: -0.24em; padding-top: 0.04em; margin-top: -0.04em; }
+[data-split] span[style*="overflow: clip"], [data-split] span[style*="overflow:clip"] { padding-bottom: 0.24em; margin-bottom: -0.24em; padding-top: 0.04em; margin-top: -0.04em; }
 
 /* ---------- journal: elements a writer can add in the admin ---------- */
 .jr-body .jr-list { margin: 1.2em 0 0; padding-left: 1.3em; display: grid; gap: 0.45em; }
