@@ -32,20 +32,30 @@ export function EnquiryPanel() {
   const honeypot = useRef<HTMLInputElement>(null);
   const uid = useId();
 
-  const open = useCallback((topic?: TopicId) => {
+  const closing = useRef(0);
+  // `from`: the middle of the control that asked, so the panel grows out of it
+  const open = useCallback((topic?: TopicId, from?: { x: number; y: number }) => {
     const d = dialog.current;
     if (!d) return;
+    window.clearTimeout(closing.current); // a close in progress turns round
     if (state === 'sent') { setValues(EMPTY); setState('idle'); setStep(1); }
     if (topic) { setValues((v) => ({ ...v, topic })); setStep(2); } else if (state !== 'sent') setStep((s) => s);
     startedAt.current = Date.now();
-    if (!d.open) { d.showModal(); document.documentElement.classList.add('is-locked'); }
+    if (!d.open) {
+      d.showModal(); document.documentElement.classList.add('is-locked');
+      // the panel sits against the right edge, from the top
+      d.style.transformOrigin = from ? `${from.x - (window.innerWidth - d.offsetWidth)}px ${from.y}px` : '';
+      void d.offsetWidth; // the closed state must be painted once for the transition to run
+    }
+    d.classList.add('is-in');
   }, [state]);
 
   const close = useCallback(() => {
     const d = dialog.current;
     if (!d?.open) return;
-    d.classList.add('is-closing');
-    window.setTimeout(() => { d.classList.remove('is-closing'); d.close(); }, 320);
+    d.classList.remove('is-in');
+    window.clearTimeout(closing.current);
+    closing.current = window.setTimeout(() => { if (!d.classList.contains('is-in')) d.close(); }, 340);
   }, []);
 
   // every link to #enquire, on any page, opens the panel instead of jumping
@@ -55,7 +65,8 @@ export function EnquiryPanel() {
       const a = (e.target as Element).closest?.('a[href$="#enquire"]') as HTMLAnchorElement | null;
       if (!a || e.metaKey || e.ctrlKey || e.shiftKey) return;
       e.preventDefault();
-      open((a.dataset.topic as TopicId) || undefined);
+      const r = a.getBoundingClientRect();
+      open((a.dataset.topic as TopicId) || undefined, { x: r.left + r.width / 2, y: r.top + r.height / 2 });
     };
     window.addEventListener(ENQUIRE_EVENT, onEvent);
     document.addEventListener('click', onClick);
