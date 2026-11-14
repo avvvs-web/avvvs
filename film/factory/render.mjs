@@ -12,7 +12,7 @@ import path from 'node:path';
 const require = createRequire(path.join(process.env.PW || process.cwd(), 'x.js'));
 const { chromium } = require('playwright-core');
 const here = path.dirname(fileURLToPath(import.meta.url)), root = path.join(here, '..', '..');
-const V = 'v3', N = 288, ID = 'standard-v2';
+const V = 'v3', N = 288, ID = 'labelled';
 const film = path.join(root, 'web', 'public', 'media', 'film', V);
 // Kozhikode is 0.795 across the full frame; the phone set is its middle 608 of 1920
 const SETS = [
@@ -27,7 +27,7 @@ const tmp = process.argv[2] || path.join(root, 'film', 'factory', '_out');
 const tests = process.argv.slice(3).filter((a) => /^\d+$/.test(a)).map(Number);
 const only = process.argv.slice(3).filter((a) => !/^\d+$/.test(a)); // set names, to render just those
 
-const browser = await chromium.launch({ channel: 'chrome' });
+const browser = await chromium.launch({ channel: 'chrome', args: ['--allow-file-access-from-files'] });
 for (const s of SETS) {
   if (tests.length && s.set === 'd') continue;
   if (only.length && !only.includes(s.set)) continue;
