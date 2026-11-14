@@ -397,7 +397,9 @@ export function FilmStage() {
           gsap.set(card, { autoAlpha: 0 });
           tl.fromTo(card, { autoAlpha: 0, y: 28 }, { autoAlpha: 1, y: 0, duration: CARD_FADE, ease: 'power2.out' }, Math.max(0, a));
         }
-        tl.to(card, { autoAlpha: 0, y: -18, duration: CARD_FADE, ease: 'power2.in' }, b - CARD_FADE);
+        if (!CLIPS[i].cards?.[Array.from(layer.querySelectorAll('.card')).indexOf(card)]?.hold) {
+          tl.to(card, { autoAlpha: 0, y: -18, duration: CARD_FADE, ease: 'power2.in' }, b - CARD_FADE);
+        }
       });
 
       // 1921: the heritage type arrives one line at a time over the manuscripts, then the years count up

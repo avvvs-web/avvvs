@@ -62,7 +62,7 @@ export function organizationLd() {
     sameAs: CONTACT.social.map((s) => s.href),
     brand: [
       { '@type': 'Brand', name: 'Gloveda Herbals', url: 'https://glovedaherbals.com/' },
-      { '@type': 'Brand', name: 'Gloveda Experience' },
+      { '@type': 'Brand', name: 'Gloveda Experience', url: 'https://glovedaexperience.com/' },
       { '@type': 'Brand', name: 'Gloveda Revive' },
       { '@type': 'Brand', name: 'AVVVS Ayur Speciality Clinic', url: 'https://clinic.avvvs.com/' },
     ],
