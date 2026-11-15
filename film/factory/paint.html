@@ -29,7 +29,7 @@ const SHOTS = [
   { src: 'paintings/p11.png', fx: 0.78, fy: 0.62, dx: 0.04, dy: -0.01, z0: 1.02, z1: 1.12 }, // capsule plate
   { src: 'paintings/p12.png', fx: 0.72, fy: 0.5, dx: -0.03, dy: 0.0, z0: 1.1, z1: 1.02 },    // blister packing
   { src: 'paintings/p14.png', fx: 0.55, fy: 0.62, dx: 0.03, dy: 0.0, z0: 1.02, z1: 1.1 },    // tube filling
-  { src: 'paintings/p13.png', fx: 0.3, fy: 0.32, dx: 0.02, dy: -0.01, z0: 1.1, z1: 1.0 },    // the lab test
+  { src: 'paintings/p13.png', fx: 0.47, fy: 0.32, dx: 0.02, dy: -0.01, z0: 1.1, z1: 1.0 },    // the lab test
 ];
 // time, as shares of the beat: the join in, each painting overlapping the next by a join, the join out
 const IN = 0.1, OUT = 0.1, X = 0.075;
@@ -108,7 +108,7 @@ const vignette = (c) => {
 };
 
 // the stream of oil in S10's last frame, and the flask in the lab painting, as shares of the frame
-const STREAM = tall ? [0.5, 0.3] : [0.49, 0.3], FLASK = tall ? [0.62, 0.42] : [0.39, 0.3];
+const STREAM = tall ? [0.5, 0.3] : [0.49, 0.3], FLASK = tall ? [0.8, 0.4] : [0.39, 0.3];
 let START, END, T_IN, T_OUT;
 function draw(f) {
   const t = f / (N - 1);
