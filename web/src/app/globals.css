@@ -477,6 +477,15 @@ html.is-locked { overflow: hidden; }
 /* small type, full-size tap areas: the padding is taken back by the margin, so nothing moves */
 .foot-legal a, .foot-legal .link-btn, .foot-social a { display: inline-block; padding: 14px 10px; margin: -14px -10px; }
 .foot-base a { color: var(--muted); }
+/* touch: the text links in the destinations, the contact line and the journal are a full finger tall too.
+   The hit area grows by a pseudo-element, so neither the layout nor the underline moves. */
+@media (pointer: coarse) {
+  .dest a:not(.dest-logo-link), .ef-direct a, .jr .jr-read, .jr-card h3 a { position: relative; }
+  .dest a:not(.dest-logo-link)::after, .ef-direct a::after, .jr .jr-read::after, .jr-card h3 a::after { content: ""; position: absolute; inset: -10px -6px; }
+  .ef-direct { gap: 12px 18px; }
+  .foot-social { gap: 12px; }
+  .foot-social a { padding: 14px 16px; margin: -14px -16px; }
+}
 /* back to the start: a real button, in AVVVS blue, big enough to hit */
 .foot .foot-top {
   display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 12px 22px 7px 24px; border-radius: 999px; /* by eye, as on Skip the film: Manjari sits high in its line */
