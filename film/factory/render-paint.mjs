@@ -23,6 +23,8 @@ const SETS = [
   { set: 'uhd', dir: 'uhd-v3', w: 2560, h: 1440, ku: 0.795, q: 80 },
   { set: 'p2', dir: 'p2-v3', w: 1080, h: 1920, ku: (0.795 * 1920 - 656) / 608, q: 80 },
 ];
+// FROM=n re-renders only frames n.. (1-based) into the existing sets, for a change late in the beat
+const FROM = Number(process.env.FROM || 0);
 const tmp = process.argv[2] || path.join(root, 'film', 'factory', '_out');
 const tests = process.argv.slice(3).filter((a) => /^\d+$/.test(a)).map(Number);
 const only = process.argv.slice(3).filter((a) => !/^\d+$/.test(a)); // set names, to render just those
@@ -39,14 +41,15 @@ for (const s of SETS) {
   await page.goto(u.href);
   console.log(s.set, JSON.stringify(await page.evaluate(() => window.ready)));
   const dir = path.join(tmp, s.set); rmSync(dir, { recursive: true, force: true }); mkdirSync(dir, { recursive: true });
-  for (const f of tests.length ? tests : Array.from({ length: N }, (_, i) => i)) {
+  for (const f of tests.length ? tests : Array.from({ length: N - Math.max(0, FROM - 1) }, (_, i) => i + Math.max(0, FROM - 1))) {
     await page.evaluate((f) => window.draw(f), f);
     writeFileSync(path.join(dir, `f_${String(f + 1).padStart(3, '0')}.png`), await page.screenshot({ type: 'png' }));
   }
   await page.context().close();
   if (tests.length) continue;
-  const out = path.join(film, s.dir || s.set, ID); rmSync(out, { recursive: true, force: true }); mkdirSync(out, { recursive: true });
-  execFileSync('ffmpeg', ['-v', 'error', '-y', '-start_number', '1', '-i', path.join(dir, 'f_%03d.png'), '-c:v', 'libwebp', '-compression_level', '6', '-quality', String(s.q), '-fps_mode', 'passthrough', path.join(out, 'f_%03d.webp')]);
+  const out = path.join(film, s.dir || s.set, ID);
+  if (!FROM) { rmSync(out, { recursive: true, force: true }); mkdirSync(out, { recursive: true }); }
+  execFileSync('ffmpeg', ['-v', 'error', '-y', '-start_number', String(Math.max(1, FROM)), '-i', path.join(dir, 'f_%03d.png'), '-c:v', 'libwebp', '-compression_level', '6', '-quality', String(s.q), '-fps_mode', 'passthrough', '-start_number', String(Math.max(1, FROM)), path.join(out, 'f_%03d.webp')]);
   console.log(s.set, readdirSync(out).length, 'frames');
   rmSync(dir, { recursive: true, force: true });
 }
