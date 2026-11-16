@@ -33,6 +33,7 @@ export function EnquiryPanel() {
   const uid = useId();
 
   const closing = useRef(0);
+  const pushed = useRef(false);
   // `from`: the middle of the control that asked, so the panel grows out of it
   const open = useCallback((topic?: TopicId, from?: { x: number; y: number }) => {
     const d = dialog.current;
@@ -46,17 +47,29 @@ export function EnquiryPanel() {
       // the panel sits against the right edge, from the top
       d.style.transformOrigin = from ? `${from.x - (window.innerWidth - d.offsetWidth)}px ${from.y}px` : '';
       void d.offsetWidth; // the closed state must be painted once for the transition to run
+      // a history entry of its own, so a phone's back gesture closes the panel instead of leaving the page
+      if (!pushed.current) { window.history.pushState({ ...window.history.state, avvvsEnquiry: true }, ''); pushed.current = true; }
     }
     d.classList.add('is-in');
   }, [state]);
 
-  const close = useCallback(() => {
+  const shut = useCallback(() => {
     const d = dialog.current;
     if (!d?.open) return;
     d.classList.remove('is-in');
     window.clearTimeout(closing.current);
     closing.current = window.setTimeout(() => { if (!d.classList.contains('is-in')) d.close(); }, 340);
   }, []);
+  // closing from the panel takes its history entry back off; the back gesture arrives here already done
+  const close = useCallback(() => {
+    if (pushed.current) { window.history.back(); return; } // popstate below shuts it
+    shut();
+  }, [shut]);
+  useEffect(() => {
+    const onPop = () => { if (pushed.current) { pushed.current = false; shut(); } };
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, [shut]);
 
   // every link to #enquire, on any page, opens the panel instead of jumping
   useEffect(() => {
@@ -136,7 +149,13 @@ export function EnquiryPanel() {
     <dialog ref={dialog} className="ef" aria-labelledby={`${uid}-title`}>
       <div className="ef-panel">
         <header className="ef-head">
-          <p className="ef-kicker">Partner enquiry</p>
+          {state !== 'sent' && step === 2 ? (
+            <button type="button" className="ef-back" onClick={() => setStep(1)}>
+              <span aria-hidden="true">←</span> Back
+            </button>
+          ) : (
+            <p className="ef-kicker">Partner enquiry</p>
+          )}
           <button type="button" className="ef-close" onClick={close} aria-label="Close the enquiry form">
             <span aria-hidden="true" /><span aria-hidden="true" />
           </button>
@@ -162,7 +181,8 @@ export function EnquiryPanel() {
                 <legend><h2 id={`${uid}-title`}>What would you like to talk about?</h2></legend>
                 {TOPICS.map((t) => (
                   <label key={t.id} className={`ef-topic${values.topic === t.id ? ' is-on' : ''}`}>
-                    <input type="radio" name="topic" value={t.id} checked={values.topic === t.id} onChange={() => pick(t.id)} />
+                    <input type="radio" name="topic" value={t.id} checked={values.topic === t.id} onChange={() => pick(t.id)}
+                      onClick={() => { if (values.topic === t.id) pick(t.id); }} />
                     <span className="ef-topic-title">{t.label}</span>
                     <span className="ef-topic-note">{t.note}</span>
                     <span className="ef-topic-arrow" aria-hidden="true">→</span>

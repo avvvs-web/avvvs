@@ -3,7 +3,7 @@
 export const TOPICS = [
   { id: 'manufacturing', label: 'Third-party or white-label manufacturing', note: 'Your formulation made in our GMP-certified factory, or ours under your brand.',
     placeholder: 'For example: a capsule formulation for the European market' },
-  { id: 'clinic', label: 'AVVVS Ayur Specialty Clinic', note: 'Clinic partnerships in wellness, leisure and hospitality.',
+  { id: 'clinic', label: 'AVVVS Ayur Speciality Clinic', note: 'Clinic partnerships in wellness, leisure and hospitality.',
     placeholder: 'Tell us about your property or centre' },
   { id: 'experience', label: 'Gloveda Experience', note: 'Luxury Ayur-Medi cosmetic clinics for standalone destinations, five-star properties and Ayurvedic resorts.',
     placeholder: 'Your property or resort' },
