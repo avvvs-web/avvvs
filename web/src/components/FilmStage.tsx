@@ -30,8 +30,9 @@ const SETS = {
 type SetName = keyof typeof SETS;
 // the sharp sets' folders carry their own version: they were re-encoded from the upscaled clips
 const SET_DIR: Record<SetName, string> = { p: 'p', d: 'd', hd: 'hd', p2: 'p2-v3', uhd: 'uhd-v3' };
-// frames are cached for a year; the phone frames of the painted beat were redrawn (the lab painting, framed on the face and the flask), so they carry a version
-const frameUrl = (set: SetName, folder: string, f: number) => `${FRAMES_BASE}/${SET_DIR[set]}/${folder}/f_${String(f + 1).padStart(3, '0')}.webp${folder === 'painted' && (set === 'p' || set === 'p2') ? '?v=2' : ''}`;
+// frames are cached for a year; the painted beat has been redrawn (the phone framing of the lab painting, then a
+// surgical mask in the vessel painting), so its frames carry a version
+const frameUrl = (set: SetName, folder: string, f: number) => `${FRAMES_BASE}/${SET_DIR[set]}/${folder}/f_${String(f + 1).padStart(3, '0')}.webp${folder === 'painted' ? '?v=3' : ''}`;
 
 // every frame of the film on one line: clip k owns START[k] .. START[k] + COUNT[k] - 1
 const COUNT = CLIPS.map((c) => (FRAME_COUNTS as Record<string, number>)[c.frames] ?? 1);
