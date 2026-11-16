@@ -5,6 +5,8 @@ export const TOPICS = [
     placeholder: 'For example: a capsule formulation for the European market' },
   { id: 'clinic', label: 'AVVVS Ayur Speciality Clinic', note: 'In-clinic and online consultations, and treatment programmes.',
     placeholder: 'For example: an online consultation, or a treatment programme' },
+  { id: 'herbals', label: 'Gloveda Herbals', note: 'Retail and resort partnerships, clinic and wellness centre distribution, and domestic and export opportunities.',
+    placeholder: 'Your store, resort, clinic or market' },
   { id: 'experience', label: 'Gloveda Experience', note: 'Luxury Ayur-Medi cosmetic clinics for standalone destinations, five-star properties and Ayurvedic resorts.',
     placeholder: 'Your property or resort' },
   { id: 'revive', label: 'Gloveda Revive', note: 'Ayur-Medi cosmetic clinics, standalone or within Ayurvedic hospitals and treatment centres.',

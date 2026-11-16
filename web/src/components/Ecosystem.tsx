@@ -85,6 +85,7 @@ export function Ecosystem() {
           <h3>Gloveda Herbals</h3>
           <p>Our Ayurvedic skincare and haircare range, rooted in nature and generations of wisdom.</p>
           <a href="https://glovedaherbals.com/" rel="noopener">See the Gloveda range</a>
+          <a href="#enquire" data-topic="herbals">Partner with Gloveda Herbals</a>
         </li>
         <li className="dest" data-dest="3">
           {/* eslint-disable-next-line @next/next/no-img-element */}

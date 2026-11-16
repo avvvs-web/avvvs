@@ -53,7 +53,13 @@ export default function config(phase: string): NextConfig {
     env: { NEXT_PUBLIC_SITE_URL: SITE_URL, NEXT_PUBLIC_DEPLOY_ENV: process.env.VERCEL_ENV || 'local' },
     reactStrictMode: true,
     // the CSR page was first published as Social service
-    async redirects() { return [{ source: '/social-service', destination: '/community', permanent: true }]; },
+    async redirects() {
+      return [
+        { source: '/social-service', destination: '/community', permanent: true },
+        // browsers ask for /favicon.ico whatever the page declares; the icon is app/icon.svg
+        { source: '/favicon.ico', destination: '/icon.svg', permanent: false },
+      ];
+    },
     // The film's frames never change under the same address (the folder is versioned: see
     // film/encode_frames.sh), so browsers may keep them for a year without asking again.
     async headers() {

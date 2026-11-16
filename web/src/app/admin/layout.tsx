@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './admin.css';
+import { StaleReload } from './StaleReload';
 
 // The Journal admin: kept out of search and out of the public site's chrome.
 export const metadata: Metadata = {
@@ -8,5 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function AdminRoot({ children }: { children: React.ReactNode }) {
-  return <div className="ad">{children}</div>;
+  return <div className="ad"><StaleReload />{children}</div>;
 }
