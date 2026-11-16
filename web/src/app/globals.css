@@ -958,7 +958,7 @@ html.is-locked { overflow: hidden; }
 /* the three other AVVVS sites, in the AVVVS blue */
 /* outlined pills, so they read as places to go and not as page links */
 .bar-nav a.bar-ext {
-  color: var(--blue); font-size: 0.92rem; padding: 7px 14px 5px; border-radius: 999px;
+  color: var(--blue); font-size: 0.92rem; padding: 9px 14px 3px; border-radius: 999px; /* by eye: Manjari sits high in its line */
   border: 1px solid color-mix(in srgb, var(--blue) 55%, transparent); background: color-mix(in srgb, var(--blue) 7%, transparent);
   transition: color 0.3s var(--ease-out), background-color 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
 }
