@@ -17,11 +17,11 @@ const manjari = Manjari({ weight: ['100', '400', '700'], subsets: ['latin', 'mal
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Arya Vaidya Vilasini Vaidya Sala (AVVVS) · Ayurveda in Kozhikode since 1921',
+    default: 'Arya Vaidya Vilasini Vaidya Sala (AVVVS) · Since 1921',
     template: '%s · AVVVS',
   },
   description:
-    'AVVVS has prepared Ayurveda medicines in Kozhikode, Kerala since 1921. More than 300 classical and proprietary formulations, a GMP-certified factory, and third-party and white-label manufacturing for partner brands.',
+    'Ayurveda medicines from Kozhikode, Kerala since 1921: 300+ classical and proprietary formulations, a GMP-certified factory and white-label manufacturing.',
   applicationName: 'AVVVS',
   authors: [{ name: ORG.name, url: SITE_URL }],
   creator: ORG.name,
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   formatDetection: { telephone: false, address: false, email: false },
   openGraph: {
     type: 'website', siteName: ORG.name, locale: 'en_IN', url: '/',
-    title: 'Arya Vaidya Vilasini Vaidya Sala (AVVVS) · Ayurveda in Kozhikode since 1921',
+    title: 'Arya Vaidya Vilasini Vaidya Sala (AVVVS) · Since 1921',
     description: 'A century of Ayurveda medicine from Kozhikode, Kerala, now made with partners: GMP manufacturing, clinics and Gloveda Ayur-Medi cosmetic clinic partnerships.',
   },
   twitter: { card: 'summary_large_image', site: '@avvvsglobal' },

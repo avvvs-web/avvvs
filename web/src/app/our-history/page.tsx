@@ -42,7 +42,7 @@ const TIMELINE = [
 const GREW = [
   ['300+', 'classical and proprietary Ayurvedic formulations, along with skincare and haircare products.'],
   ['GMP', 'certified factory in Kozhikode, with traditional mechanised units alongside capsule, blister, ointment and cosmetic lines.'],
-  ['Clinics', 'The clinical division has grown to include AVVVS Ayur Specialty Clinics, offering specialised Ayurvedic care, and Gloveda Revive and Gloveda Experience, two Ayur-Medi cosmetic clinic franchises focused on skin and hair care.'],
+  ['Clinics', 'The clinical division has grown to include the AVVVS Ayur Speciality Clinic, offering specialised Ayurvedic care, and Gloveda Revive and Gloveda Experience, two Ayur-Medi cosmetic clinic franchises focused on skin and hair care.'],
   ['Abroad', 'Sold throughout India, and exported to the United States, Russia, Austria, Slovenia, Colombia and beyond.'],
 ] as const;
 

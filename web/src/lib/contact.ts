@@ -11,6 +11,6 @@ export const CONTACT = {
   social: [
     { label: 'Facebook', href: 'https://www.facebook.com/aryavaidyavilasini' },
     { label: 'Instagram', href: 'https://www.instagram.com/avvvsglobal/' },
-    { label: 'X', href: 'https://www.twitter.com/avvvsglobal' },
+    { label: 'X', href: 'https://x.com/avvvsglobal' },
   ],
 } as const;

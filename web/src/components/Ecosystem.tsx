@@ -75,8 +75,8 @@ export function Ecosystem() {
         <li className="dest" data-dest="1">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <a href="https://clinic.avvvs.com/" rel="noopener" className="dest-logo-link" tabIndex={-1} aria-hidden="true"><img src="/brand/ayur-specialty-clinics.webp" width={175} height={56} className="dest-logo" alt="" loading="lazy" decoding="async" /></a>
-          <h3>AVVVS Ayur Specialty Clinic</h3>
-          <p>The first clinical venture under AVVVS, offering specialised care for headaches, chronic pain, obesity, lifestyle disorders, fertility, skin and hair concerns, and maternal health.</p>
+          <h3>AVVVS Ayur Speciality Clinic</h3>
+          <p>In-clinic and online consultations, and treatment programmes, with specialised doctors in focused departments.</p>
           <a href="https://clinic.avvvs.com/" rel="noopener">Visit the clinic</a>
         </li>
         <li className="dest" data-dest="2">

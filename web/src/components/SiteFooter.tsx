@@ -44,7 +44,7 @@ export function SiteFooter() {
           <ul>
             <li><Link href="/manufacturing">AVVVS Manufacturing</Link></li>
             <li><Link href="/#destinations">Five ways to partner</Link></li>
-            <li><a href="#enquire" data-topic="experience">Gloveda Ayur-Medi Cosmetic Clinic Partnerships</a></li>
+            <li><a href="#enquire" data-topic="experience">Gloveda Ayur-Medi cosmetic clinic partnerships</a></li>
             <li><a href="#enquire">Partner enquiry</a></li>
           </ul>
         </nav>
