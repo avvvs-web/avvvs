@@ -956,9 +956,27 @@ html.is-locked { overflow: hidden; }
 /* ---------- site structure: bar groups, menu, breadcrumbs, where next, journal strip ---------- */
 .bar-sep { width: 1px; height: 18px; background: var(--line); margin-inline: calc(clamp(18px, 2.6vw, 40px) * -0.35); }
 /* the three other AVVVS sites, in the AVVVS blue */
-.bar-nav a.bar-ext { color: var(--blue); font-size: 0.88rem; }
-.bar-nav a.bar-ext:hover { color: var(--blue-deep); }
-.sheet-title-ext { color: var(--blue); }
+/* outlined pills, so they read as places to go and not as page links */
+.bar-nav a.bar-ext {
+  color: var(--blue); font-size: 0.92rem; padding: 7px 14px 5px; border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--blue) 55%, transparent); background: color-mix(in srgb, var(--blue) 7%, transparent);
+  transition: color 0.3s var(--ease-out), background-color 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+}
+.bar-nav a.bar-ext::after { display: none; }
+.bar-nav a.bar-ext:hover { color: var(--on-blue); background: var(--blue); border-color: var(--blue); }
+/* the menu sheet: the three sites first, as three tiles; the pages follow */
+.sheet-sites { list-style: none; margin: 0 0 6px; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.sheet-sites li { display: grid; }
+.sheet-sites a::after { content: "↗"; position: absolute; top: 6px; right: 9px; font-size: 0.78rem; line-height: 1; }
+.sheet-sites a {
+  position: relative; display: grid; gap: 4px; align-content: center; justify-items: center; text-align: center; min-height: 84px; padding: 18px 6px 12px;
+  color: var(--blue); text-decoration: none; border: 1px solid color-mix(in srgb, var(--blue) 55%, transparent); border-radius: 14px;
+  background: color-mix(in srgb, var(--blue) 7%, transparent);
+}
+.sheet-sites a:active { background: var(--blue); color: var(--on-blue); }
+.sheet-sites b { font-weight: 400; font-size: 1.02rem; line-height: 1.1; padding-top: 0.1em; white-space: nowrap; }
+.sheet-sites small { font-size: 0.72rem; line-height: 1.25; color: var(--muted); }
+.sheet-sites a:active small { color: inherit; }
 
 
 .crumbs ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 0; font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }

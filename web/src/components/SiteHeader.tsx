@@ -21,9 +21,13 @@ const MENU: { label: string; note: string; href: string; chapter?: string; page?
   { label: 'Manufacturing', note: 'GMP-certified, and made for your brand', href: '/manufacturing', page: 'manufacturing' },
   { label: 'Work With Us', note: 'Five ways to partner with AVVVS', href: '#destinations' },
   { label: 'Journal', note: 'Notes from a century of Ayurveda', href: '/journal', page: 'journal' },
-  { label: 'Consultation', note: 'The AVVVS Ayur Speciality Clinic', href: CLINIC_URL, external: 'clinic' },
-  { label: 'Pharmacy', note: 'AVVVS medicines and products, online', href: SHOP_URL, external: 'shop' },
-  { label: 'Gloveda', note: 'Our botanical skin care and hair care', href: CONTACT.gloveda, external: 'gloveda' },
+];
+
+// the other AVVVS sites: pills in the bar, tiles at the top of the menu sheet
+const SITES: { label: string; note: string; href: string; external: 'clinic' | 'shop' | 'gloveda' }[] = [
+  { label: 'Pharmacy', note: 'Medicines, online', href: SHOP_URL, external: 'shop' },
+  { label: 'Consultation', note: 'Ayur Speciality Clinic', href: CLINIC_URL, external: 'clinic' },
+  { label: 'Gloveda', note: 'Skin and hair care', href: CONTACT.gloveda, external: 'gloveda' },
 ];
 
 /**
@@ -125,6 +129,16 @@ export function SiteHeader({ page }: { page: Page }) {
 
       <div className="sheet" id="menu-sheet" hidden={!open}>
         <nav aria-label="Menu">
+          <ul className="sheet-sites" aria-label="Our other sites">
+            {SITES.map((s) => (
+              <li key={s.label}>
+                <a href={s.href} rel="noopener" onClick={() => { trackOutbound(s.external); close(); }}>
+                  <b>{s.label}</b>
+                  <small>{s.note}</small>
+                </a>
+              </li>
+            ))}
+          </ul>
           <ol className="sheet-nav">
             {MENU.map((m, i) => (
               <li key={m.label} style={{ '--i': i } as React.CSSProperties}>
