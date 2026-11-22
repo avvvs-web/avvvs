@@ -10,7 +10,6 @@ web/out/
 *.key
 
 # --- tooling and OS
-.claude/
 .DS_Store
 Thumbs.db
 

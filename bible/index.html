@@ -1,5 +1,4 @@
 <title>The Golden Thread</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+Malayalam:wght@400&display=swap">
 <style>
@@ -193,9 +192,9 @@ footer{padding-block:40px;color:var(--muted);font-size:.85rem}
 </div></section>
 
 <section id="audit"><div class="wrap">
-  <div class="sec-head"><span class="sec-num">03</span><div><h2>Skills and tools audit</h2><p class="muted read" style="margin-top:8px">Checked on this machine on 7 November 2026: installed skills (their SKILL.md files), connectors, software and GPU. Nothing new was installed.</p></div></div>
+  <div class="sec-head"><span class="sec-num">03</span><div><h2>Tools audit</h2><p class="muted read" style="margin-top:8px">Checked on this machine on 7 November 2026: installed software, media services and GPU. Nothing new was installed.</p></div></div>
   <div class="tbl"><table>
-    <thead><tr><th>Capability</th><th>Existing skill / tool</th><th>Available?</th><th>Quality</th><th>Recommended usage</th></tr></thead>
+    <thead><tr><th>Capability</th><th>Existing tool</th><th>Available?</th><th>Quality</th><th>Recommended usage</th></tr></thead>
     <tbody id="audit-rows"></tbody>
   </table></div>
   <div class="cols3" style="margin-top:28px">
@@ -311,7 +310,6 @@ footer{padding-block:40px;color:var(--muted);font-size:.85rem}
       <li>Four destinations, each a distinct world (see Seq 08). Loaded on demand, under 2.5 MB each, KTX2 textures, Draco meshes.</li>
       <li>GSAP ScrollTrigger to scrub the film segments. Video as HLS at 1080p, with 720p for mobile.</li>
       <li>Static poster frames and reduced motion for low-power devices and <span class="mono">prefers-reduced-motion</span>.</li>
-      <li>Skills to apply: awwwards-motion (shaders, particles, post), scroll-experience, and one of impeccable or hallmark for the page design.</li>
     </ul></div>
   </div>
 </div></section>
@@ -381,26 +379,25 @@ const DECISIONS=[
  ["Runtime and delivery","2:49 linear plus interactive Seq 08.","Approve 2:49, plus a 0:45 cut-down for social, and decide whether the website plays the full film or scroll-scrubbed segments."]
 ];
 const AUDIT=[
- ["3D environment creation","Blender 5.2, Unreal Engine 5.8 (installed). No skill for either.","Yes","High","UE5 for the forest, Blender for macro and symbolic worlds"],
- ["Cinematic storytelling, direction","No dedicated skill","Partial","My own direction","Treatment, storyboard, edit decisions"],
- ["Three.js and R3F","awwwards-motion (701 lines: GLSL, R3F, particles, post), threejs-skills (wrapper plus 701-line guide), Node.js","Yes","Good","Seq 07–08 on the website"],
+ ["3D environment creation","Blender 5.2, Unreal Engine 5.8 (installed).","Yes","High","UE5 for the forest, Blender for macro and symbolic worlds"],
+ ["Cinematic storytelling, direction","No dedicated tool","Partial","My own direction","Treatment, storyboard, edit decisions"],
+ ["Three.js and R3F","Three.js, React Three Fiber, Node.js","Yes","Good","Seq 07–08 on the website"],
  ["Blender","Blender 5.2 CLI, scriptable headless from here","Yes","Strong","Venation, threads, droplet, network"],
- ["Unreal Engine 5","UE 5.8 editor. No MCP or skill, so it's driven manually or by Python scripts","Yes","Highest for vegetation; 6 GB VRAM limits it","Forest shots 01.02–01.04"],
+ ["Unreal Engine 5","UE 5.8 editor, driven manually or by Python scripts","Yes","Highest for vegetation; 6 GB VRAM limits it","Forest shots 01.02–01.04"],
  ["Procedural modelling","Blender Geometry Nodes, UE PCG","Yes","Strong","Venation, braid, forest scatter"],
- ["Materials and shaders","awwwards-motion GLSL sections, Blender shader nodes, UE materials","Yes","Strong","Gold thin-film, droplet, leaf translucency"],
- ["Particle systems","awwwards-motion GPU particles, Blender, UE Niagara","Yes","Good","Dust in light shafts only"],
+ ["Materials and shaders","GLSL shaders, Blender shader nodes, UE materials","Yes","Strong","Gold thin-film, droplet, leaf translucency"],
+ ["Particle systems","Three.js GPU particles, Blender, UE Niagara","Yes","Good","Dust in light shafts only"],
  ["Fluid simulation","Blender Mantaflow (built in)","Yes, slow","Fair on a laptop","Prefer a real high-speed shot for 05.02"],
  ["Geometry and animation","Blender","Yes","Strong","All built shots"],
- ["Camera and motion design","awwwards-motion (spring physics), Blender and UE Sequencer","Yes","Good","Continuous camera language"],
- ["Video generation","Media connector: Kling 3/4, Seedance 2/2.5, MiniMax H3, Cinema Studio 4, FLUX 3 Video. 0 credits. Gemini/Veo not connected","No","n/a","Fallback forest plates only"],
- ["Image generation","Media connector image models (0 credits). canvas-design and algorithmic-art skills for code-made art","Partial","Fair","Look-frames, plate engraving tests"],
+ ["Camera and motion design","Spring-physics camera in Three.js, Blender and UE Sequencer","Yes","Good","Continuous camera language"],
+ ["Video generation","Media service: Kling 3/4, Seedance 2/2.5, MiniMax H3, Cinema Studio 4, FLUX 3 Video. 0 credits. Gemini/Veo not connected","No","n/a","Fallback forest plates only"],
+ ["Image generation","Media service image models (0 credits). Code-made art","Partial","Fair","Look-frames, plate engraving tests"],
  ["Video editing","Premiere Pro (Beta), Media Encoder, ffmpeg","Yes","Good","Animatic, edit, delivery"],
  ["Colour grading","Premiere Lumetri, ffmpeg LUTs. DaVinci Resolve not installed","Partial","Fair","Install Resolve (free) for the grade"],
- ["Archival restoration","Photoshop (Beta). Upscalers on the media connector have 0 credits","Partial","n/a","Not needed while website images are excluded"],
- ["Sound design and music","Audio models on the media connector (0 credits). No local audio tools","No","n/a","Composer and sound designer"],
- ["GSAP and scroll animation","scroll-experience (thin wrapper plus 584-line guide), awwwards-motion","Yes","Good","Scroll-scrubbed film segments"],
- ["Web design","impeccable, hallmark, design-taste-frontend, ui-ux-pro-max (overlapping)","Yes","Strong","Pick one for the site to avoid conflicting rules"],
- ["Performance optimisation","awwwards-motion §18, web-design-guidelines","Partial","Fair","Budgets in section 09"]
+ ["Archival restoration","Photoshop (Beta). Upscalers on the media service have 0 credits","Partial","n/a","Not needed while website images are excluded"],
+ ["Sound design and music","Audio models on the media service (0 credits). No local audio tools","No","n/a","Composer and sound designer"],
+ ["GSAP and scroll animation","GSAP ScrollTrigger","Yes","Good","Scroll-scrubbed film segments"],
+ ["Performance optimisation","Performance budgets","Partial","Fair","Budgets in section 09"]
 ];
 const SEQ=[
  {id:"01",name:"The Sacred Forest",color:"#7A5238"},

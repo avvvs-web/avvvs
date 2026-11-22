@@ -1,7 +1,7 @@
 # The Golden Thread: production plan v2 (Higgsfield)
 
 Written 2026-11-07, after the move to Higgsfield Pro (600 credits). Follows the bible
-(https://claude.ai/artifact/9XyPwgz16dAE8RwnNusNgG): one continuous camera, physical transitions,
+(bible/index.html): one continuous camera, physical transitions,
 gold only in the thread and the drop, no green in the grade, no factory shown, no invented history,
 no readable invented script, type set on the page.
 
