@@ -1,11 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { OrbWeaving } from '@/components/ui/thinking-orb';
+import { OrbWeaving } from '@/components/ui/thinking-orb-utils/orb-weaving';
 import { markReady } from '@/lib/ready';
-
-const MIN_MS = 450;   // long enough to read as intended, not as a flicker
-const MAX_MS = 3500;  // never hold a visitor longer than this, whatever is still loading
 
 /**
  * The first-load veil: ivory, with the weaving orb in thread gold. It is in the server HTML, so it
@@ -19,6 +16,10 @@ export function PageLoader() {
     const start = performance.now();
     let done = false;
     const timers: number[] = [];
+    const isMobile = window.innerWidth < 820;
+    const minMs = isMobile ? 180 : 350;
+    const maxMs = isMobile ? 2200 : 3500;
+
     const finish = () => {
       if (done) return;
       done = true;
@@ -26,16 +27,16 @@ export function PageLoader() {
         setPhase('leaving');
         document.documentElement.classList.remove('is-loading');
         markReady();
-        timers.push(window.setTimeout(() => setPhase('off'), 700));
-      }, Math.max(0, MIN_MS - (performance.now() - start))));
+        timers.push(window.setTimeout(() => setPhase('off'), 600));
+      }, Math.max(0, minMs - (performance.now() - start))));
     };
     // the page's opening picture (marked fetchpriority="high"), decoded and ready to paint
-    const hero = document.querySelector<HTMLImageElement>('main img[fetchpriority="high"]');
+    const hero = document.querySelector<HTMLImageElement>('main img[fetchpriority="high"], main .film-poster');
     const picture = !hero ? Promise.resolve()
       : (hero.complete ? Promise.resolve() : new Promise<void>((r) => { hero.addEventListener('load', () => r(), { once: true }); hero.addEventListener('error', () => r(), { once: true }); }))
         .then(() => hero.decode?.().catch(() => {}));
     Promise.all([document.fonts?.ready ?? Promise.resolve(), picture]).then(finish, finish);
-    timers.push(window.setTimeout(finish, MAX_MS));
+    timers.push(window.setTimeout(finish, maxMs));
     return () => timers.forEach((t) => window.clearTimeout(t));
   }, []);
 

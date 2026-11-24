@@ -12,7 +12,7 @@ const castle = localFont({
   src: [{ path: '../fonts/CastleT.woff2', weight: '400', style: 'normal' }],
   variable: '--font-castle', display: 'swap', fallback: ['Iowan Old Style', 'Palatino Linotype', 'Georgia', 'serif'], adjustFontFallback: 'Times New Roman',
 });
-const manjari = Manjari({ weight: ['100', '400', '700'], subsets: ['latin', 'malayalam'], variable: '--font-manjari', display: 'swap' });
+const manjari = Manjari({ weight: ['400', '700'], subsets: ['latin', 'malayalam'], variable: '--font-manjari', display: 'swap' });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -58,6 +58,9 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en-IN" className={`${castle.variable} ${manjari.variable}`}>
+      <head>
+        <link rel="preload" as="image" href="/media/film/v3/p/s01/f_001.webp" media="(max-width: 819px) and (orientation: portrait)" fetchPriority="high" />
+      </head>
       {/* browsers and extensions may stamp a style attribute on body before React hydrates */}
       <body suppressHydrationWarning>
         <PublicChrome />

@@ -44,7 +44,8 @@ COUNT.forEach((n, k) => CLIP_OF.fill(k, START[k], START[k] + n));
 
 const MAX_FETCH = 8;     // frames downloading at once
 const MAX_DECODE = 3;    // frames decoding at once
-const FIRST_FRAMES = 48; // before the visitor first scrolls, only every second frame of these loads
+const FIRST_FRAMES = 32; // before the visitor first scrolls, only every second frame of these loads
+const FIRST_FRAMES_MOBILE = 10; // on mobile before first scroll, keep prefetch light so it doesn't saturate the radio
 
 /**
  * The whole film in one pinned stage, drawn on one canvas. Scrolling moves a playhead along the
@@ -86,7 +87,7 @@ export function FilmStage() {
       const w = window.innerWidth, px = w * window.devicePixelRatio;
       const slow = net?.saveData || ['slow-2g', '2g', '3g'].includes(net?.effectiveType ?? '');
       const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory ?? 8;
-      if (w < 820 && window.innerHeight > w) return !capped && px >= 900 && !slow && memory >= 4 ? 'p2' : 'p';
+      if (w < 820 && window.innerHeight > w) return 'p';
       if (capped >= 2 || w < 1100 || px < 1700 || slow || memory < 4) return 'd';
       return !capped && px >= 2400 && memory >= 8 ? 'uhd' : 'hd';
     };
@@ -204,7 +205,8 @@ export function FilmStage() {
       const last = CLIPS.length - 1;
       const a = START[Math.max(0, clip - 1)];
       const end = Math.min(last, started ? clip + 2 : clip);
-      const b = started ? START[end] + COUNT[end] - 1 : Math.min(FIRST_FRAMES, COUNT[0]) - 1;
+      const firstFramesCap = window.innerWidth < 820 ? FIRST_FRAMES_MOBILE : FIRST_FRAMES;
+      const b = started ? START[end] + COUNT[end] - 1 : Math.min(firstFramesCap, COUNT[0]) - 1;
       // When the playhead moves faster than frames can arrive, the ones just ahead of it would
       // land too late to be shown. So aim ahead of it by as far as it travels during one download,
       // and take only every second, fourth or eighth frame: as many as the connection can keep
@@ -214,7 +216,7 @@ export function FilmStage() {
       while (arrivals.length && now - arrivals[0] > 1000) arrivals.shift();
       const rate = Math.max(arrivals.length, 4);
       // a slow connection does better with fewer downloads at once: each one finishes sooner
-      const most = requestTime > 0.8 ? 3 : MAX_FETCH;
+      const most = requestTime > 0.8 ? 3 : (window.innerWidth < 820 ? 4 : MAX_FETCH);
       let stride = 1;
       while (stride < 16 && v > rate * stride) stride *= 2;
       // a heavy set that keeps arriving too slowly while the visitor scrolls: drop to the next lighter one
@@ -426,10 +428,12 @@ export function FilmStage() {
     setTime(0);
 
     // The opening frames wait for the first-load veil to lift, so they never compete with the
-    // page's own first paint; everything else waits for the first scroll.
+    // page's own first paint; everything else waits for the first scroll or touch.
     const cancelReady = whenReady(pump);
-    const onFirstScroll = () => { started = true; pump(); };
-    window.addEventListener('scroll', onFirstScroll, { passive: true, once: true });
+    const onFirstInteraction = () => { started = true; pump(); };
+    window.addEventListener('scroll', onFirstInteraction, { passive: true, once: true });
+    window.addEventListener('touchstart', onFirstInteraction, { passive: true, once: true });
+    window.addEventListener('pointerdown', onFirstInteraction, { passive: true, once: true });
 
     // a hidden tab gives its decoded frames back (phones close tabs that hold too much)
     const onVisibility = () => {
@@ -457,7 +461,9 @@ export function FilmStage() {
       gsap.ticker.remove(tick);
       gsap.ticker.remove(follow);
       window.clearTimeout(resizeTimer);
-      window.removeEventListener('scroll', onFirstScroll);
+      window.removeEventListener('scroll', onFirstInteraction);
+      window.removeEventListener('touchstart', onFirstInteraction);
+      window.removeEventListener('pointerdown', onFirstInteraction);
       window.removeEventListener('resize', onResize);
       window.removeEventListener('online', onOnline);
       document.removeEventListener('visibilitychange', onVisibility);
